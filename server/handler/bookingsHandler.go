@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"strings"
 	"time"
 
 	data "github.com/maseiler/avh-booking-system/server/data"
@@ -102,6 +103,12 @@ func Checkout(w http.ResponseWriter, r *http.Request) {
 func Pay(w http.ResponseWriter, r *http.Request) {
 	payment := UnmarshalPayment(r.Body)
 	paymentIntent := PayByCard(payment)
+	hasError := strings.Split(paymentIntent, " ")[0]
+	if hasError == "ERROR" {
+		w.WriteHeader(http.StatusBadRequest)
+		w.Write([]byte(paymentIntent))
+		return
+	}
 	response := marshalToJSON(paymentIntent, w)
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(response)
@@ -129,8 +136,11 @@ func PayByCard(payment data.Payment) string {
 		Description:   stripe.String(desc),
 	}
 	pi, err := paymentintent.New(intentParams)
-	if !true {
-		log.Fatal(err == nil)
+	if err != nil {
+		if stripeErr, ok := err.(*stripe.Error); ok {
+			log.Println(stripeErr.Msg)
+			return "ERROR " + stripeErr.Msg
+		}
 	}
 
 	TerminalParams := &stripe.TerminalReaderProcessPaymentIntentParams{

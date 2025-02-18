@@ -193,7 +193,7 @@
     },
     "failure":{
       "noFavoriteItems":"Couldn't get favorite items.",
-      "negativePaymentNotAllowed":"Payments smaller or equal 0 are not allowed",
+      "negativePaymentNotAllowed":"Payments smaller or equal 0.50 are not allowed",
       "error":"Error",
       "wrongPassword":"Wrong password?",
       "noDebts":"Couldn't get debts.",

@@ -140,7 +140,7 @@ export default {
       this.pay();
     },
     pay() {
-      if (this.balancePart <= 0) {
+      if (this.balancePart <= 0.5) {
         this.$emit("close");
         this.$responseEventBus.$emit(
           "failureMessage",
@@ -174,6 +174,7 @@ export default {
         })
         .catch((response) => {
           //ToDo: internationalize this failure message
+          this.$emit("close");
           this.$responseEventBus.$emit("failureMessage", response.data);
         });
     },

@@ -80,15 +80,44 @@
                   <h3>{{$t('admin.reportSettings.reportLabel')}}</h3>
                 </div>
               </div>
-              <div class="columns">
+              <div class="columns field">
                 <div class="column is-2">
-                  <p>{{$t('admin.reportSettings.sendCurrentDebts')}}</p>
+                  <label for="reportReceiver">{{$t('admin.reportSettings.reportReceiver')}}</label>
+                </div>
+                <div class="column is-2">
+                  <div class="control has-icons-left">
+                    <input data-setting="ReportReceiver" id="reportReceiver" type="email" :placeholder="$t('admin.reportSettings.reportReceiver')" class="input" v-model.lazy="reportReceiver" @change="changeSetting">
+                    <span class="icon is-small is-left">
+                      <font-awesome-icon icon="user" />
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="columns field">
+                <div class="column is-2">
+                  <label for="sendDebtsUntilDate">{{$t('admin.reportSettings.sendCurrentDebtsUntil')}}</label>
+                </div>
+                <div class="column is-2">
+                  <div class="control">
+                      <input
+                        class="input is-info"
+                        type="date"
+                        v-bind:placeholder="$t('statistics.from')"
+                        v-model="until"
+                      />
+                    </div>
+                </div>
+              </div>
+              <div class="columns field">
+                <div class="column is-2">
+                  <label for="sendDebtsBtn">{{$t('admin.reportSettings.sendCurrentDebts')}}</label>
                 </div>
                 <div class="column is-2">
                   <div class="buttons">
                     <button
-                      class="button is-link is-fullwidth"
-                      @click="sendCurrentDebts"
+                    id="sendDebtsBtn"  
+                    class="button is-link is-fullwidth"
+                    @click="sendCurrentDebts"
                     >
                     {{$t('admin.reportSettings.sendCurrentDebts')}}
                     </button>
@@ -102,76 +131,82 @@
     </div>
   </template>
   
-  <script>
-  export default {
-    components: {
-    },
-    data() {
-      return {
-        eMailHost: "",
-        eMailPort: "",
-        eMailUser: "",
-        eMailPass: "",
-        eMailSender: "",
-      };
-    },
-    mounted: function () {
-      this.$http
-          .post("getSettings")
-          .then((resp) => {
-          let settings = resp.data;
-          for (const setting of settings) {
-              if(setting.Name == "EMailHost"){
-                  this.eMailHost = setting.Value;
-              }
-              if(setting.Name == "EMailPort"){
-                  this.eMailPort = setting.Value;
-              }
-              if(setting.Name == "EMailUser"){
-                  this.eMailUser = setting.Value;
-              }
-              if(setting.Name == "EMailPass"){
-                  this.eMailPass = setting.Value;
-              }
-              if(setting.Name == "EMailSender"){
-                  this.eMailSender = setting.Value;
-              }
-          }
-          });
+<script>
+export default {
+  components: {
+  },
+  data() {
+    return {
+      eMailHost: "",
+      eMailPort: "",
+      eMailUser: "",
+      eMailPass: "",
+      eMailSender: "",
+      reportReceiver: "",
+      until: ""
+    };
+  },
+  mounted: function () {
+    this.$http
+      .post("getSettings")
+      .then((resp) => {
+      let settings = resp.data;
+      for (const setting of settings) {
+        if(setting.Name == "EMailHost"){
+          this.eMailHost = setting.Value;
+        }
+        if(setting.Name == "EMailPort"){
+          this.eMailPort = setting.Value;
+        }
+        if(setting.Name == "EMailUser"){
+          this.eMailUser = setting.Value;
+        }
+        if(setting.Name == "EMailPass"){
+          this.eMailPass = setting.Value;
+        }
+        if(setting.Name == "EMailSender"){
+          this.eMailSender = setting.Value;
+        }
+        if(setting.Name == "ReportReceiver"){
+          this.reportReceiver = setting.Value;
+        }
+      }
+      });
     },
     methods: {
       changeSetting(e){
-            let set = {
-                "Name": e.target.dataset.setting,
-                "Value": e.target.value
-            }
-            this.$http.post("updateSetting", set);
-        },
-        sendCurrentDebts() {
-            let date = new Date()
-            let year = date.getFullYear();
-            let month = '' + (date.getMonth() + 1);
-            let day = '' + date.getDate();
-            if (month.length < 2){
-                month = "0" + month;
-            }
-            if (day.length < 2) {
-                day = "0" + day;
-            }
-            this.$http
-            .post("sendCurrentDebts", `${year}-${month}-${day}`)
-            .then(() => {
-                let message = `${this.$t('messages.success.emailSend')}`;
-                this.$responseEventBus.$emit("successMessage", message);
-            })
-            .catch((response) => {
-                if (response.data !== undefined) {
-                //ToDo: Internationalize this failure Message
-                this.validationError = response.data;
-                }
-            });
-        },
+        let set = {
+          "Name": e.target.dataset.setting,
+          "Value": e.target.value
+        }
+        this.$http.post("updateSetting", set);
+      },
+      sendCurrentDebts() {
+        // let date = new Date()
+        // let year = date.getFullYear();
+        // let month = '' + (date.getMonth() + 1);
+        // let day = '' + date.getDate();
+        // if (month.length < 2){
+        //     month = "0" + month;
+        // }
+        // if (day.length < 2) {
+        //     day = "0" + day;
+        // }
+        // .post("sendCurrentDebts", `${year}-${month}-${day}`)
+        this.$http
+        .post("sendCurrentDebts", `${this.until}`)
+        .then(() => {
+          let message = `${this.$t('messages.success.emailSend')}`;
+          this.$responseEventBus.$emit("successMessage", message);
+        })
+        .catch((response) => {
+          if (response.data !== undefined) {
+            //ToDo: Internationalize this failure Message
+            this.validationError = response.data;
+          }
+        });
+      },
     }
-  };
+};
   </script>
   

@@ -23,10 +23,19 @@ func SendCurrentDebts(w http.ResponseWriter, r *http.Request) {
 	if until == "" {
 		until = time.Now().String()[:10]
 	}
-	receiver := "dev@leon-ebert.de"         //Change to Database Setting E-Mail
-	receiverCC := ""                        //Change to Database Setting E-Mail
-	receiverBCC := ""                       //Change to Database Setting E-Mail
-	sender := os.Getenv("AVHBS_EMAIL_USER") //Change to Database Setting E-Mail
+	allSettings := dbP.GetSettings()
+	eMailUser := ""
+	reportReceiver := ""
+	for i := range allSettings {
+		if allSettings[i].Name == "EMailUser" {
+			eMailUser = allSettings[i].Value
+		}
+		if allSettings[i].Name == "ReportReceiver" {
+			reportReceiver = allSettings[i].Value
+		}
+	}
+	receiverCC := ""  //Change to Database Setting E-Mail
+	receiverBCC := "" //Change to Database Setting E-Mail
 
 	//From here on think of internationalisation or Database Settings for the texts.
 	subject := "Current Debts until " + until
@@ -39,7 +48,7 @@ func SendCurrentDebts(w http.ResponseWriter, r *http.Request) {
 	message += "</tbody></table>" +
 		"<p>In this list, positive values mean debt while negative values represent credit.</p>"
 
-	EmailController(receiver, receiverCC, receiverBCC, sender, subject, message)
+	EmailController(reportReceiver, receiverCC, receiverBCC, eMailUser, subject, message)
 }
 
 // Brauche noch Hilfe mit der Datenbankfunktion

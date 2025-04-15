@@ -294,11 +294,12 @@ export default {
     },
     downloadCsv() {
       let csv = "ID,Time Stamp,User,Item,Amount,Price,Comment,Payment Method\n";
+      let user = this.getUserByID(entry.UserID);
       this.bookEntries.forEach((entry) => {
         csv += entry.ID + ",";
         csv += this.printDateTime(entry.TimeStamp) + ",";
         csv +=
-          this.displayUserName(this.getUserByID(entry.UserID)) +
+          user.FirstName + " (" + user.BierName + ") " + user.LastName +
           " (ID: " +
           entry.UserID +
           "),";

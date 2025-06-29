@@ -18,4 +18,4 @@
 client/dist/
 client/node_modules/
 
-server/configs
+server/internal/configs

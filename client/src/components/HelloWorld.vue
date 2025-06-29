@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import {
+  fireConfetti, fireConfettiFromSides, fireworks, bookingConfetti, paymentConfetti, startSnow, huetteConfetti
+} from '../confetti.ts';
 
 defineProps<{ msg: string }>()
 
@@ -11,6 +14,7 @@ const count = ref(0)
 
   <div class="card">
     <button type="button" @click="count++">count is {{ count }}</button>
+    <button @click="huetteConfetti">Party</button>
     <p>
       Edit
       <code>components/HelloWorld.vue</code> to test HMR

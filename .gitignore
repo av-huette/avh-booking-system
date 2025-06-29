@@ -12,6 +12,7 @@
 *.out
 # miscellaneous
 .vscode
+.idea
 
 # Application specifc
 client/dist/

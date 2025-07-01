@@ -8,7 +8,6 @@ import (
 )
 
 func main() {
-
 	staticPath := os.Getenv("AVHBS_FRONTEND_PATH")
 	if staticPath == "" {
 		panic("Environment variable AVHBS_FRONTEND_PATH is not set. Make sure to set it to `<path to avh-booking-system>/client/dist`")

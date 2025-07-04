@@ -1,10 +1,10 @@
 package main
 
 import (
+	"github.com/av-huette/avh-booking-system/internal/server"
 	"github.com/joho/godotenv"
 	"log"
 	"net/http"
-	"os"
 	"time"
 )
 
@@ -15,23 +15,15 @@ func main() {
 		log.Fatal("Error loading .env file: " + err.Error())
 	}
 
-	// set up file server
-	staticPath := os.Getenv("AVHBS_FRONTEND_PATH")
-	fileServer := http.FileServer(http.Dir(staticPath))
-
-	// set up routes
-	mux := http.NewServeMux()
-	mux.Handle("GET /", fileServer)
-
 	// set up web server
-	server := &http.Server{
+	webServer := &http.Server{
 		Addr:           ":8081",
-		Handler:        mux,
+		Handler:        server.SetUpMux(),
 		ReadTimeout:    10 * time.Second,
 		WriteTimeout:   10 * time.Second,
 		MaxHeaderBytes: 1 << 20,
 	}
 	log.Print("Starting server on :8081")
-	err = server.ListenAndServe()
+	err = webServer.ListenAndServe()
 	log.Fatal(err)
 }

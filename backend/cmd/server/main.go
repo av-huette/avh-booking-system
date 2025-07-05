@@ -10,7 +10,7 @@ import (
 func main() {
 	staticPath := os.Getenv("AVHBS_FRONTEND_PATH")
 	if staticPath == "" {
-		panic("Environment variable AVHBS_FRONTEND_PATH is not set. Make sure to set it to `<path to avh-booking-system>/client/dist`")
+		panic("Environment variable AVHBS_FRONTEND_PATH is not set. Make sure to set it to `<path to avh-booking-system>/frontend/dist`")
 	}
 
 	mux := http.NewServeMux()
@@ -25,7 +25,7 @@ func main() {
 		MaxHeaderBytes: 1 << 20,
 	}
 
-	log.Print("Starting server on :8081")
+	log.Print("Starting backend on :8081")
 	err := server.ListenAndServe()
 	log.Fatal(err)
 }

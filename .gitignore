@@ -15,7 +15,7 @@
 .idea
 
 # Application specifc
-client/dist/
-client/node_modules/
+frontend/dist/
+frontend/node_modules/
 
-server/internal/configs
+backend/internal/configs

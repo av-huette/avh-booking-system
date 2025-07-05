@@ -13,6 +13,6 @@ func (app *application) routes() http.Handler {
 	// set up routes
 	mux := http.NewServeMux()
 	mux.Handle("GET /", fileServer)
-	
-	return mux
+
+	return app.securityHeaders(mux)
 }

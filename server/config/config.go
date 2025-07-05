@@ -3,11 +3,13 @@ package config
 import (
 	"github.com/joho/godotenv"
 	"log"
+	"log/slog"
 	"os"
 	"strconv"
 )
 
 type Config struct {
+	LogLevel     slog.Level
 	HttpPort     int
 	FrontendPath string
 }
@@ -20,13 +22,14 @@ func LoadConfig() *Config {
 	}
 
 	conf := &Config{}
-	conf.HttpPort = GetInt("AVHBS_HTTP_PORT", 8081)
-	conf.FrontendPath = GetString("AVHBS_FRONTEND_PATH", "")
+	conf.LogLevel = getLogLevel("AVHBS_LOG_LEVEL", slog.LevelInfo)
+	conf.HttpPort = getInt("AVHBS_HTTP_PORT", 8081)
+	conf.FrontendPath = getString("AVHBS_FRONTEND_PATH", "")
 
 	return conf
 }
 
-func GetString(key, defaultValue string) string {
+func getString(key, defaultValue string) string {
 	value, exists := os.LookupEnv(key)
 	if !exists {
 		return defaultValue
@@ -35,7 +38,7 @@ func GetString(key, defaultValue string) string {
 	return value
 }
 
-func GetInt(key string, defaultValue int) int {
+func getInt(key string, defaultValue int) int {
 	value, exists := os.LookupEnv(key)
 	if !exists {
 		return defaultValue
@@ -49,7 +52,7 @@ func GetInt(key string, defaultValue int) int {
 	return intValue
 }
 
-func GetBool(key string, defaultValue bool) bool {
+func getBool(key string, defaultValue bool) bool {
 	value, exists := os.LookupEnv(key)
 	if !exists {
 		return defaultValue
@@ -61,4 +64,23 @@ func GetBool(key string, defaultValue bool) bool {
 	}
 
 	return boolValue
+}
+
+func getLogLevel(key string, defaultValue slog.Level) slog.Level {
+	value, exists := os.LookupEnv(key)
+	if !exists {
+		return slog.LevelInfo
+	}
+
+	m := make(map[string]slog.Level)
+	m["DEBUG"] = slog.LevelDebug
+	m["INFO"] = slog.LevelInfo
+	m["WARN"] = slog.LevelWarn
+	m["ERROR"] = slog.LevelError
+
+	logLevel, exists := m[value]
+	if exists {
+		return logLevel
+	}
+	return defaultValue
 }

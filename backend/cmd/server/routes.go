@@ -1,11 +1,11 @@
-package server
+package main
 
 import (
 	"net/http"
 	"os"
 )
 
-func SetUpMux() http.Handler {
+func (app *application) routes() http.Handler {
 	// set up file server
 	staticPath := os.Getenv("AVHBS_FRONTEND_PATH")
 	fileServer := http.FileServer(http.Dir(staticPath))
@@ -13,6 +13,6 @@ func SetUpMux() http.Handler {
 	// set up routes
 	mux := http.NewServeMux()
 	mux.Handle("GET /", fileServer)
-
+	
 	return mux
 }

@@ -8,6 +8,10 @@ import (
 	"strconv"
 )
 
+const (
+	DefaultHTTPPort = 8081
+)
+
 type Config struct {
 	LogLevel     slog.Level
 	HttpPort     int
@@ -23,7 +27,7 @@ func LoadConfig() *Config {
 
 	conf := &Config{}
 	conf.LogLevel = getLogLevel("AVHBS_LOG_LEVEL", slog.LevelInfo)
-	conf.HttpPort = getInt("AVHBS_HTTP_PORT", 8081)
+	conf.HttpPort = getInt("AVHBS_HTTP_PORT", DefaultHTTPPort)
 	conf.FrontendPath = getString("AVHBS_FRONTEND_PATH", "")
 
 	return conf
@@ -82,5 +86,6 @@ func getLogLevel(key string, defaultValue slog.Level) slog.Level {
 	if exists {
 		return logLevel
 	}
+
 	return defaultValue
 }

@@ -17,5 +17,6 @@ func CreateLogger() *slog.Logger {
 
 	log := slog.New(tint.NewHandler(os.Stdout, options))
 	log.Debug(fmt.Sprintf("Log level: %s", options.Level))
+	
 	return log
 }

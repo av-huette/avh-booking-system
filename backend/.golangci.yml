@@ -1,0 +1,21 @@
+version: "2"
+
+linters:
+  default: fast
+  enable:
+    - bodyclose
+    - contextcheck
+    - errcheck
+    - errchkjson
+    - errorlint
+    - goconst
+    - govet
+    - ineffassign
+    - sloglint
+    - sqlclosecheck
+    - staticcheck
+    - unused
+    - wsl_v5
+  disable:
+    - depguard
+    - wsl

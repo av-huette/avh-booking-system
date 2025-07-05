@@ -14,5 +14,5 @@ func (app *application) routes() http.Handler {
 	mux := http.NewServeMux()
 	mux.Handle("GET /", fileServer)
 
-	return app.securityHeaders(mux)
+	return app.logRequest(app.securityHeaders(mux))
 }

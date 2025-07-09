@@ -9,9 +9,16 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^6.7.2",
+    "@fortawesome/free-solid-svg-icons": "^6.7.2",
+    "@fortawesome/vue-fontawesome": "^3.0.8",
     "canvas-confetti": "^1.9.3",
+    "font-awesome": "^4.7.0",
     "node": "^22.17.0",
-    "vue": "^3.5.17"
+    "sass": "^1.89.2",
+    "vue": "^3.5.17",
+    "vue-i18n": "^11.1.9",
+    "vue-router": "^4.5.1"
   },
   "devDependencies": {
     "@types/canvas-confetti": "^1.9.0",

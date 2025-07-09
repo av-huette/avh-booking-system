@@ -1,25 +1,49 @@
-<script setup lang="ts">
-import { ref } from 'vue'
+<script lang="ts">
 import {
   huetteConfetti
-} from '../confetti.ts';
+} from '../composables/confetti.ts';
+import { getTestCategorys, type Category } from '../composables/category.ts';
 
-defineProps<{ msg: string }>()
+export default {
+  data() {
+    return{
+      count: 0,
+      categorys: [] as Category[]
+    }
+  },
+  props: {
+    msg: String
+  },
+  methods:{
+    listCategorys(){
+      this.categorys = getTestCategorys();
+      console.log(getTestCategorys());
+    },
+    huetteConfetti(){
+      huetteConfetti();
+    }
+  },
+}
 
-const count = ref(0)
 </script>
 
 <template>
   <h1>{{ msg }}</h1>
-
+  <h2><icon :icon="['fas', 'user']"/> Icon</h2>
   <div class="card">
     <button type="button" @click="count++">count is {{ count }}</button>
     <button @click="huetteConfetti">Party</button>
     <p>
       Edit
-      <code>components/HelloWorld.vue</code> to test HMR
+      <code>components/HelloWorld.vue</code> to test HMR {{ $t('home.title') }}
     </p>
   </div>
+  <div class="box">
+    Test
+    <button>TEst</button>
+  </div>
+  <button class="button" @click="listCategorys">List Categorys</button>
+  <p v-for="category in categorys" :key="category.title">{{category.title}} <icon :icon="category.icon" /></p>
 
   <p>
     Check out
@@ -39,7 +63,5 @@ const count = ref(0)
 </template>
 
 <style scoped>
-.read-the-docs {
-  color: #888;
-}
+
 </style>

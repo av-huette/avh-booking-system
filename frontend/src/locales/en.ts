@@ -1,0 +1,211 @@
+const en = {
+  "home":{
+    "title": "Academic Association Hütte",
+    "subtitle": "Booking System",
+    "slogan": "Vivat Crescat Floreat Hütte"
+  },
+  "admin":{
+    "menuLabel": "Administration",
+    "loginTitle":"Login to Admin",
+    "userSettings":{
+      "menuLabel":"User Settings",
+      "deleteUserTitle":"Delete user",
+      "selectFirst":"Select user first.",
+      "deleteShure":"Do you really want to delete",
+      "add":"Add User",
+      "modify":"Modify user"
+    },
+    "itemSettings":{
+      "menuLabel": "Item Settings",
+      "deleteItemTitle":"Delete Item",
+      "selectFirst":"Select item first.",
+      "deleteShure":"Do you really want to delete",
+      "add":"Add Item",
+      "modify":"Modify Item"
+    },
+    "bookingSettings":{
+      "menuLabel":"Booking Settings",
+      "getBookEntries":"Get Book Entries",
+      "lastN":"Last N",
+      "ofUser":"Of User",
+      "ofItem":"Of Item",
+      "userPayments":"User Payments",
+      "undoEntry":"Undo Entry",
+      "delEntry":"Delete Entry"
+    },
+    "otherSettings":{
+      "menuLabel": "Other Settings"
+    },
+    "feedbackList": "Feedback",
+    "reportSettings":{
+      "menuLabel":"Report Settings",
+      "sendCurrentDebtsUntil":"Report should inlcude until",
+      "sendCurrentDebts": "Send Debt Report",
+      "eMailLabel" : "E-Mail Settings",
+      "eMailServer": "E-Mail Server Host",
+      "eMailPort": "E-Mail Server Port",
+      "eMailUser": "E-Mail Username",
+      "eMailPass": "E-Mail Password",
+      "eMailSender": "E-Mail Sender name",
+      "reportLabel": "E-Mail Reports",
+      "reportReceiver": "Report Receiver"
+
+    },
+    "addUser":{
+      "title":"Add new User"
+    },
+    "password":{
+      "old":"Old password",
+      "new":"New password",
+      "confirm":"Confirm new password",
+      "change":"Change Password"
+    },
+    "paymentSettings": {
+      "menuLabel": "Payment Settings",
+      "stripeAPILabel": "Stripe API Key",
+      "stripeCardReaderLabel": "Card Reader"
+    }
+  },
+  "statistics":{
+    "menuLabel": "Statistics",
+    "showBookingsStats":"Book Entries",
+    "showFavoriteItemsStats":"Favorite Items",
+    "numDays":"# Days",
+    "createChart":"Create Chart",
+    "selectDays":"Select number of last days you want to display",
+    "clickToDisEn":"Click on item to disable/enable",
+    "from":"From",
+    "to":"To",
+    "n":"N"
+  },
+  "feedback":{
+    "button": "Feedback",
+    "title": "Feedback",
+    "subtitle": "Do you have comments, feature requests or found a bug? Please let us know!",
+    "PHName": "Name (optional)",
+    "PHComment": "Comment here..."
+  },
+  "generic":{
+    "submit": "Submit",
+    "cancel": "Cancel",
+    "alcoholic":"alcoholic",
+    "nonAlcoholic":"non-Alcoholic",
+    "food":"Food",
+    "favorites":"Favorites",
+    "refresh":"Refresh",
+    "comment":"Comment",
+    "credit":"Credit",
+    "debt":"Debt",
+    "balance":"Balance",
+    "max":"Max",
+    "id":"ID",
+    "download":"Download",
+    "change":"Change",
+    "delete":"Delete",
+    "name":"Name",
+    "text":"Text",
+    "modify":"Modify"
+  },
+  "navigation":{
+    "home":"Home",
+    "booking": "Booking",
+    "statistics": "Statistics"
+  },
+  "notification":{
+    "success":"Success",
+    "error":"Error",
+    "processing":"Processing"
+  },
+  "booking":{
+    "addItem":{
+      "title":"Add new item"
+    },
+    "addUser":{
+      "title":"Add new user"
+    },
+    "search":{
+      "items":"Search Items",
+      "users":"Search Users"
+    },
+    "entries":{
+      "payment":"Payment",
+      "undid":"Undid book entry"
+    },
+    "payment":{
+      "title":"Payment",
+      "htp":"has to pay",
+      "subtitle":"Please place the cash in the money box!",
+      "cash":"Cash",
+      "card":"EC",
+      "lastPayment":"Last Payment",
+      "timestamp":"Timestamp",
+      "recharge":{
+        "title":"Recharge",
+        "sub1":"cannot pay.",
+        "sub2":"Available credit is",
+        "sub3":"€",
+        "addCreditNotice":"To add more credit, enter and pay amount below."
+      },
+      "pay":"Pay",
+      "method":"Payment Method",
+      "processing": "Payment in process",
+      "failed": "Payment failed!"
+    }
+  },
+  "item":{
+    "item":"Item",
+    "name":"Name",
+    "price":"Price",
+    "size":"Size",
+    "unit":"Unit",
+    "unitL":"l",
+    "unitPiece":"Piece",
+    "type":"Type",
+    "enabled":"Enabled"
+  },
+  "user":{
+    "user":"User",
+    "status":"Status",
+    "nickname":"Nickname",
+    "firstName":"First Name",
+    "lastName":"Last Name",
+    "boatName":"Boat Name",
+    "eMail":"E-Mail",
+    "phoneNumber":"Phone Number",
+    "password":"Password"
+  },
+  "cart":{
+    "amount":"Amount",
+    "checkout":"Checkout",
+    "total":"Total Price"
+  },
+  "messages":{
+    "success":{
+      "newUserAdded":"Added new user",
+      "newItemAdded":"Added new item",
+      "checkoutFrom":"Checkout from",
+      "paid":"paid",
+      "newFeedbackAdded":"Thank you! <3",
+      "passwordChangedAdmin":"Changed password.\n\nPlease make sure that all responsible persons know the new password.",
+      "deletedItem":"Deleted item",
+      "deleteUser":"Deleted user",
+      "deleteFeedback":"Deleted feedback entry.",
+      "modifiedItem":"Modified item",
+      "modifiedUser":"Modified user",
+      "emailSend":"E-Mail send successully"
+    },
+    "failure":{
+      "noFavoriteItems":"Couldn't get favorite items.",
+      "negativePaymentNotAllowed":"Payments smaller or equal 0.50 are not allowed",
+      "error":"Error",
+      "wrongPassword":"Wrong password?",
+      "noDebts":"Couldn't get debts.",
+      "submitFeedback":"Couldn't submit feedback.",
+      "passwordNoMatch":"New passwords do not match!",
+      "itemDelete":"Couldn't delete item.",
+      "userDelete":"Couldn't delete user.",
+      "feedbackDelete":"Couldn't delete feedback."
+    }
+  }
+}
+export default en

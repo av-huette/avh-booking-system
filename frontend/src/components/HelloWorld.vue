@@ -3,6 +3,7 @@ import {
   huetteConfetti
 } from '../composables/confetti.ts';
 import { getTestCategorys, type Category } from '../composables/category.ts';
+import type { Account } from '../composables/account.ts';
 
 export default {
   data() {

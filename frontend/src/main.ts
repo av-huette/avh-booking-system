@@ -5,6 +5,7 @@ import App from './App.vue'
 import { createI18n } from 'vue-i18n'
 import de  from './locales/de.ts'
 import en from './locales/en.ts'
+import { createPinia } from 'pinia'
 
 function loadLocaleMessages() {
   //https://vue-i18n.intlify.dev/guide/essentials/started.html
@@ -66,9 +67,11 @@ import { fas } from '@fortawesome/free-solid-svg-icons'
 
 library.add( fas )
 
+const pinia = createPinia()
 const app = createApp(App)
 
 app.component('icon', FontAwesomeIcon)
 app.use(router)
 app.use(i18n)
+app.use(pinia)
 app.mount('#app')

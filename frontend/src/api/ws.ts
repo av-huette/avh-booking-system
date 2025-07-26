@@ -19,8 +19,10 @@ export function connectWebSocket(){
     }
   };
 
+  //ToDo: Separate this into a new Function
   ws.onmessage = (event) => {
     console.log("Message received:", event.data);
+    //ToDo: Get Message Type and update corresponding store automatically.
     socketStore.addNotification(event.data);
   };
 

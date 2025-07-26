@@ -8,6 +8,7 @@ export const useSocketStore = defineStore("notificationStore", {
   }),
   actions: {
     addNotification(msg: any) {
+      //ToDo: Limit this buffer to a certain amount of messages
       this.notifications.push(msg);
     },
     sendMessage(msg: any){

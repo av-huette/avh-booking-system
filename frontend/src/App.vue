@@ -1,6 +1,12 @@
+<template>
+  <MainNavigation />
+  <div v-for="msg in store.notifications"> {{ msg }}</div>
+  <button class="button" @click="sendTestMessage">Send Test Message</button>
+  <RouterView />
+</template>
+
 <script lang="ts">
-  import { mapState } from 'pinia';
-import { connectWebSocket, closeConnection } from './api/ws';
+  import { connectWebSocket, closeConnection } from './api/ws';
   import MainNavigation from './components/MainNavigation.vue';
   import { useSocketStore } from './store/socketStore';
   
@@ -19,26 +25,10 @@ import { connectWebSocket, closeConnection } from './api/ws';
     unmounted() {
       closeConnection();
     },
-    computed: {
-      ...mapState(useSocketStore, ['socket', 'notifications'])
-    },
     methods: {
       sendTestMessage(){
         this.store.sendMessage('Test Message from Store');
-        this.store.socket?.send('Test Message from Socket in Store');
-        this.socket?.send('Test Message from Computed Store variable ');
       }
     }
   }
 </script>
-
-<template>
-  <MainNavigation />
-  <div v-for="msg in notifications"> {{ msg }}</div>
-  <button class="button" @click="sendTestMessage">Send Test Message</button>
-  <RouterView />
-</template>
-
-<style>
-
-</style>

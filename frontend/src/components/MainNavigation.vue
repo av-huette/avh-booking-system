@@ -1,13 +1,3 @@
-<script setup lang="ts">
-  import { ref } from 'vue';
-  let burgerActive = ref(false);
-
-  function toggleBurger(){
-    burgerActive.value = !burgerActive.value;
-  }
-</script>
-
-
 <template>
 <nav class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
@@ -59,3 +49,18 @@
   </div>
 </nav>
 </template>
+
+<script lang="ts">
+  export default {
+    data() {
+      return {
+        burgerActive: false as Boolean
+      }
+    },
+    methods: {
+      toggleBurger(){
+        this.burgerActive = !this.burgerActive;
+      }
+    }
+  }
+</script>

@@ -60,3 +60,7 @@ export function getTestCategorys(): Category[]{
 
   return [c1, c2];
 }
+
+export function generateTestData(): Category[]{
+  return getTestCategorys();
+}

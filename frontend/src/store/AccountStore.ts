@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import type { Account } from '../composables/account'
+import { type Account, generateTestData } from '../composables/account'
 
 export const useAccountStore = defineStore('account', {
   state: () => {
@@ -12,6 +12,11 @@ export const useAccountStore = defineStore('account', {
     fullName(): string {
       //ToDo: Implement Nickname Logic
       return `${this.selected.firstName} ${this.selected.lastName}`;
+    }
+  },
+  actions: {
+    generateTestData(){
+      this.accounts.push(...generateTestData());
     }
   }
 })

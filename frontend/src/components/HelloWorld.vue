@@ -1,32 +1,3 @@
-<script lang="ts">
-import {
-  huetteConfetti
-} from '../composables/confetti.ts';
-import { getTestCategorys, type Category } from '../composables/category.ts';
-
-export default {
-  data() {
-    return{
-      count: 0,
-      categorys: [] as Category[]
-    }
-  },
-  props: {
-    msg: String
-  },
-  methods:{
-    listCategorys(){
-      this.categorys = getTestCategorys();
-      console.log(getTestCategorys());
-    },
-    huetteConfetti(){
-      huetteConfetti();
-    }
-  },
-}
-
-</script>
-
 <template>
   <h1>{{ msg }}</h1>
   <h2><icon :icon="['fas', 'user']"/> Icon</h2>
@@ -62,6 +33,32 @@ export default {
   <p class="read-the-docs">Click on the Vite and Vue logos to learn more</p>
 </template>
 
-<style scoped>
 
-</style>
+<script lang="ts">
+import {
+  huetteConfetti
+} from '../composables/confetti.ts';
+import { getTestCategorys, type Category } from '../composables/category.ts';
+
+export default {
+  data() {
+    return{
+      count: 0,
+      categorys: [] as Category[]
+    }
+  },
+  props: {
+    msg: String
+  },
+  methods:{
+    listCategorys(){
+      this.categorys = getTestCategorys();
+      console.log(getTestCategorys());
+    },
+    huetteConfetti(){
+      huetteConfetti();
+    }
+  },
+}
+
+</script>

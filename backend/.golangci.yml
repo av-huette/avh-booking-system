@@ -19,3 +19,8 @@ linters:
   disable:
     - depguard
     - wsl
+  settings:
+    wsl_v5:
+      default: default
+      disable:
+        - assign

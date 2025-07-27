@@ -46,13 +46,15 @@ export async function getCategorys(){
 
 export function getTestCategorys(): Category[]{
   let c1: Category = {
-    title: "Test Category", 
+    id: 1,
+    title: "Rooms", 
     icon: ['fas', 'house'],
     type: 0,
     visibility: 1
   }
   let c2: Category = {
-    title: "Test Category 2", 
+    id: 2,
+    title: "Guests", 
     icon: ['fas', 'beer'],
     type: 0,
     visibility: 1

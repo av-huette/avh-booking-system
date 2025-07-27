@@ -1,4 +1,3 @@
-import { type Category } from './category'
 export interface Account {
   id?: number
   firstName: string
@@ -8,7 +7,7 @@ export interface Account {
   phone?: string
   balance: number
   maxDebt: number
-  category?: Category
+  category?: number
   enabled: boolean
   createdAt?: string
 }
@@ -20,8 +19,19 @@ export function generateTestData(): Account[]{
     email: "test@test.de",
     balance: Math.random() * 100,
     maxDebt: 0,
-    enabled: true
+    enabled: true,
+    category: 1
   }
 
-  return [a1];
+  let a2: Account = {
+    firstName: "Peter",
+    lastName: "Super",
+    email: "test@test.de",
+    balance: Math.random() * 100,
+    maxDebt: 0,
+    enabled: true,
+    category: 2
+  }
+
+  return [a1, a2];
 }

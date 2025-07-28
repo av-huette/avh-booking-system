@@ -2,6 +2,8 @@ package models
 
 import (
 	"context"
+	"database/sql"
+	"errors"
 	"github.com/av-huette/avh-booking-system/internal/database"
 	"github.com/jackc/pgx/v5/pgtype"
 )
@@ -34,7 +36,7 @@ func (m *AccountModel) Insert(name string) error {
 	return err
 }
 
-func (m *AccountModel) Get(id int) (Account, error) {
+func (m *AccountModel) Get(id int) (*Account, error) {
 	ctx := context.Background()
 	stmt := `SELECT account_id, first_name, nickname, last_name, email, phone, balance,
        max_debt, category, enabled, created_at FROM accounts WHERE account_id = $1`
@@ -44,13 +46,12 @@ func (m *AccountModel) Get(id int) (Account, error) {
 	err := row.Scan(&account.ID, &account.FirstName, &account.Nickname, &account.LastName, &account.Email,
 		&account.Phone, &account.Balance, &account.MaxDebt, &account.Category, &account.Enabled, &account.CreatedAt)
 	if err != nil {
-		return Account{}, err
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, ErrNoRecord
+		} else {
+			return nil, err
+		}
 	}
 
-	return account, nil
-}
-
-func (m *AccountModel) Latest() ([]Account, error) {
-	// TODO
-	return nil, nil
+	return &account, nil
 }

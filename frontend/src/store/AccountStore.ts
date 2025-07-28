@@ -15,6 +15,13 @@ export const useAccountStore = defineStore('account', {
     select(acc: Account){
       this.selected = [acc];
     },
+    selectAdd(acc: Account){
+      if(this.selected.includes(acc)){ return; }
+      this.selected.push(acc);
+    },
+    selectSubstract(acc: Account){
+      this.selected = this.selected.filter((a) => a != acc);
+    },
     unselect(){
       this.selected = [];
     },

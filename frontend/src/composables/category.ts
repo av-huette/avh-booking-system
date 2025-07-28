@@ -23,7 +23,7 @@ export interface Category {
   type: CategoryType
   visibility: CategoryVisibility
   icon?: Icon
-  id?: number
+  id: number
 }
 
 /**

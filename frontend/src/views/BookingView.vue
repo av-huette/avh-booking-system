@@ -6,8 +6,16 @@
         Cart
         <button v-if="account$.selected.length > 0" class="delete" @click="account$.unselect()" title="discard cart and unselect account"></button>
       </div>
-      <div class="message-body">
-        <p v-if="account$.selected.length > 0">This is the cart of {{ account$.selected[0]?.firstName }}</p>
+      <div class="message-body fixed-grid has-3-cols">
+        <div class="grid">
+          <div class="is-col-span-1">
+            <div class="tag" v-for="account in account$.selected">
+              {{ account.firstName }}
+              <button class="delete is-small" @click="unselectAccount(account)"></button>
+            </div>
+          </div>
+          <p class="is-col-span-2">Cart Items, quantities and prices</p>
+        </div>
       </div>
     </div>
 
@@ -29,7 +37,7 @@
     </div>
 
     <div v-if="visiblePart==0" class="accounts">
-      <AccountSelector view="button"/>
+      <AccountSelector show="button"/>
     </div>
 
     <div v-if="visiblePart==1" class="accounts">
@@ -43,11 +51,15 @@
 .section{
   padding-block: 0;
 }
+.tag {
+  margin-right:.5em;
+}
 </style>
 
 <script lang="ts">
-import AccountSelector from '../components/AccountSelector.vue';
+import AccountSelector from '../components/AccountSelector/AccountSelector.vue';
 import { useAccountStore } from '../store/AccountStore';
+import type { Account } from '../composables/account';
 
   export default {
     components: {
@@ -62,6 +74,9 @@ import { useAccountStore } from '../store/AccountStore';
     methods: {
       setVisiblePart(partNr: number){
         this.visiblePart = partNr;
+      },
+      unselectAccount(account: Account){
+        this.account$.selectSubstract(account);
       }
     }
   }

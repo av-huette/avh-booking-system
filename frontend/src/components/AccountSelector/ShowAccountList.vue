@@ -1,20 +1,5 @@
 <template>
-  
-  <!-- Category Filter -->
-  <div class="tags is-flex is-justify-content-space-around">
-    <button class="tag is-hoverable" :class="selectedCategory == 0 ? 'is-primary' : ''" @click="selectCategory(0)">All</button>
-    <button v-for="category in category$.categorys" class="tag is-hoverable" :class="selectedCategory == category.id ? 'is-primary' : ''" @click="selectCategory(category.id)">{{ category.title }}</button>
-  </div>
-  <hr>
-  <!-- BUTTON VIEW -->
-  <div v-if="view=='button'" class="is-flex is-flex-direction-row is-flex-wrap-wrap is-justify-content-space-around is-gap-1">
-    <div v-for="account in accounts" @click="account$.select(account)" >
-      <button class="button is-fullwidth" :class="account$.selected.includes(account) ? 'is-primary' : ''" title="select account">{{ account.firstName }}</button>
-    </div>
-  </div>
-
-  <!-- LIST VIEW -->
-  <div v-if="view=='list'" class="table-container">
+  <div class="table-container">
     <table class="table is-striped is-hoverable">
       <tbody>
         <tr>
@@ -49,6 +34,30 @@
   </div>
 </template>
 
+<script lang="ts">
+import type { Account } from '../../composables/account';
+import { useAccountStore } from '../../store/AccountStore';
+import type { PropType } from 'vue';
+
+export default {
+  data(){
+    return {
+      account$: useAccountStore()
+    }
+  },
+  props: {
+    accounts: {
+      type: Array as PropType<Account[]>
+    }
+  },
+  methods: {
+    copyText(txt: string){
+      navigator.clipboard.writeText(txt);
+    }
+  }
+}
+</script>
+
 <style scoped>
   .has-copy-btn{
     position:relative;
@@ -70,34 +79,3 @@
     }
   }
 </style>
-
-<script lang="ts">
-import { useAccountStore } from '../store/AccountStore';
-import { useCategoryStore } from '../store/CategoryStore';
-
-export default {
-  props: {
-    view: String
-  },
-  data() {
-    return {
-      account$: useAccountStore(),
-      category$: useCategoryStore(),
-      selectedCategory: 0 as number,
-    }
-  },
-  methods: {
-    selectCategory(categoryId: number){
-      this.selectedCategory = categoryId;
-    },
-    copyText(txt: string){
-      navigator.clipboard.writeText(txt);
-    }
-  },
-  computed: {
-    accounts(){
-      return this.account$.getByCategory(this.selectedCategory);
-    }
-  }
-}
-</script>

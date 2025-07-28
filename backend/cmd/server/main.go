@@ -35,6 +35,11 @@ func main() {
 		categories:     &models.CategoriesModel{DB: dbPool},
 	}
 
+	err = app.account.Insert("Dummy")
+	if err != nil {
+		panic(err.Error())
+	}
+
 	categories, err := app.categories.Get(1)
 	if err != nil {
 		panic(err.Error())

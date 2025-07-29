@@ -12,23 +12,48 @@ const (
 	DefaultHTTPPort = 8081
 )
 
-type Config struct {
+type AppConfig struct {
 	LogLevel     slog.Level
 	HttpPort     int
 	FrontendPath string
 }
 
-func LoadConfig() *Config {
+type DbConfig struct {
+	DbHost     string
+	DbPort     int
+	DbName     string
+	DbUser     string
+	DbPassword string
+}
+
+func LoadConfig() *AppConfig {
 	// load environment variables from .env file
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file: " + err.Error())
 	}
 
-	conf := &Config{}
+	conf := &AppConfig{}
 	conf.LogLevel = getLogLevel("AVHBS_LOG_LEVEL", slog.LevelInfo)
 	conf.HttpPort = getInt("AVHBS_HTTP_PORT", DefaultHTTPPort)
 	conf.FrontendPath = getString("AVHBS_FRONTEND_PATH", "")
+
+	return conf
+}
+
+func LoadDbConfig() *DbConfig {
+	// load environment variables from .env file
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal("Error loading .env file: " + err.Error())
+	}
+
+	conf := &DbConfig{}
+	conf.DbHost = getString("DB_HOST", "INVALID")
+	conf.DbPort = getInt("DB_PORT", 0)
+	conf.DbName = getString("DB_NAME", "INVALID")
+	conf.DbUser = getString("DB_USER", "INVALID")
+	conf.DbPassword = getString("DB_PASSWORD", "INVALID")
 
 	return conf
 }

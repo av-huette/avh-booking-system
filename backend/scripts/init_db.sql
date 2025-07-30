@@ -8,8 +8,8 @@ CREATE TABLE categories(
     category_id serial PRIMARY KEY,
     name   varchar(20) NOT NULL,
     enabled bool NOT NULL DEFAULT TRUE,
-    icon varchar(20)
--- TODO Type?
+    icon varchar(20),
+    type varchar(20)
 );
 
 CREATE TABLE accounts

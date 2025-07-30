@@ -10,6 +10,7 @@ type Categories struct {
 	Name       string `json:"name"`
 	Enabled    bool   `json:"enabled"`
 	Icon       string `json:"icon"`
+	Type       string `json:"type"`
 }
 
 type CategoriesModel struct {
@@ -23,11 +24,11 @@ func (m *CategoriesModel) Insert() (int, error) {
 
 func (m *CategoriesModel) Get(id int) (Categories, error) {
 	ctx := context.Background()
-	stmt := `SELECT category_id, name, enabled, icon FROM categories WHERE category_id = $1`
+	stmt := `SELECT category_id, name, enabled, icon, type FROM categories WHERE category_id = $1`
 	row := m.DB.QueryRow(ctx, stmt, id)
 
 	var opt Categories
-	err := row.Scan(&opt.CategoryId, &opt.Name, &opt.Enabled, &opt.Icon)
+	err := row.Scan(&opt.CategoryId, &opt.Name, &opt.Enabled, &opt.Icon, &opt.Type)
 	if err != nil {
 		return Categories{}, err
 	}

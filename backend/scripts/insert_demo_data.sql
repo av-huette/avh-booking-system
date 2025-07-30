@@ -1,9 +1,10 @@
 \c avhbs;
 
-INSERT INTO categories(name, enabled, icon)
+INSERT INTO categories(name, enabled, icon, type)
 VALUES ('Active B',
         true,
-        'icon');
+        'icon',
+        'account');
 
 INSERT INTO accounts(first_name, nickname, last_name, email, phone, balance, max_debt, category, enabled)
 VALUES ('Brandon',

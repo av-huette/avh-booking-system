@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { type Account, generateTestData } from '../composables/account'
+import { Account, generateTestData } from '../composables/account'
 
 export const useAccountStore = defineStore('account', {
   state: () => {
@@ -31,6 +31,19 @@ export const useAccountStore = defineStore('account', {
         return enabledUsers;
       }
       return enabledUsers.filter((acc) => acc.category == categoryId );
+    },
+    getBySearchAndCategory(searchString: string, categoryId: number): Account[]{
+      let search = searchString.toLowerCase();
+      let byCategory = this.getByCategory(categoryId);
+      let searchResults = byCategory.filter((acc) => {
+        return (
+          acc.firstName.toLowerCase().includes(search) ||
+          acc.nickName?.toLowerCase().includes(search) ||
+          acc.lastName.toLowerCase().includes(search)
+        )
+      })
+
+      return searchResults
     }
   }
 })

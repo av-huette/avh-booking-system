@@ -1,23 +1,8 @@
 <template>
-  <section class="section">
+  <section class="fixed-grid has-1-cols-mobile has-3-cols-tablet">
+    <div class="grid">
     <!-- ToDo: Create own Component for Cart Info-->
-    <div class="cart message is-info">
-      <div class="message-header">
-        Cart
-        <button v-if="account$.selected.length > 0" class="delete" @click="account$.unselect()" title="discard cart and unselect account"></button>
-      </div>
-      <div class="message-body fixed-grid has-3-cols">
-        <div class="grid">
-          <div class="is-col-span-1">
-            <div class="tag" v-for="account in account$.selected">
-              {{ account.firstName }}
-              <button class="delete is-small" @click="unselectAccount(account)"></button>
-            </div>
-          </div>
-          <p class="is-col-span-2">Cart Items, quantities and prices</p>
-        </div>
-      </div>
-    </div>
+    <OrderViewer />
 
     <div class="tabs is-boxed is-centered">
       <ul>
@@ -35,14 +20,14 @@
         </li>
       </ul>
     </div>
-
-    <div v-if="visiblePart==0" class="accounts">
+    
+    <div class="accounts" :class="visiblePart==0 ? '' : 'unselected'">
       <AccountSelector show="button"/>
     </div>
-
-    <div v-if="visiblePart==1" class="accounts">
+    <div class="items" :class="visiblePart==1 ? '' : 'unselected'">
       <!-- ToDo: Develop Item Selector -->
       HERE ARE ITEMS
+    </div>
     </div>
   </section>
 </template>
@@ -54,16 +39,41 @@
 .tag {
   margin-right:.5em;
 }
+.unselected{
+  display:none;
+}
+
+@media screen and (min-width: 768px) {
+  .order{
+    grid-column-start:2;
+    grid-row-start: 1;
+  }
+  .tabs{
+    display:none;
+  }
+  .unselected{
+    display:block;
+  }
+  .accounts{
+    grid-column-start:1;
+    grid-row-start: 1;
+  }
+  .items{
+    grid-column-start: 3;
+    grid-row-start: 1;
+  }
+}
 </style>
 
 <script lang="ts">
 import AccountSelector from '../components/AccountSelector/AccountSelector.vue';
+import OrderViewer from '../components/OrderViewer/OrderViewer.vue';
 import { useAccountStore } from '../store/AccountStore';
-import type { Account } from '../composables/account';
 
   export default {
     components: {
-      AccountSelector
+      AccountSelector,
+      OrderViewer
     },
     data() {
       return {
@@ -74,9 +84,6 @@ import type { Account } from '../composables/account';
     methods: {
       setVisiblePart(partNr: number){
         this.visiblePart = partNr;
-      },
-      unselectAccount(account: Account){
-        this.account$.selectSubstract(account);
       }
     }
   }

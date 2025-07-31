@@ -10,7 +10,11 @@ export const useAccountStore = defineStore('account', {
   },
   actions: {
     generateTestData(){
-      this.accounts.push(...generateTestData());
+      let testData = generateTestData();
+      this.accounts.push(...testData);
+      this.accounts.sort((a, b) => {
+        return a.getShortName() < b.getShortName() ? -1 : 1;
+      })
     },
     select(acc: Account){
       this.selected = [acc];
@@ -42,8 +46,7 @@ export const useAccountStore = defineStore('account', {
           acc.lastName.toLowerCase().includes(search)
         )
       })
-
-      return searchResults
+      return searchResults;
     }
   }
 })

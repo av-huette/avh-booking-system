@@ -1,7 +1,12 @@
 <template>
-  <div class="is-flex is-flex-direction-row is-flex-wrap-wrap is-justify-content-space-around is-align-content-flex-start is-gap-1 accountList" :style="`--_height:${height}px;`" ref="resizeBox" @mouseenter="onResize" @scroll="onResize">
-    <div v-for="account in accounts" @mousemove="changeSelectMode" @click="selectAccount($event, account)" >
-      <button class="button is-fullwidth" :class="account$.selected.includes(account) ? 'is-primary' : ''" title="select account">{{ account.getShortName() }}</button>
+  <div class="accountList" :style="`--_height:${height}px;`" ref="resizeBox" @mouseenter="onResize" @scroll="onResize">
+    <div class="dictionary" v-for="(dict, key) of accountsInOrder" :key="key">
+      <span class="title is-1">{{ key }}</span>
+      <div class="is-flex is-flex-direction-row is-flex-wrap-wrap is-align-content-flex-start is-gap-1">
+        <div v-for="account in dict" @mousemove="changeSelectMode" @click="selectAccount($event, account)" >
+          <button class="button is-fullwidth" :class="account$.selected.includes(account) ? 'is-primary' : ''" title="select account">{{ account.getShortName() }}</button>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -10,6 +15,14 @@
 .accountList{
   height: var(--_height);
   overflow-y: scroll;
+}
+.dictionary{
+  display:grid;
+  grid-template-columns: 10% 90%;
+  margin-bottom:1em;
+  .title{
+    justify-self: center;
+  }
 }
 </style>
 
@@ -33,6 +46,27 @@ export default {
       type: Array as PropType<Account[]>
     }
   },
+  computed: {
+    accountsInOrder() {
+      var dict: {[key: string]: Account[]} = {};
+      this.accounts?.forEach(acc => {
+      var char = acc.getShortName()[0].toUpperCase();
+      var charCode = char.charCodeAt(0);
+      if (charCode >= 65 && charCode <= 90) { // A-Z
+      } else if (charCode >= 48 && charCode <= 57) { // 0-9
+        char = "#";
+      } else {
+        char = "?";
+      }
+      if (dict[char] === undefined) {
+        dict[char] = [acc]
+      } else {
+        dict[char].push(acc);
+      }
+    })
+    return dict;
+    }
+  },
   methods: {
     selectAccount(e: MouseEvent, account: Account) {
       this.changeSelectMode(e);
@@ -54,12 +88,11 @@ export default {
       (e.target as HTMLElement).style.cursor = "";
     },
     onResize(){
-      console.log("resize detected", this.resizeElement.getBoundingClientRect().top);
       let y = window.innerHeight;
       let _y = this.resizeElement.getBoundingClientRect().top;
       let dy = y - _y;
       this.height = dy -15 ;
-      }
+    }
   },
   mounted() {
     this.resizeElement = this.$refs.resizeBox as HTMLElement

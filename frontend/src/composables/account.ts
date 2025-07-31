@@ -51,6 +51,8 @@ export class Account {
     }
     return `${this.firstName} ${this.lastName}`;
   }
+
+  
 }
 
 export function generateTestData(): Account[]{
@@ -87,5 +89,5 @@ export function generateTestData(): Account[]{
   } as Account
   a3 = new Account(a3)
 
-  return [a1, a2, a3];
+  return [a3, a1, a2];
 }

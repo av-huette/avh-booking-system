@@ -25,6 +25,21 @@ export interface Category {
   icon?: Icon
   id: number
 }
+export class Category {
+  public title: string;
+  public type: CategoryType;
+  public visibility: CategoryVisibility;
+  public icon?: Icon;
+  public id: number;
+
+  constructor(cat: Category){
+    this.title = cat.title;
+    this.type = cat.type;
+    this.visibility = cat.visibility;
+    this.icon = cat.icon;
+    this.id = cat.id;
+  }
+}
 
 /**
  * Funcitons
@@ -52,6 +67,8 @@ export function getTestCategorys(): Category[]{
     type: 0,
     visibility: 1
   }
+  c1 = new Category(c1);
+
   let c2: Category = {
     id: 2,
     title: "Guests", 
@@ -59,7 +76,8 @@ export function getTestCategorys(): Category[]{
     type: 0,
     visibility: 1
   }
-
+  c2 = new Category(c2);
+  
   return [c1, c2];
 }
 

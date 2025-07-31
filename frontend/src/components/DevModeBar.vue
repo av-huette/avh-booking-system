@@ -26,13 +26,21 @@
 </nav>
 </template>
 
+<style scoped>
+  .navbar{
+    border: 3px solid red;
+  }
+</style>
+
 <script lang="ts">
 import { useAccountStore } from '../store/AccountStore';
+import { useCategoryStore } from '../store/CategoryStore';
 
   export default {
     data() {
       return {
         account$: useAccountStore(),
+        category$: useCategoryStore(),
         burgerActive: false as Boolean
       }
     },
@@ -42,6 +50,7 @@ import { useAccountStore } from '../store/AccountStore';
       },
       generateTestData(){
         this.account$.generateTestData();
+        this.category$.generateTestData();
       }
     }
   }

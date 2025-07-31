@@ -1,8 +1,8 @@
 <template>
   <DevModeBar v-if="dev"/>
   <MainNavigation />
-  <div v-for="msg in store.notifications"> {{ msg }}</div>
-  <button class="button" @click="sendTestMessage">Send Test Message</button>
+  <!-- <div v-for="msg in store.notifications"> {{ msg }}</div>
+  <button class="button" @click="sendTestMessage">Send Test Message</button> -->
   <RouterView />
 </template>
 

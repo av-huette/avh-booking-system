@@ -23,7 +23,22 @@ export interface Category {
   type: CategoryType
   visibility: CategoryVisibility
   icon?: Icon
-  id?: number
+  id: number
+}
+export class Category {
+  public title: string;
+  public type: CategoryType;
+  public visibility: CategoryVisibility;
+  public icon?: Icon;
+  public id: number;
+
+  constructor(cat: Category){
+    this.title = cat.title;
+    this.type = cat.type;
+    this.visibility = cat.visibility;
+    this.icon = cat.icon;
+    this.id = cat.id;
+  }
 }
 
 /**
@@ -46,18 +61,23 @@ export async function getCategorys(){
 
 export function getTestCategorys(): Category[]{
   let c1: Category = {
-    title: "Test Category", 
+    id: 1,
+    title: "Rooms", 
     icon: ['fas', 'house'],
     type: 0,
     visibility: 1
   }
+  c1 = new Category(c1);
+
   let c2: Category = {
-    title: "Test Category 2", 
+    id: 2,
+    title: "Guests", 
     icon: ['fas', 'beer'],
     type: 0,
     visibility: 1
   }
-
+  c2 = new Category(c2);
+  
   return [c1, c2];
 }
 

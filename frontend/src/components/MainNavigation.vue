@@ -15,12 +15,12 @@
 
   <div class="navbar-menu" :class="{'is-active': burgerActive}">
     <div class="navbar-start">
-      <router-link class="navbar-item" to="/">
+      <router-link class="navbar-item" to="/" @click="burgerActive = false">
         Home
       </router-link>
 
-      <router-link class="navbar-item" to="/test">
-        Test
+      <router-link class="navbar-item" to="/booking" @click="burgerActive = false">
+        Booking
       </router-link>
 
       <a class="navbar-item">Statistics</a>
@@ -29,10 +29,10 @@
         <a class="navbar-link">Settings</a>
 
         <div class="navbar-dropdown">
-          <a class="navbar-item">Wareneinstellungen</a>
-          <a class="navbar-item">Benutzereinstellungen</a>
-          <a class="navbar-item">Zahlungseinstellungen</a>
-          <a class="navbar-item">Systemeinstellungen</a>
+          <a class="navbar-item" @click="burgerActive = false">Wareneinstellungen</a>
+          <a class="navbar-item" @click="burgerActive = false">Benutzereinstellungen</a>
+          <a class="navbar-item" @click="burgerActive = false">Zahlungseinstellungen</a>
+          <a class="navbar-item" @click="burgerActive = false">Systemeinstellungen</a>
         </div>
       </div>
     </div>

@@ -23,3 +23,6 @@ VALUES (1,
 
 INSERT INTO unit(name)
 VALUES('ml');
+
+INSERT INTO product_group(name)
+VALUES('Beer');

@@ -15,6 +15,7 @@ type dbModels struct {
 	accountOption *models.AccountOptionModel
 	category      *models.CategoryModel
 	unit          *models.UnitModel
+	productGroup  *models.ProductGroupModel
 }
 
 type application struct {
@@ -40,7 +41,13 @@ func main() {
 			&models.AccountOptionModel{DB: dbPool},
 			&models.CategoryModel{DB: dbPool},
 			&models.UnitModel{DB: dbPool},
+			&models.ProductGroupModel{DB: dbPool},
 		},
+	}
+
+	err = app.dbModels.productGroup.Insert("Spezi")
+	if err != nil {
+		panic(err.Error())
 	}
 
 	err = app.dbModels.unit.Insert("l")

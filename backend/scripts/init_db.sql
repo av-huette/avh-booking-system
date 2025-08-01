@@ -47,3 +47,8 @@ CREATE TABLE unit
     name    varchar(20) NOT NULL
 );
 
+CREATE TABLE product_group
+(
+    product_group_id serial PRIMARY KEY,
+    name    varchar(20) NOT NULL
+);

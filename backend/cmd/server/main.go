@@ -16,6 +16,7 @@ type dbModels struct {
 	category      *models.CategoryModel
 	unit          *models.UnitModel
 	productGroup  *models.ProductGroupModel
+	product       *models.ProductModel
 }
 
 type application struct {
@@ -42,8 +43,15 @@ func main() {
 			&models.CategoryModel{DB: dbPool},
 			&models.UnitModel{DB: dbPool},
 			&models.ProductGroupModel{DB: dbPool},
+			&models.ProductModel{DB: dbPool},
 		},
 	}
+
+	product, err := app.dbModels.product.Get(1)
+	if err != nil {
+		panic(err.Error())
+	}
+	app.log.Debug(fmt.Sprintf("product: %#v", product))
 
 	err = app.dbModels.productGroup.Insert("Spezi")
 	if err != nil {

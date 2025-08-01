@@ -50,5 +50,21 @@ CREATE TABLE unit
 CREATE TABLE product_group
 (
     product_group_id serial PRIMARY KEY,
-    name    varchar(20) NOT NULL
+    name             varchar(20) NOT NULL
+);
+
+CREATE TABLE product
+(
+    product_id    serial PRIMARY KEY,
+    name          varchar(40)   NOT NULL,
+    price         numeric(5, 2) NOT NULL,
+    product_group int           NOT NULL,
+    size          int           NOT NULL,
+    unit          int           NOT NULL,
+    tax           numeric(5, 2) NOT NULL,
+    category      int           NOT NULL,
+    created_at    timestamp     NOT NULL DEFAULT NOW(),
+    FOREIGN KEY (product_group) REFERENCES product_group (product_group_id),
+    FOREIGN KEY (unit) REFERENCES unit (unit_id),
+    FOREIGN KEY (category) REFERENCES category (category_id)
 );

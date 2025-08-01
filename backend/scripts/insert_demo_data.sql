@@ -22,7 +22,10 @@ VALUES (1,
         'val1');
 
 INSERT INTO unit(name)
-VALUES('ml');
+VALUES ('ml');
 
 INSERT INTO product_group(name)
-VALUES('Beer');
+VALUES ('Beer');
+
+INSERT INTO product (name, price, product_group, size, unit, tax, category)
+VALUES ('Beer', 1.2, 1, 0.5, 1, 19, 1);

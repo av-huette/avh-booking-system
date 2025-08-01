@@ -53,9 +53,11 @@ func main() {
 	}
 	app.log.Debug(fmt.Sprintf("product: %#v", product))
 
-	err = app.dbModels.productGroup.Insert("Spezi")
+	prodGroupId, err := app.dbModels.productGroup.Insert("Spezi")
 	if err != nil {
 		panic(err.Error())
+	} else {
+		app.log.Debug(fmt.Sprintf("Inserted product group with ID: %d", prodGroupId))
 	}
 
 	err = app.dbModels.unit.Insert("l")
@@ -71,9 +73,11 @@ func main() {
 
 	dummyAccount := models.CreateAccount("FirstName", "NickName", "LastName",
 		"Email", "Phone", "12.34", 100, 1)
-	err = app.dbModels.account.Insert(dummyAccount)
+	accountId, err := app.dbModels.account.Insert(dummyAccount)
 	if err != nil {
 		panic(err.Error())
+	} else {
+		app.log.Debug(fmt.Sprintf("Inserted account with ID: %d", accountId))
 	}
 
 	categories, err := app.dbModels.category.Get(1)

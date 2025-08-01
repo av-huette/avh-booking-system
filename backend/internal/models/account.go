@@ -41,12 +41,14 @@ type AccountModel struct {
 	DB *database.DB
 }
 
-func (m *AccountModel) Insert(account Account) error {
+func (m *AccountModel) Insert(account Account) (int, error) {
 	ctx := context.Background()
 	query := `
         INSERT INTO account (first_name, nickname, last_name, email, phone, balance, max_debt, category, enabled) 
-        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)`
-	_, err := m.DB.Exec(ctx, query, account.FirstName,
+        VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9)
+        RETURNING account_id`
+	var id int
+	err := m.DB.QueryRow(ctx, query, account.FirstName,
 		account.Nickname,
 		account.LastName,
 		account.Email,
@@ -54,9 +56,9 @@ func (m *AccountModel) Insert(account Account) error {
 		account.Balance,
 		account.MaxDebt,
 		account.Category,
-		account.Enabled)
+		account.Enabled).Scan(&id)
 
-	return err
+	return id, err
 }
 
 func (m *AccountModel) Get(accountId int) (*Account, error) {

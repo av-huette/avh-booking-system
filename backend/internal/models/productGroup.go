@@ -16,14 +16,16 @@ type ProductGroupModel struct {
 	DB *database.DB
 }
 
-func (m *ProductGroupModel) Insert(name string) error {
+func (m *ProductGroupModel) Insert(name string) (int, error) {
 	ctx := context.Background()
 	query := `
         INSERT INTO product_group (name) 
-        VALUES ($1)`
-	_, err := m.DB.Exec(ctx, query, name)
+        VALUES ($1)
+        RETURNING product_group_id`
+	var id int
+	err := m.DB.QueryRow(ctx, query, name).Scan(&id)
 
-	return err
+	return id, err
 }
 
 func (m *ProductGroupModel) Get(id int) (*ProductGroup, error) {

@@ -29,7 +29,7 @@ type AccountModel struct {
 func (m *AccountModel) Insert(name string) error {
 	ctx := context.Background()
 	query := `
-        INSERT INTO accounts (first_name, nickname, last_name, email, phone, balance, max_debt, category, enabled) 
+        INSERT INTO account (first_name, nickname, last_name, email, phone, balance, max_debt, category, enabled) 
         VALUES ('', $1, '', '', '', 0, 100, 1, true)`
 	_, err := m.DB.Exec(ctx, query, name)
 
@@ -39,7 +39,7 @@ func (m *AccountModel) Insert(name string) error {
 func (m *AccountModel) Get(id int) (*Account, error) {
 	ctx := context.Background()
 	stmt := `SELECT account_id, first_name, nickname, last_name, email, phone, balance,
-       max_debt, category, enabled, created_at FROM accounts WHERE account_id = $1`
+       max_debt, category, enabled, created_at FROM account WHERE account_id = $1`
 	row := m.DB.QueryRow(ctx, stmt, id)
 
 	var account Account

@@ -4,7 +4,7 @@ CREATE DATABASE avhbs;
 
 \c avhbs;
 
-CREATE TABLE categories(
+CREATE TABLE category(
     category_id serial PRIMARY KEY,
     name   varchar(20) NOT NULL,
     enabled bool NOT NULL DEFAULT TRUE,
@@ -12,7 +12,7 @@ CREATE TABLE categories(
     type varchar(20)
 );
 
-CREATE TABLE accounts
+CREATE TABLE account
 (
     account_id serial PRIMARY KEY,
     first_name varchar(20),
@@ -25,17 +25,17 @@ CREATE TABLE accounts
     category   integer       NOT NULL,
     enabled    bool                   DEFAULT TRUE,
     created_at timestamp     NOT NULL DEFAULT NOW(),
-    FOREIGN KEY (category) REFERENCES categories (category_id)
+    FOREIGN KEY (category) REFERENCES category (category_id)
         ON DELETE NO ACTION
 );
 
 
-CREATE TABLE account_options
+CREATE TABLE account_option
 (
     account integer     NOT NULL,
     key     varchar(40) NOT NULL,
     value   varchar(40) NOT NULL,
     PRIMARY KEY (account, key),
-    FOREIGN KEY (account) REFERENCES accounts (account_id)
+    FOREIGN KEY (account) REFERENCES account (account_id)
         ON DELETE CASCADE
 );

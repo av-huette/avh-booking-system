@@ -5,7 +5,7 @@ import (
 	"github.com/av-huette/avh-booking-system/internal/database"
 )
 
-type Categories struct {
+type Category struct {
 	CategoryId int    `json:"accountId"`
 	Name       string `json:"name"`
 	Enabled    bool   `json:"enabled"`
@@ -13,24 +13,24 @@ type Categories struct {
 	Type       string `json:"type"`
 }
 
-type CategoriesModel struct {
+type CategoryModel struct {
 	DB *database.DB
 }
 
-func (m *CategoriesModel) Insert() (int, error) {
+func (m *CategoryModel) Insert() (int, error) {
 	// TODO
 	return 0, nil
 }
 
-func (m *CategoriesModel) Get(id int) (Categories, error) {
+func (m *CategoryModel) Get(id int) (Category, error) {
 	ctx := context.Background()
-	stmt := `SELECT category_id, name, enabled, icon, type FROM categories WHERE category_id = $1`
+	stmt := `SELECT category_id, name, enabled, icon, type FROM category WHERE category_id = $1`
 	row := m.DB.QueryRow(ctx, stmt, id)
 
-	var opt Categories
+	var opt Category
 	err := row.Scan(&opt.CategoryId, &opt.Name, &opt.Enabled, &opt.Icon, &opt.Type)
 	if err != nil {
-		return Categories{}, err
+		return Category{}, err
 	}
 
 	return opt, nil

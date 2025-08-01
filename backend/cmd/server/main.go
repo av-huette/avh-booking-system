@@ -11,9 +11,9 @@ import (
 )
 
 type dbModels struct {
-	account        *models.AccountModel
-	accountOptions *models.AccountOptionsModel
-	categories     *models.CategoriesModel
+	account       *models.AccountModel
+	accountOption *models.AccountOptionModel
+	category      *models.CategoryModel
 }
 
 type application struct {
@@ -36,8 +36,9 @@ func main() {
 		db:   dbPool,
 		dbModels: dbModels{
 			&models.AccountModel{DB: dbPool},
-			&models.AccountOptionsModel{DB: dbPool},
-			&models.CategoriesModel{DB: dbPool}},
+			&models.AccountOptionModel{DB: dbPool},
+			&models.CategoryModel{DB: dbPool},
+		},
 	}
 
 	err = app.dbModels.account.Insert("Dummy")
@@ -45,7 +46,7 @@ func main() {
 		panic(err.Error())
 	}
 
-	categories, err := app.dbModels.categories.Get(1)
+	categories, err := app.dbModels.category.Get(1)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -57,7 +58,7 @@ func main() {
 	}
 	app.log.Debug(fmt.Sprintf("account: %#v", account))
 
-	accountOptions, err := app.dbModels.accountOptions.Get(1, "opt1")
+	accountOptions, err := app.dbModels.accountOption.Get(1, "opt1")
 	if err != nil {
 		panic(err.Error())
 	}

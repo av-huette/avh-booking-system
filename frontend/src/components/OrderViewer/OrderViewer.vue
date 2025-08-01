@@ -6,7 +6,7 @@
         <icon :class="showOrderDetails ? 'showDetails' : ''" class="order-icon" :icon="['fas', 'arrow-down-short-wide']" />
         New Order
       </span>
-      <button v-if="account$.selected.length > 0" class="delete" @click="account$.unselect()" title="discard cart and unselect account"></button>
+      <button v-if="account$.selected.length > 0" class="delete" @click="cancelOrder" title="discard cart and unselect account"></button>
     </div>
     <div :class="showOrderDetails ? 'showDetails' : ''" class="order-ripped-teaser"> </div>
     <div :class="showOrderDetails ? 'showDetails' : ''" class="message-body fixed-grid has-3-cols">
@@ -19,9 +19,15 @@
         </div>
         <div class="cell is-col-span-2">
           <p v-if="account$.selected.length == 0">Please select an Accout first</p>
-          
+          <div v-if="account$.selected.length != 0">
+            <CartProduct v-for="content in cart$.cartContents" :content="content"/>
+            <!-- Component CartSums -->
+            <p>Summe: {{ cart$.getTotals[0] }} <br> Davon Steuer: {{ cart$.getTotals[1] }}</p>
+            <!-- Component OrderControls -->
+             <button class="button is-warning" @click="cancelOrder">Cancel Order</button>
+             <button class="button is-success" @click="checkoutOrder">Book now</button>
+          </div>
         </div>
-
       </div>
     </div>
   </div>
@@ -50,7 +56,7 @@
   display:none;
   position:absolute;
   width:100%;
-  z-index:1;
+  z-index:20;
 }
 .order-ripped-teaser{
   --_bg-color:hsl(var(--bulma-message-h),var(--bulma-message-s),var(--bulma-message-background-l));
@@ -101,13 +107,19 @@
 <script lang="ts">
 import { useAccountStore } from '../../store/AccountStore';
 import type { Account } from '../../composables/account';
+import { useCartStore } from '../../store/CartStore';
+import CartProduct from './CartProduct.vue';
 
 export default {
   data() {
     return {
       account$: useAccountStore(),
-      showOrderDetails: false
+      showOrderDetails: false,
+      cart$: useCartStore(),
     }
+  },
+  components: {
+    CartProduct
   },
   methods: {
     unselectAccount(account: Account){
@@ -115,6 +127,14 @@ export default {
     },
     toggleOrderDetails(){
       this.showOrderDetails = !this.showOrderDetails;
+    },
+    cancelOrder(){
+      this.account$.unselect();
+      this.cart$.cartContents = [];
+    },
+    checkoutOrder(){
+      alert("new Order received");
+      this.cancelOrder();
     }
   }
 }

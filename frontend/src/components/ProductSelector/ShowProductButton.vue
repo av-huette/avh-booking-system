@@ -4,7 +4,7 @@
       <span class="title is-1">{{ key }}</span>
       <div class="is-flex is-flex-direction-row is-flex-wrap-wrap is-align-content-flex-start is-gap-1">
         <div v-for="product in dict">
-          <button class="button is-fullwidth" title="select product">{{ product.name }} {{ product.size }} {{ product.unit }}</button>
+          <button class="button is-fullwidth" title="select product" @click="cart$.addToCart(product)">{{ product.name }} {{ product.size }} {{ product.unit }}</button>
         </div>
       </div>
     </div>
@@ -22,6 +22,7 @@
   margin-bottom:1em;
   .title{
     justify-self: center;
+    margin-bottom:0;
   }
 }
 </style>
@@ -31,13 +32,15 @@ import { Product } from '../../composables/product';
 import { useProductStore } from '../../store/ProductStore';
 import type { PropType } from 'vue';
 import { useResizeObserver } from '@vueuse/core';
+import { useCartStore } from '../../store/CartStore';
 
 export default {
   data(){
     return {
       product$: useProductStore(),
       height: 0,
-      resizeElement: {} as HTMLElement
+      resizeElement: {} as HTMLElement,
+      cart$: useCartStore(),
     }
   },
   props: {

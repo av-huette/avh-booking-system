@@ -22,6 +22,7 @@
   margin-bottom:1em;
   .title{
     justify-self: center;
+    margin-bottom:0;
   }
 }
 </style>
@@ -31,6 +32,7 @@ import { Account } from '../../composables/account';
 import { useAccountStore } from '../../store/AccountStore';
 import type { PropType } from 'vue';
 import { useResizeObserver } from '@vueuse/core';
+import { useCartStore } from '../../store/CartStore';
 
 export default {
   data(){
@@ -38,7 +40,8 @@ export default {
       account$: useAccountStore(),
       selectMode: "single",
       height: 0,
-      resizeElement: {} as HTMLElement
+      resizeElement: {} as HTMLElement,
+      cart$: useCartStore()
     }
   },
   props: {
@@ -70,6 +73,7 @@ export default {
   methods: {
     selectAccount(e: MouseEvent, account: Account) {
       this.changeSelectMode(e);
+      this.cart$.cartContents = [];
       if(this.selectMode == "single") {
         this.account$.select(account);
         return;

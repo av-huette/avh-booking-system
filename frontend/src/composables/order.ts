@@ -1,6 +1,6 @@
 import { type Account } from './account'
 
-export interface Cart {
+export interface Order {
   id?: number
   account: Account
   createdAt?: string

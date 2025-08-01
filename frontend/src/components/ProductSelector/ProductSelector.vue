@@ -15,8 +15,8 @@
   </div>
   <hr>
 
-  <ShowAccountButton v-if="show=='button'" :accounts="accounts" />
-  <ShowAccountList v-if="show=='list'" :accounts="accounts" />
+  <ShowProductButton v-if="show=='button'" :products="products" />
+  <ShowProductList v-if="show=='list'" :products="products" />
 </template>
 
 <style scoped>
@@ -34,23 +34,25 @@ hr{
 </style>
 
 <script lang="ts">
-import { useAccountStore } from '../../store/AccountStore';
 import { useCategoryStore } from '../../store/CategoryStore';
-import ShowAccountButton from './ShowAccountButton.vue';
-import ShowAccountList from './ShowAccountList.vue';
+import ShowProductButton from './ShowProductButton.vue';
+import ShowProductList from './ShowProductList.vue';
+import { useProductStore } from '../../store/ProductStore';
+import { useAccountStore } from '../../store/AccountStore';
 
 export default {
   components: {
-    ShowAccountButton,
-    ShowAccountList
+    ShowProductButton,
+    ShowProductList
   },
   props: {
     show: String
   },
   data() {
     return {
-      account$: useAccountStore(),
+      product$: useProductStore(),
       category$: useCategoryStore(),
+      account$: useAccountStore(),
       selectedCategory: 0 as number,
       search: "" as string
     }
@@ -58,14 +60,19 @@ export default {
   methods: {
     selectCategory(categoryId: number){
       this.selectedCategory = categoryId;
-    }
+    },
   },
   computed: {
-    accounts(){
-      return this.account$.getBySearchAndCategory(this.search, this.selectedCategory);
+    products(){
+      let selectedAccountCategorys = [...new Set(this.account$.selected.map(a => a.category))] as number[];
+      console.log("Selected Account Categorys: ", selectedAccountCategorys);
+      console.log("Selected Product Category: ", this.selectedCategory);
+      console.log("Search String: ", this.search);
+      // return this.product$.products;
+      return this.product$.getBySearchAndCategory(this.search, this.selectedCategory, selectedAccountCategorys);
     },
     categorys(){
-      return this.category$.accountCategorys;
+      return this.category$.productCategorys;
     }
   }
 }

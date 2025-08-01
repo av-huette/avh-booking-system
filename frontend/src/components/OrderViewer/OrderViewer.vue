@@ -11,13 +11,17 @@
     <div :class="showOrderDetails ? 'showDetails' : ''" class="order-ripped-teaser"> </div>
     <div :class="showOrderDetails ? 'showDetails' : ''" class="message-body fixed-grid has-3-cols">
       <div class="grid">
-        <div class="is-col-span-1">
+        <div class="cell is-col-span-1">
           <div class="tag" v-for="account in account$.selected">
             {{ account.getFullName() }}
             <button class="delete is-small" @click="unselectAccount(account)"></button>
           </div>
         </div>
-        <p class="is-col-span-2">Cart Items, quantities and prices</p>
+        <div class="cell is-col-span-2">
+          <p v-if="account$.selected.length == 0">Please select an Accout first</p>
+          
+        </div>
+
       </div>
     </div>
   </div>

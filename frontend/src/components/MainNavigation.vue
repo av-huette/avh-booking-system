@@ -23,6 +23,8 @@
         Booking
       </router-link>
 
+      <a class="navbar-item">Orders</a>
+
       <a class="navbar-item">Statistics</a>
 
       <div class="navbar-item has-dropdown is-hoverable">

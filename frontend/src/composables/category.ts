@@ -6,17 +6,17 @@ type Icon = [string, string];
  * Type definitions
  */
 
-const categoryTypes = {
+export const CategoryType = {
   ACCOUNT: 0,
   PRODUCT: 1
 } as const;
-export type CategoryType = (typeof categoryTypes)[keyof typeof categoryTypes];
+export type CategoryType = (typeof CategoryType)[keyof typeof CategoryType];
 
-const categoryVisibilitys = {
+export const CategoryVisibility = {
   HIDDEN: 0,
   SHOWN: 1
 } as const;
-export type CategoryVisibility = (typeof categoryVisibilitys)[keyof typeof categoryVisibilitys];
+export type CategoryVisibility = (typeof CategoryVisibility)[keyof typeof CategoryVisibility];
 
 export interface Category {
   title: string
@@ -25,13 +25,8 @@ export interface Category {
   icon?: Icon
   id: number
 }
-export class Category {
-  public title: string;
-  public type: CategoryType;
-  public visibility: CategoryVisibility;
-  public icon?: Icon;
-  public id: number;
-
+export class Category implements Category{
+  
   constructor(cat: Category){
     this.title = cat.title;
     this.type = cat.type;
@@ -64,7 +59,7 @@ export function getTestCategorys(): Category[]{
     id: 1,
     title: "Rooms", 
     icon: ['fas', 'house'],
-    type: 0,
+    type: CategoryType.ACCOUNT,
     visibility: 1
   }
   c1 = new Category(c1);
@@ -73,12 +68,29 @@ export function getTestCategorys(): Category[]{
     id: 2,
     title: "Guests", 
     icon: ['fas', 'beer'],
-    type: 0,
+    type: CategoryType.ACCOUNT,
     visibility: 1
   }
   c2 = new Category(c2);
   
-  return [c1, c2];
+  let c3: Category = {
+    id: 3,
+    title: "Beverages", 
+    icon: ['fas', 'beer'],
+    type: CategoryType.PRODUCT,
+    visibility: 1
+  }
+  c3 = new Category(c3);
+
+  let c4: Category = {
+    id: 4,
+    title: "Food", 
+    icon: ['fas', 'burger'],
+    type: CategoryType.PRODUCT,
+    visibility: 1
+  }
+  c4 = new Category(c4);
+  return [c1, c2, c3, c4];
 }
 
 export function generateTestData(): Category[]{

@@ -10,13 +10,17 @@ import (
 	"os"
 )
 
-type application struct {
-	conf           *config.AppConfig
-	log            *slog.Logger
-	db             *database.DB
+type dbModels struct {
 	account        *models.AccountModel
 	accountOptions *models.AccountOptionsModel
 	categories     *models.CategoriesModel
+}
+
+type application struct {
+	conf     *config.AppConfig
+	log      *slog.Logger
+	db       *database.DB
+	dbModels dbModels
 }
 
 func main() {
@@ -27,32 +31,33 @@ func main() {
 	defer dbPool.Close()
 
 	app := &application{
-		conf:           config.LoadConfig(),
-		log:            logger.CreateLogger(),
-		db:             dbPool,
-		account:        &models.AccountModel{DB: dbPool},
-		accountOptions: &models.AccountOptionsModel{DB: dbPool},
-		categories:     &models.CategoriesModel{DB: dbPool},
+		conf: config.LoadConfig(),
+		log:  logger.CreateLogger(),
+		db:   dbPool,
+		dbModels: dbModels{
+			&models.AccountModel{DB: dbPool},
+			&models.AccountOptionsModel{DB: dbPool},
+			&models.CategoriesModel{DB: dbPool}},
 	}
 
-	err = app.account.Insert("Dummy")
+	err = app.dbModels.account.Insert("Dummy")
 	if err != nil {
 		panic(err.Error())
 	}
 
-	categories, err := app.categories.Get(1)
+	categories, err := app.dbModels.categories.Get(1)
 	if err != nil {
 		panic(err.Error())
 	}
 	app.log.Debug(fmt.Sprintf("category: %#v", categories))
 
-	account, err := app.account.Get(1)
+	account, err := app.dbModels.account.Get(1)
 	if err != nil {
 		panic(err.Error())
 	}
 	app.log.Debug(fmt.Sprintf("account: %#v", account))
 
-	accountOptions, err := app.accountOptions.Get(1, "opt1")
+	accountOptions, err := app.dbModels.accountOptions.Get(1, "opt1")
 	if err != nil {
 		panic(err.Error())
 	}

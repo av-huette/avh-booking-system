@@ -20,3 +20,6 @@ INSERT INTO account_option(account, key, value)
 VALUES (1,
         'opt1',
         'val1');
+
+INSERT INTO unit(name)
+VALUES('ml');

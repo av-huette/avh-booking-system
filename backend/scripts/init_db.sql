@@ -4,12 +4,13 @@ CREATE DATABASE avhbs;
 
 \c avhbs;
 
-CREATE TABLE category(
+CREATE TABLE category
+(
     category_id serial PRIMARY KEY,
-    name   varchar(20) NOT NULL,
-    enabled bool NOT NULL DEFAULT TRUE,
-    icon varchar(20),
-    type varchar(20)
+    name        varchar(20) NOT NULL,
+    enabled     bool        NOT NULL DEFAULT TRUE,
+    icon        varchar(20),
+    type        varchar(20)
 );
 
 CREATE TABLE account
@@ -39,3 +40,10 @@ CREATE TABLE account_option
     FOREIGN KEY (account) REFERENCES account (account_id)
         ON DELETE CASCADE
 );
+
+CREATE TABLE unit
+(
+    unit_id serial PRIMARY KEY,
+    name    varchar(20) NOT NULL
+);
+

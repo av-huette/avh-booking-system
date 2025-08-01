@@ -14,6 +14,7 @@ type dbModels struct {
 	account       *models.AccountModel
 	accountOption *models.AccountOptionModel
 	category      *models.CategoryModel
+	unit          *models.UnitModel
 }
 
 type application struct {
@@ -38,7 +39,13 @@ func main() {
 			&models.AccountModel{DB: dbPool},
 			&models.AccountOptionModel{DB: dbPool},
 			&models.CategoryModel{DB: dbPool},
+			&models.UnitModel{DB: dbPool},
 		},
+	}
+
+	err = app.dbModels.unit.Insert("l")
+	if err != nil {
+		panic(err.Error())
 	}
 
 	err = app.dbModels.account.Insert("Dummy")

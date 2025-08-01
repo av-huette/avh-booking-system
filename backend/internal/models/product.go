@@ -7,7 +7,7 @@ import (
 )
 
 type Product struct {
-	ProductId      int              `json:"productId"`
+	Id             int              `json:"id"`
 	Name           string           `json:"name"`
 	Price          pgtype.Numeric   `json:"price"`
 	ProductGroupId int              `json:"productGroupId"`
@@ -33,7 +33,7 @@ func (m *ProductModel) Get(productId int) (Product, error) {
 	row := m.DB.QueryRow(ctx, stmt, productId)
 
 	var product Product
-	err := row.Scan(&product.ProductId, &product.Name, &product.Price, &product.ProductGroupId,
+	err := row.Scan(&product.Id, &product.Name, &product.Price, &product.ProductGroupId,
 		&product.Size, &product.UnitId, &product.Tax, &product.CategoryId, &product.CreatedAt)
 	if err != nil {
 		return Product{}, err

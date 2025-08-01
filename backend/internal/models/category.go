@@ -6,11 +6,11 @@ import (
 )
 
 type Category struct {
-	CategoryId int    `json:"accountId"`
-	Name       string `json:"name"`
-	Enabled    bool   `json:"enabled"`
-	Icon       string `json:"icon"`
-	Type       string `json:"type"`
+	Id      int    `json:"id"`
+	Name    string `json:"name"`
+	Enabled bool   `json:"enabled"`
+	Icon    string `json:"icon"`
+	Type    string `json:"type"`
 }
 
 type CategoryModel struct {
@@ -28,7 +28,7 @@ func (m *CategoryModel) Get(id int) (Category, error) {
 	row := m.DB.QueryRow(ctx, stmt, id)
 
 	var opt Category
-	err := row.Scan(&opt.CategoryId, &opt.Name, &opt.Enabled, &opt.Icon, &opt.Type)
+	err := row.Scan(&opt.Id, &opt.Name, &opt.Enabled, &opt.Icon, &opt.Type)
 	if err != nil {
 		return Category{}, err
 	}

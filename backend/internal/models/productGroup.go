@@ -8,7 +8,7 @@ import (
 )
 
 type ProductGroup struct {
-	ID   int    `json:"id"`
+	Id   int    `json:"id"`
 	Name string `json:"name"`
 }
 
@@ -32,7 +32,7 @@ func (m *ProductGroupModel) Get(id int) (*ProductGroup, error) {
 	row := m.DB.QueryRow(ctx, stmt, id)
 
 	var ProductGroup ProductGroup
-	err := row.Scan(&ProductGroup.ID, &ProductGroup.Name)
+	err := row.Scan(&ProductGroup.Id, &ProductGroup.Name)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, ErrNoRecord

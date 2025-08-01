@@ -6,9 +6,9 @@ import (
 )
 
 type AccountOption struct {
-	AccountId int    `json:"accountId"`
-	Key       string `json:"key"`
-	Value     string `json:"value"`
+	Id    int    `json:"id"`
+	Key   string `json:"key"`
+	Value string `json:"value"`
 }
 
 type AccountOptionModel struct {
@@ -26,7 +26,7 @@ func (m *AccountOptionModel) Get(accountId int, key string) (AccountOption, erro
 	row := m.DB.QueryRow(ctx, stmt, accountId, key)
 
 	var opt AccountOption
-	err := row.Scan(&opt.AccountId, &opt.Key, &opt.Value)
+	err := row.Scan(&opt.Id, &opt.Key, &opt.Value)
 	if err != nil {
 		return AccountOption{}, err
 	}

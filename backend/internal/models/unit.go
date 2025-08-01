@@ -8,7 +8,7 @@ import (
 )
 
 type Unit struct {
-	ID   int    `json:"id"`
+	Id   int    `json:"id"`
 	Name string `json:"name"`
 }
 
@@ -32,7 +32,7 @@ func (m *UnitModel) Get(id int) (*Unit, error) {
 	row := m.DB.QueryRow(ctx, stmt, id)
 
 	var unit Unit
-	err := row.Scan(&unit.ID, &unit.Name)
+	err := row.Scan(&unit.Id, &unit.Name)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, ErrNoRecord

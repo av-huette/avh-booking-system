@@ -9,7 +9,7 @@ import (
 )
 
 type Account struct {
-	ID        int              `json:"id"`
+	Id        int              `json:"id"`
 	FirstName string           `json:"firstName"`
 	Nickname  string           `json:"nickname"`
 	LastName  string           `json:"lastName"`
@@ -43,7 +43,7 @@ func (m *AccountModel) Get(id int) (*Account, error) {
 	row := m.DB.QueryRow(ctx, stmt, id)
 
 	var account Account
-	err := row.Scan(&account.ID, &account.FirstName, &account.Nickname, &account.LastName, &account.Email,
+	err := row.Scan(&account.Id, &account.FirstName, &account.Nickname, &account.LastName, &account.Email,
 		&account.Phone, &account.Balance, &account.MaxDebt, &account.Category, &account.Enabled, &account.CreatedAt)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {

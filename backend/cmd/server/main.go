@@ -63,7 +63,15 @@ func main() {
 		panic(err.Error())
 	}
 
-	err = app.dbModels.account.Insert("Dummy")
+	account, err := app.dbModels.account.Get(1)
+	if err != nil {
+		panic(err.Error())
+	}
+	app.log.Debug(fmt.Sprintf("account: %#v", account))
+
+	dummyAccount := models.CreateAccount("FirstName", "NickName", "LastName",
+		"Email", "Phone", "12.34", 100, 1)
+	err = app.dbModels.account.Insert(dummyAccount)
 	if err != nil {
 		panic(err.Error())
 	}
@@ -73,12 +81,6 @@ func main() {
 		panic(err.Error())
 	}
 	app.log.Debug(fmt.Sprintf("category: %#v", categories))
-
-	account, err := app.dbModels.account.Get(1)
-	if err != nil {
-		panic(err.Error())
-	}
-	app.log.Debug(fmt.Sprintf("account: %#v", account))
 
 	accountOptions, err := app.dbModels.accountOption.Get(1, "opt1")
 	if err != nil {

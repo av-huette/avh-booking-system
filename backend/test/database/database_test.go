@@ -65,6 +65,36 @@ func TestGetAccountById(t *testing.T) {
 }
 
 // --------------------------------------------------
+// AccountOption
+// --------------------------------------------------
+
+func TestInsertAccountOption(t *testing.T) {
+	dummyOpt := models.CreateAccountOption(1, "key", "value")
+	accountId, key, err := dbModels.accountOption.Insert(dummyOpt)
+
+	require.NoError(t, err)
+	assert.NotZero(t, accountId)
+	assert.NotZero(t, key)
+}
+
+func TestGetAccountOptionByAccountAndKey(t *testing.T) {
+	const accountId = 1
+	const optKey = "deceased"
+	opt, err := dbModels.accountOption.Get(accountId, optKey)
+	if opt == nil {
+		t.Fail()
+		t.Log("Could not get account option")
+
+		return
+	}
+
+	require.NoError(t, err)
+	require.Equal(t, opt.AccountId, accountId)
+	require.Equal(t, opt.Key, optKey)
+	require.Equal(t, opt.Value, "true")
+}
+
+// --------------------------------------------------
 // Category
 // --------------------------------------------------
 

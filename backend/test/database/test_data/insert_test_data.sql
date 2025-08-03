@@ -1,8 +1,8 @@
 INSERT INTO category(name, enabled, icon, type)
 VALUES ('Sailor',
         true,
-        'icon',
-        'sailboat');
+        'sailboat',
+        'account');
 
 INSERT INTO account(first_name, nickname, last_name, email, phone, balance, max_debt, category, enabled)
 VALUES ('Vasco',

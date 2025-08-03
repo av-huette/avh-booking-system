@@ -1,13 +1,12 @@
-package models
+package test
 
 import (
 	"context"
 	"fmt"
 	"github.com/av-huette/avh-booking-system/config"
 	"github.com/av-huette/avh-booking-system/internal/database"
+	"github.com/av-huette/avh-booking-system/internal/models"
 	"github.com/jackc/pgx/v5"
-	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 	"os"
 	"strings"
 	"testing"
@@ -15,18 +14,13 @@ import (
 )
 
 var dbPool *database.DB
-var accountModel *AccountModel
 
-func TestMain(m *testing.M) {
-	code, err := run(m)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	os.Exit(code)
+type modelStructs struct {
+	account *models.AccountModel
 }
 
-func run(m *testing.M) (code int, err error) {
+// run sets up members and the database before executing tests and tearing them down after execution.
+func run(m *testing.M, dbModels *modelStructs) (code int, err error) {
 	currentWorkDirectory, _ := os.Getwd()
 	dbConf := config.LoadDbConfigFromFileEnv(string(currentWorkDirectory) + `/.env`)
 
@@ -37,13 +31,15 @@ func run(m *testing.M) (code int, err error) {
 
 	setUp()
 
-	accountModel = &AccountModel{DB: dbPool}
+	dbModels.account = &models.AccountModel{DB: dbPool}
 
 	defer tearDown()
 
 	return m.Run(), nil
 }
 
+// getQueriesFromFile reads the file content specified in `filePath` into a string. It expects the content
+// to be SQL queries that are terminated by `;` and returns a list of queries.
 func getQueriesFromFile(filePath string) []string {
 	// open file and read into string
 	buf, err := os.ReadFile(filePath)
@@ -61,6 +57,7 @@ func getQueriesFromFile(filePath string) []string {
 	return queries
 }
 
+// batchExecQueries executes a list of queries.
 func batchExecQueries(queries []string) pgx.BatchResults {
 	// batch queries
 	batch := &pgx.Batch{}
@@ -79,22 +76,24 @@ func batchExecQueries(queries []string) pgx.BatchResults {
 	return br
 }
 
+// setUp set-ups the database by creating the tables and inserting test data.
 func setUp() {
 	currentWorkDirectory, _ := os.Getwd()
-	filePath := currentWorkDirectory + `/create_tables.sql`
+	filePath := currentWorkDirectory + `/test_data/create_tables.sql`
 	queries := getQueriesFromFile(filePath)
 	batchExecQueries(queries)
 	logSetup("Created tables")
 
-	filePath = currentWorkDirectory + `/insert_test_data.sql`
+	filePath = currentWorkDirectory + `/test_data/insert_test_data.sql`
 	queries = getQueriesFromFile(filePath)
 	batchExecQueries(queries)
 	logSetup("Inserted test data")
 }
 
+// tearDown drops all tables from the database and closes the database connection pool.
 func tearDown() {
 	currentWorkDirectory, _ := os.Getwd()
-	filePath := currentWorkDirectory + `/drop_tables.sql`
+	filePath := currentWorkDirectory + `/test_data/drop_tables.sql`
 	queries := getQueriesFromFile(filePath)
 
 	br := batchExecQueries(queries)
@@ -121,25 +120,12 @@ func tearDown() {
 	}
 }
 
+// logSetup prints a message to stdout. It is intended to be called during test setup.
 func logSetup(msg string) {
 	fmt.Println(fmt.Sprintf("== SETUP: %s", msg))
 }
 
+// logTearDown prints a message to stdout. It is intended to be called during test teardown.
 func logTearDown(msg string) {
 	fmt.Println(fmt.Sprintf("== TEARDOWN: %s", msg))
-}
-
-func TestInsertAccount(t *testing.T) {
-	dummyAccount := CreateAccount("FirstName", "NickName", "LastName",
-		"Email", "Phone", "12.34", 100, 1)
-	id, err := accountModel.Insert(dummyAccount)
-
-	require.NoError(t, err)
-	assert.NotZero(t, id)
-}
-
-func TestGetAccountById(t *testing.T) {
-	_, err := accountModel.Get(1)
-	// TODO verify fields
-	require.NoError(t, err)
 }

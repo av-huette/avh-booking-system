@@ -176,7 +176,7 @@ func TestGetProductGroupById(t *testing.T) {
 	group, err := dbModels.productGroup.Get(groupId)
 	if group == nil {
 		t.Fail()
-		t.Log("Could not get group group")
+		t.Log("Could not get group")
 
 		return
 	}
@@ -184,4 +184,31 @@ func TestGetProductGroupById(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, group.Id, groupId)
 	require.Equal(t, group.Name, "Port Wine")
+}
+
+// --------------------------------------------------
+// Unit
+// --------------------------------------------------
+
+func TestInsertUnit(t *testing.T) {
+	dummyUnit := models.CreateUnit("oz")
+	id, err := dbModels.unit.Insert(dummyUnit)
+
+	require.NoError(t, err)
+	assert.NotZero(t, id)
+}
+
+func TestGetUnitById(t *testing.T) {
+	const unitId = 1
+	unit, err := dbModels.unit.Get(unitId)
+	if unit == nil {
+		t.Fail()
+		t.Log("Could not get unit")
+
+		return
+	}
+
+	require.NoError(t, err)
+	require.Equal(t, unit.Id, unitId)
+	require.Equal(t, unit.Name, "ml")
 }

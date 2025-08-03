@@ -21,6 +21,7 @@ type modelStructs struct {
 	category      *models.CategoryModel
 	product       *models.ProductModel
 	productGroup  *models.ProductGroupModel
+	unit          *models.UnitModel
 }
 
 // run sets up members and the database before executing tests and tearing them down after execution.
@@ -40,6 +41,7 @@ func run(m *testing.M, dbModels *modelStructs) (code int, err error) {
 	dbModels.category = &models.CategoryModel{DB: dbPool}
 	dbModels.product = &models.ProductModel{DB: dbPool}
 	dbModels.productGroup = &models.ProductGroupModel{DB: dbPool}
+	dbModels.unit = &models.UnitModel{DB: dbPool}
 
 	defer tearDown()
 

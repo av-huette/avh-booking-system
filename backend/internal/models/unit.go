@@ -16,19 +16,29 @@ type UnitModel struct {
 	DB *database.DB
 }
 
-func (m *UnitModel) Insert(name string) error {
+func CreateUnit(name string) Unit {
+	return Unit{
+		Name: name,
+	}
+}
+
+func (m *UnitModel) Insert(unit Unit) (int, error) {
 	ctx := context.Background()
 	query := `
         INSERT INTO unit (name) 
-        VALUES ($1)`
-	_, err := m.DB.Exec(ctx, query, name)
+        VALUES ($1)
+        RETURNING unit_id;`
+	var id int
+	err := m.DB.QueryRow(ctx, query, unit.Name).Scan(&id)
 
-	return err
+	return id, err
 }
 
 func (m *UnitModel) Get(id int) (*Unit, error) {
 	ctx := context.Background()
-	stmt := `SELECT unit_id, name FROM unit WHERE unit_id = $1`
+	stmt := `SELECT unit_id, name
+			FROM unit
+			WHERE unit_id = $1`
 	row := m.DB.QueryRow(ctx, stmt, id)
 
 	var unit Unit

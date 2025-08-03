@@ -158,3 +158,30 @@ func TestGetProductById(t *testing.T) {
 	require.Equal(t, product.Tax, expectedTax)
 	require.Equal(t, product.CategoryId, 1)
 }
+
+// --------------------------------------------------
+// ProductGroup
+// --------------------------------------------------
+
+func TestInsertProductGroup(t *testing.T) {
+	dummyProductGroup := models.CreateProductGroup("Beer")
+	id, err := dbModels.productGroup.Insert(dummyProductGroup)
+
+	require.NoError(t, err)
+	assert.NotZero(t, id)
+}
+
+func TestGetProductGroupById(t *testing.T) {
+	const groupId = 1
+	group, err := dbModels.productGroup.Get(groupId)
+	if group == nil {
+		t.Fail()
+		t.Log("Could not get group group")
+
+		return
+	}
+
+	require.NoError(t, err)
+	require.Equal(t, group.Id, groupId)
+	require.Equal(t, group.Name, "Port Wine")
+}

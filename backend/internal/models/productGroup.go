@@ -16,25 +16,33 @@ type ProductGroupModel struct {
 	DB *database.DB
 }
 
-func (m *ProductGroupModel) Insert(name string) (int, error) {
+func CreateProductGroup(name string) ProductGroup {
+	return ProductGroup{
+		Name: name,
+	}
+}
+
+func (m *ProductGroupModel) Insert(group ProductGroup) (int, error) {
 	ctx := context.Background()
 	query := `
         INSERT INTO product_group (name) 
         VALUES ($1)
         RETURNING product_group_id`
 	var id int
-	err := m.DB.QueryRow(ctx, query, name).Scan(&id)
+	err := m.DB.QueryRow(ctx, query, group.Name).Scan(&id)
 
 	return id, err
 }
 
 func (m *ProductGroupModel) Get(id int) (*ProductGroup, error) {
 	ctx := context.Background()
-	stmt := `SELECT product_group_id, name FROM product_group WHERE product_group_id = $1`
+	stmt := `SELECT product_group_id, name
+			FROM product_group
+			WHERE product_group_id = $1`
 	row := m.DB.QueryRow(ctx, stmt, id)
 
-	var ProductGroup ProductGroup
-	err := row.Scan(&ProductGroup.Id, &ProductGroup.Name)
+	var productGroup ProductGroup
+	err := row.Scan(&productGroup.Id, &productGroup.Name)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, ErrNoRecord
@@ -43,5 +51,5 @@ func (m *ProductGroupModel) Get(id int) (*ProductGroup, error) {
 		}
 	}
 
-	return &ProductGroup, nil
+	return &productGroup, nil
 }

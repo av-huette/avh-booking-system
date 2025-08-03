@@ -15,6 +15,7 @@ type DB struct {
 // NewFromConfig creates a new database connection pool using values loaded from environment variables.
 func NewFromConfig() (*DB, error) {
 	dbConf := config.LoadDbConfigFromRootEnv()
+
 	return New(dbConf.DbUser, dbConf.DbPassword, dbConf.DbHost, dbConf.DbPort, dbConf.DbName)
 }
 

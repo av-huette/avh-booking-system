@@ -6,7 +6,7 @@ VALUES ('Sailor',
 
 INSERT INTO account(first_name, nickname, last_name, email, phone, balance, max_debt, category, enabled)
 VALUES ('Vasco',
-        'Cape Conquerer',
+        'Cape Conqueror',
         'da Gama',
         'indianspice@capeofgoodhope.com',
         '+351 914 97 1498',

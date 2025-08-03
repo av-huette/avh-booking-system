@@ -19,7 +19,7 @@ const (
 	defaultShutdownPeriod = 30 * time.Second
 )
 
-// serveHTTP creates and runs a web server
+// serveHTTP creates and runs a web server.
 func (app *application) serveHTTP() error {
 	srv := &http.Server{
 		Addr:         fmt.Sprintf(":%d", app.conf.HttpPort),

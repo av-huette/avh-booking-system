@@ -1,4 +1,4 @@
-package test
+package test_database
 
 import (
 	"context"
@@ -122,10 +122,10 @@ func tearDown() {
 
 // logSetup prints a message to stdout. It is intended to be called during test setup.
 func logSetup(msg string) {
-	fmt.Println(fmt.Sprintf("== SETUP: %s", msg))
+	fmt.Printf("== SETUP: %s\n", msg)
 }
 
 // logTearDown prints a message to stdout. It is intended to be called during test teardown.
 func logTearDown(msg string) {
-	fmt.Println(fmt.Sprintf("== TEARDOWN: %s", msg))
+	fmt.Printf("== TEARDOWN: %s\n", msg)
 }

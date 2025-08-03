@@ -29,7 +29,9 @@ func (m *ProductModel) Insert() (int, error) {
 
 func (m *ProductModel) Get(productId int) (Product, error) {
 	ctx := context.Background()
-	stmt := `SELECT product_id, name, price, product_group, size, unit, tax, category, created_at FROM product WHERE product_id = $1`
+	stmt := `SELECT product_id, name, price, product_group, size, unit, tax, category, created_at
+			FROM product
+			WHERE product_id = $1`
 	row := m.DB.QueryRow(ctx, stmt, productId)
 
 	var product Product

@@ -1,4 +1,4 @@
-package test
+package test_database
 
 import (
 	"fmt"
@@ -48,7 +48,7 @@ func TestGetAccountById(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, daGama.Id, accountId)
 	require.Equal(t, daGama.FirstName, "Vasco")
-	require.Equal(t, daGama.Nickname, "Cape Conquerer")
+	require.Equal(t, daGama.Nickname, "Cape Conqueror")
 	require.Equal(t, daGama.LastName, "da Gama")
 	require.Equal(t, daGama.Email, "indianspice@capeofgoodhope.com")
 	require.Equal(t, daGama.Phone, "+351 914 97 1498")

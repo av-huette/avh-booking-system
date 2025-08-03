@@ -123,3 +123,38 @@ func TestGetCategoryById(t *testing.T) {
 	require.Equal(t, cat.Icon, "sailboat")
 	require.Equal(t, cat.Type, "account")
 }
+
+// --------------------------------------------------
+// Product
+// --------------------------------------------------
+
+func TestInsertProduct(t *testing.T) {
+	dummyProduct := models.CreateProduct("Pearl River Dynasty", "10", 1, 200, 1, "0.19", 1)
+	id, err := dbModels.product.Insert(dummyProduct)
+
+	require.NoError(t, err)
+	assert.NotZero(t, id)
+}
+
+func TestGetProductById(t *testing.T) {
+	const productId = 1
+	product, err := dbModels.product.Get(productId)
+	if product == nil {
+		t.Fail()
+		t.Log("Could not get product")
+
+		return
+	}
+
+	require.NoError(t, err)
+	require.Equal(t, product.Id, productId)
+	require.Equal(t, product.Name, "Rota das Especiarias")
+	expectedBalance := models.NewNumeric("18.00")
+	require.Equal(t, product.Price, expectedBalance)
+	require.Equal(t, product.ProductGroupId, 1)
+	require.Equal(t, product.Size, 150)
+	require.Equal(t, product.UnitId, 1)
+	expectedTax := models.NewNumeric("0.19")
+	require.Equal(t, product.Tax, expectedTax)
+	require.Equal(t, product.CategoryId, 1)
+}

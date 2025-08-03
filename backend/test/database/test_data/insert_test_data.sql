@@ -1,14 +1,15 @@
 INSERT INTO category(name, enabled, icon, type)
-VALUES ('Active B',
+VALUES ('Sailor',
         true,
         'icon',
-        'account');
+        'sailboat');
 
 INSERT INTO account(first_name, nickname, last_name, email, phone, balance, max_debt, category, enabled)
-VALUES ('Brandon',
-        'Broseidon',
-        'Poseidon', 'kingofocean@mail.com',
-        '+30 123 456 78',
+VALUES ('Vasco',
+        'Cape Conquerer',
+        'da Gama',
+        'indianspice@capeofgoodhope.com',
+        '+351 914 97 1498',
         33.55,
         100,
         1,
@@ -16,14 +17,14 @@ VALUES ('Brandon',
 
 INSERT INTO account_option(account, key, value)
 VALUES (1,
-        'opt1',
-        'val1');
+        'deceased',
+        'true');
 
 INSERT INTO unit(name)
 VALUES ('ml');
 
 INSERT INTO product_group(name)
-VALUES ('Beer');
+VALUES ('Port Wine');
 
 INSERT INTO product (name, price, product_group, size, unit, tax, category)
-VALUES ('Beer', 1.2, 1, 0.5, 1, 19, 1);
+VALUES ('Rota das Especiarias', 18, 1, 150, 1, 19, 1);

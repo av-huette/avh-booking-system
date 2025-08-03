@@ -1,25 +1,25 @@
 CREATE TABLE IF NOT EXISTS category
 (
-    category_id serial PRIMARY KEY,
-    name        varchar(20) NOT NULL,
-    enabled     bool        NOT NULL DEFAULT TRUE,
-    icon        varchar(20),
-    type        varchar(20)
+    category_id SERIAL PRIMARY KEY,
+    name        VARCHAR(20) NOT NULL,
+    enabled     BOOL        NOT NULL DEFAULT TRUE,
+    icon        VARCHAR(20),
+    type        VARCHAR(20)
 );
 
 CREATE TABLE IF NOT EXISTS account
 (
-    account_id serial PRIMARY KEY,
-    first_name varchar(20),
-    nickname   varchar(20),
-    last_name  varchar(20),
-    email      varchar(40),
-    phone      varchar(20),
+    account_id SERIAL PRIMARY KEY,
+    first_name VARCHAR(20),
+    nickname   VARCHAR(20),
+    last_name  VARCHAR(20),
+    email      VARCHAR(40),
+    phone      VARCHAR(20),
     balance    NUMERIC(5, 2) NOT NULL,
     max_debt   NUMERIC(5, 2) NOT NULL,
-    category   integer       NOT NULL,
-    enabled    bool                   DEFAULT TRUE,
-    created_at timestamp     NOT NULL DEFAULT NOW(),
+    category   INTEGER       NOT NULL,
+    enabled    BOOL                   DEFAULT TRUE,
+    created_at TIMESTAMP     NOT NULL DEFAULT NOW(),
     FOREIGN KEY (category) REFERENCES category (category_id)
         ON DELETE NO ACTION
 );
@@ -27,9 +27,9 @@ CREATE TABLE IF NOT EXISTS account
 
 CREATE TABLE IF NOT EXISTS account_option
 (
-    account integer     NOT NULL,
-    key     varchar(40) NOT NULL,
-    value   varchar(40) NOT NULL,
+    account INTEGER     NOT NULL,
+    key     VARCHAR(40) NOT NULL,
+    value   VARCHAR(40) NOT NULL,
     PRIMARY KEY (account, key),
     FOREIGN KEY (account) REFERENCES account (account_id)
         ON DELETE CASCADE
@@ -37,27 +37,27 @@ CREATE TABLE IF NOT EXISTS account_option
 
 CREATE TABLE IF NOT EXISTS unit
 (
-    unit_id serial PRIMARY KEY,
-    name    varchar(20) NOT NULL
+    unit_id SERIAL PRIMARY KEY,
+    name    VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS product_group
 (
-    product_group_id serial PRIMARY KEY,
-    name             varchar(20) NOT NULL
+    product_group_id SERIAL PRIMARY KEY,
+    name             VARCHAR(20) NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS product
 (
-    product_id    serial PRIMARY KEY,
-    name          varchar(40)   NOT NULL,
-    price         numeric(5, 2) NOT NULL,
-    product_group int           NOT NULL,
-    size          int           NOT NULL,
-    unit          int           NOT NULL,
-    tax           numeric(5, 2) NOT NULL,
-    category      int           NOT NULL,
-    created_at    timestamp     NOT NULL DEFAULT NOW(),
+    product_id    SERIAL PRIMARY KEY,
+    name          VARCHAR(40)   NOT NULL,
+    price         NUMERIC(5, 2) NOT NULL,
+    product_group INTEGER           NOT NULL,
+    size          INTEGER           NOT NULL,
+    unit          INTEGER           NOT NULL,
+    tax           NUMERIC(5, 2) NOT NULL,
+    category      INTEGER           NOT NULL,
+    created_at    TIMESTAMP     NOT NULL DEFAULT NOW(),
     FOREIGN KEY (product_group) REFERENCES product_group (product_group_id),
     FOREIGN KEY (unit) REFERENCES unit (unit_id),
     FOREIGN KEY (category) REFERENCES category (category_id)

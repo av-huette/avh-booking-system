@@ -1,9 +1,3 @@
--- naming convention: snake case (https://www.postgresql.org/docs/7.0/syntax525.htm)
-
-CREATE DATABASE avhbs;
-
-\c avhbs;
-
 CREATE TABLE IF NOT EXISTS category
 (
     category_id serial PRIMARY KEY,

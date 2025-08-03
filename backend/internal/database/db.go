@@ -11,10 +11,14 @@ type DB struct {
 	*pgxpool.Pool
 }
 
-func New() (*DB, error) {
-	dbConf := config.LoadDbConfig()
+func NewFromConfig() (*DB, error) {
+	dbConf := config.LoadDbConfigFromRootEnv()
+	return New(dbConf.DbUser, dbConf.DbPassword, dbConf.DbHost, dbConf.DbPort, dbConf.DbName)
+}
+
+func New(dbUser string, dbPassword string, dbHost string, dbPort int, dbName string) (*DB, error) {
 	dsn := fmt.Sprintf("%s:%s@%s:%d/%s",
-		dbConf.DbUser, dbConf.DbPassword, dbConf.DbHost, dbConf.DbPort, dbConf.DbName)
+		dbUser, dbPassword, dbHost, dbPort, dbName)
 	dbPool, err := pgxpool.New(context.Background(), fmt.Sprintf("postgres://%s", dsn))
 	if err != nil {
 		return nil, err

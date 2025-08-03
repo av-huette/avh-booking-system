@@ -27,7 +27,7 @@ type application struct {
 }
 
 func main() {
-	dbPool, err := database.New()
+	dbPool, err := database.NewFromConfig()
 	if err != nil {
 		panic(err)
 	}

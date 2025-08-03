@@ -41,13 +41,27 @@ func LoadConfig() *AppConfig {
 	return conf
 }
 
-func LoadDbConfig() *DbConfig {
-	// load environment variables from .env file
+func LoadDbConfigFromRootEnv() *DbConfig {
+	// load environment variables from root .env file
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal("Error loading .env file: " + err.Error())
 	}
 
+	return createDbConfig()
+}
+
+func LoadDbConfigFromFileEnv(filePath string) *DbConfig {
+	// load environment variables from absolute path to .env file
+	err := godotenv.Load(filePath)
+	if err != nil {
+		log.Fatal("Error loading .env file: " + err.Error())
+	}
+
+	return createDbConfig()
+}
+
+func createDbConfig() *DbConfig {
 	conf := &DbConfig{}
 	conf.DbHost = getString("DB_HOST", "INVALID")
 	conf.DbPort = getInt("DB_PORT", 0)

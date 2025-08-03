@@ -16,7 +16,8 @@ import (
 var dbPool *database.DB
 
 type modelStructs struct {
-	account *models.AccountModel
+	account  *models.AccountModel
+	category *models.CategoryModel
 }
 
 // run sets up members and the database before executing tests and tearing them down after execution.
@@ -32,6 +33,7 @@ func run(m *testing.M, dbModels *modelStructs) (code int, err error) {
 	setUp()
 
 	dbModels.account = &models.AccountModel{DB: dbPool}
+	dbModels.category = &models.CategoryModel{DB: dbPool}
 
 	defer tearDown()
 

@@ -2,6 +2,8 @@ package models
 
 import (
 	"context"
+	"database/sql"
+	"errors"
 	"github.com/av-huette/avh-booking-system/internal/database"
 )
 
@@ -17,21 +19,47 @@ type CategoryModel struct {
 	DB *database.DB
 }
 
-func (m *CategoryModel) Insert() (int, error) {
-	// TODO
-	return 0, nil
+func CreateCategory(name string, icon string, type_ string) Category {
+	return Category{
+		Name: name,
+		Icon: icon,
+		Type: type_,
+	}
 }
 
-func (m *CategoryModel) Get(id int) (Category, error) {
+func (m *CategoryModel) Insert(category Category) (int, error) {
 	ctx := context.Background()
-	stmt := `SELECT category_id, name, enabled, icon, type FROM category WHERE category_id = $1`
+	query := `
+        INSERT INTO category (name, enabled, icon, type) 
+        VALUES ($1, $2, $3, $4)
+        RETURNING category_id`
+	var id int
+	err := m.DB.QueryRow(ctx, query,
+		category.Name,
+		category.Enabled,
+		category.Icon,
+		category.Type,
+	).Scan(&id)
+
+	return id, err
+}
+
+func (m *CategoryModel) Get(id int) (*Category, error) {
+	ctx := context.Background()
+	stmt := `SELECT category_id, name, enabled, icon, type
+			FROM category
+			WHERE category_id = $1`
 	row := m.DB.QueryRow(ctx, stmt, id)
 
-	var opt Category
-	err := row.Scan(&opt.Id, &opt.Name, &opt.Enabled, &opt.Icon, &opt.Type)
+	var cat Category
+	err := row.Scan(&cat.Id, &cat.Name, &cat.Enabled, &cat.Icon, &cat.Type)
 	if err != nil {
-		return Category{}, err
+		if errors.Is(err, sql.ErrNoRows) {
+			return nil, ErrNoRecord
+		} else {
+			return nil, err
+		}
 	}
 
-	return opt, nil
+	return &cat, nil
 }

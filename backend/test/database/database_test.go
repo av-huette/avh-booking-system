@@ -68,4 +68,28 @@ func TestGetAccountById(t *testing.T) {
 // Category
 // --------------------------------------------------
 
-// TODO
+func TestInsertCategory(t *testing.T) {
+	dummyCategory := models.CreateCategory("Guest", "user-friends", "account")
+	id, err := dbModels.category.Insert(dummyCategory)
+
+	require.NoError(t, err)
+	assert.NotZero(t, id)
+}
+
+func TestGetCategoryById(t *testing.T) {
+	const categoryId = 1
+	cat, err := dbModels.category.Get(categoryId)
+	if cat == nil {
+		t.Fail()
+		t.Log("Could not get category")
+
+		return
+	}
+
+	require.NoError(t, err)
+	require.Equal(t, cat.Id, categoryId)
+	require.Equal(t, cat.Name, "Sailor")
+	require.Equal(t, cat.Enabled, true)
+	require.Equal(t, cat.Icon, "sailboat")
+	require.Equal(t, cat.Type, "account")
+}

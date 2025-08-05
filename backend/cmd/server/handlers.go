@@ -15,7 +15,7 @@ func (app *application) getAccount(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	account, err := app.account.Get(id)
+	account, err := app.dbModels.account.Get(id)
 	if err != nil {
 		if errors.Is(err, models.ErrNoRecord) {
 			app.notFound(w)

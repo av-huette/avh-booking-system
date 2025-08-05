@@ -1,3 +1,4 @@
+// Package database implements methods to interact with the database.
 package database
 
 import (
@@ -11,10 +12,17 @@ type DB struct {
 	*pgxpool.Pool
 }
 
-func New() (*DB, error) {
-	dbConf := config.LoadDbConfig()
+// NewFromConfig creates a new database connection pool using values loaded from environment variables.
+func NewFromConfig() (*DB, error) {
+	dbConf := config.LoadDbConfigFromRootEnv()
+
+	return New(dbConf.DbUser, dbConf.DbPassword, dbConf.DbHost, dbConf.DbPort, dbConf.DbName)
+}
+
+// New creates a new database connection pool using the passed parameters.
+func New(dbUser string, dbPassword string, dbHost string, dbPort int, dbName string) (*DB, error) {
 	dsn := fmt.Sprintf("%s:%s@%s:%d/%s",
-		dbConf.DbUser, dbConf.DbPassword, dbConf.DbHost, dbConf.DbPort, dbConf.DbName)
+		dbUser, dbPassword, dbHost, dbPort, dbName)
 	dbPool, err := pgxpool.New(context.Background(), fmt.Sprintf("postgres://%s", dsn))
 	if err != nil {
 		return nil, err

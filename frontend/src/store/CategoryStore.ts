@@ -1,10 +1,19 @@
 import { defineStore } from 'pinia'
-import { type Category, generateTestData } from '../composables/category'
+import { Category, generateTestData } from '../composables/category'
+import { CategoryType } from '../composables/category'
 
 export const useCategoryStore = defineStore('category', {
   state: () => {
     return {
       categorys: [] as Category[]
+    }
+  },
+  getters:{
+    accountCategorys(state){
+      return state.categorys.filter((cat) => cat.type == CategoryType.ACCOUNT)
+    },
+    productCategorys(state){
+      return state.categorys.filter((cat) => cat.type == CategoryType.PRODUCT)
     }
   },
   actions: {

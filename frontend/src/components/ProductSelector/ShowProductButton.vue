@@ -1,10 +1,10 @@
 <template>
   <div class="accountList" :style="`--_height:${height}px;`" ref="resizeBox" @mouseenter="onResize" @scroll="onResize">
-    <div class="dictionary" v-for="(dict, key) of accountsInOrder" :key="key">
+    <div class="dictionary" v-for="(dict, key) of productsInOrder" :key="key">
       <span class="title is-1">{{ key }}</span>
       <div class="is-flex is-flex-direction-row is-flex-wrap-wrap is-align-content-flex-start is-gap-1">
-        <div v-for="account in dict" @mousemove="changeSelectMode" @click="selectAccount($event, account)" >
-          <button class="button is-fullwidth" :class="account$.selected.includes(account) ? 'is-primary' : ''" title="select account">{{ account.getShortName() }}</button>
+        <div v-for="product in dict">
+          <button class="button is-fullwidth" title="select product" @click="cart$.addToCart(product)">{{ product.name }} {{ product.size }} {{ product.unit }}</button>
         </div>
       </div>
     </div>
@@ -28,8 +28,8 @@
 </style>
 
 <script lang="ts">
-import { Account } from '../../composables/account';
-import { useAccountStore } from '../../store/AccountStore';
+import { Product } from '../../composables/product';
+import { useProductStore } from '../../store/ProductStore';
 import type { PropType } from 'vue';
 import { useResizeObserver } from '@vueuse/core';
 import { useCartStore } from '../../store/CartStore';
@@ -37,23 +37,22 @@ import { useCartStore } from '../../store/CartStore';
 export default {
   data(){
     return {
-      account$: useAccountStore(),
-      selectMode: "single",
+      product$: useProductStore(),
       height: 0,
       resizeElement: {} as HTMLElement,
-      cart$: useCartStore()
+      cart$: useCartStore(),
     }
   },
   props: {
-    accounts: {
-      type: Array as PropType<Account[]>
+    products: {
+      type: Array as PropType<Product[]>
     }
   },
   computed: {
-    accountsInOrder() {
-      var dict: {[key: string]: Account[]} = {};
-      this.accounts?.forEach(acc => {
-      var char = acc.getShortName()[0].toUpperCase();
+    productsInOrder() {
+      var dict: {[key: string]: Product[]} = {};
+      this.products?.forEach(prod => {
+      var char = prod.name[0].toUpperCase();
       var charCode = char.charCodeAt(0);
       if (charCode >= 65 && charCode <= 90) { // A-Z
       } else if (charCode >= 48 && charCode <= 57) { // 0-9
@@ -62,35 +61,15 @@ export default {
         char = "?";
       }
       if (dict[char] === undefined) {
-        dict[char] = [acc]
+        dict[char] = [prod]
       } else {
-        dict[char].push(acc);
+        dict[char].push(prod);
       }
     })
     return dict;
     }
   },
   methods: {
-    selectAccount(e: MouseEvent, account: Account) {
-      this.changeSelectMode(e);
-      this.cart$.cartContents = [];
-      if(this.selectMode == "single") {
-        this.account$.select(account);
-        return;
-      }
-      if(this.selectMode == "multiple") {
-        this.account$.selectAdd(account);
-      }
-    },
-    changeSelectMode(e: MouseEvent){
-      if(e.ctrlKey){
-        this.selectMode = "multiple";
-        (e.target as HTMLElement).style.cursor = "copy";
-        return;
-      }
-      this.selectMode = "single";
-      (e.target as HTMLElement).style.cursor = "";
-    },
     onResize(){
       let y = window.innerHeight;
       let _y = this.resizeElement.getBoundingClientRect().top;

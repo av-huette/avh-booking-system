@@ -11,18 +11,7 @@ export interface Account {
   enabled: boolean
   createdAt?: string
 }
-export class Account {
-  public id?: number;
-  public firstName: string;
-  public lastName: string;
-  public nickName?: string;
-  public email: string;
-  public phone?: string;
-  public balance: number;
-  public maxDebt: number;
-  public category?: number;
-  public enabled: boolean;
-  public createdAt?: string;
+export class Account implements Account{
 
   constructor(acc: Account){
     this.id = acc.id;
@@ -85,7 +74,8 @@ export function generateTestData(): Account[]{
     email: "test@test.de",
     balance: Math.random() * 100,
     maxDebt: 0,
-    enabled: true
+    enabled: true,
+    category: 2
   } as Account
   a3 = new Account(a3)
 

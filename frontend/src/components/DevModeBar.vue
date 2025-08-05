@@ -35,12 +35,14 @@
 <script lang="ts">
 import { useAccountStore } from '../store/AccountStore';
 import { useCategoryStore } from '../store/CategoryStore';
+import { useProductStore } from '../store/ProductStore';
 
   export default {
     data() {
       return {
         account$: useAccountStore(),
         category$: useCategoryStore(),
+        product$: useProductStore(),
         burgerActive: false as Boolean
       }
     },
@@ -51,6 +53,7 @@ import { useCategoryStore } from '../store/CategoryStore';
       generateTestData(){
         this.account$.generateTestData();
         this.category$.generateTestData();
+        this.product$.generateTestData();
       }
     }
   }

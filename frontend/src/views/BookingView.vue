@@ -1,9 +1,10 @@
 <template>
   <section class="fixed-grid has-1-cols-mobile has-3-cols-tablet">
     <div class="grid">
-    <!-- ToDo: Create own Component for Cart Info-->
     <OrderViewer />
 
+    <!-- ToDo? Do this as a own component? -->
+    <!-- Only visible on mobile -->
     <div class="tabs is-boxed is-centered">
       <ul>
         <li :class="visiblePart == 0 ? 'is-active' : ''">
@@ -24,9 +25,10 @@
     <div class="accounts" :class="visiblePart==0 ? '' : 'unselected'">
       <AccountSelector show="button"/>
     </div>
+
     <div class="items" :class="visiblePart==1 ? '' : 'unselected'">
       <!-- ToDo: Develop Item Selector -->
-      HERE ARE ITEMS
+      <ProductSelector show="button" />
     </div>
     </div>
   </section>
@@ -69,11 +71,13 @@
 import AccountSelector from '../components/AccountSelector/AccountSelector.vue';
 import OrderViewer from '../components/OrderViewer/OrderViewer.vue';
 import { useAccountStore } from '../store/AccountStore';
+import ProductSelector from '../components/ProductSelector/ProductSelector.vue';
 
   export default {
     components: {
       AccountSelector,
-      OrderViewer
+      OrderViewer,
+      ProductSelector
     },
     data() {
       return {

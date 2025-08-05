@@ -164,7 +164,7 @@ func TestGetProductById(t *testing.T) {
 // --------------------------------------------------
 
 func TestInsertProductGroup(t *testing.T) {
-	dummyProductGroup := models.CreateProductGroup("Beer")
+	dummyProductGroup := models.CreateProductGroup("Beer", 1)
 	id, err := dbModels.productGroup.Insert(dummyProductGroup)
 
 	require.NoError(t, err)

@@ -44,7 +44,9 @@ CREATE TABLE IF NOT EXISTS unit
 CREATE TABLE IF NOT EXISTS product_group
 (
     product_group_id SERIAL PRIMARY KEY,
-    name             VARCHAR(20) NOT NULL
+    name             VARCHAR(20) NOT NULL,
+    parent           INTEGER,
+    FOREIGN KEY (parent) REFERENCES product_group (product_group_id)
 );
 
 CREATE TABLE IF NOT EXISTS product
@@ -52,11 +54,11 @@ CREATE TABLE IF NOT EXISTS product
     product_id    SERIAL PRIMARY KEY,
     name          VARCHAR(40)   NOT NULL,
     price         NUMERIC(5, 2) NOT NULL,
-    product_group INTEGER           NOT NULL,
-    size          INTEGER           NOT NULL,
-    unit          INTEGER           NOT NULL,
+    product_group INTEGER       NOT NULL,
+    size          INTEGER       NOT NULL,
+    unit          INTEGER       NOT NULL,
     tax           NUMERIC(5, 2) NOT NULL,
-    category      INTEGER           NOT NULL,
+    category      INTEGER       NOT NULL,
     created_at    TIMESTAMP     NOT NULL DEFAULT NOW(),
     FOREIGN KEY (product_group) REFERENCES product_group (product_group_id),
     FOREIGN KEY (unit) REFERENCES unit (unit_id),

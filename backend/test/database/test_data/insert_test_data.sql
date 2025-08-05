@@ -24,7 +24,10 @@ INSERT INTO unit(name)
 VALUES ('ml');
 
 INSERT INTO product_group(name)
-VALUES ('Port Wine');
+VALUES ('Alcohol');
+
+INSERT INTO product_group(name, parent)
+VALUES ('Port Wine', 1);
 
 INSERT INTO product (name, price, product_group, size, unit, tax, category)
 VALUES ('Rota das Especiarias', 18.00, 1, 150, 1, 0.19, 1);

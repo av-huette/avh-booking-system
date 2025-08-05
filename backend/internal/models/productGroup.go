@@ -53,13 +53,19 @@ func (m *ProductGroupModel) Get(id int) (*ProductGroup, error) {
 	row := m.DB.QueryRow(ctx, stmt, id)
 
 	var productGroup ProductGroup
-	err := row.Scan(&productGroup.Id, &productGroup.Name, &productGroup.ParentId)
+	var parentId *int // pointer to read null
+	err := row.Scan(&productGroup.Id, &productGroup.Name, &parentId)
 	if err != nil {
 		if errors.Is(err, sql.ErrNoRows) {
 			return nil, ErrNoRecord
 		} else {
 			return nil, err
 		}
+	}
+	if parentId == nil {
+		productGroup.ParentId = 0
+	} else {
+		productGroup.ParentId = *parentId
 	}
 
 	return &productGroup, nil

@@ -31,3 +31,6 @@ VALUES ('Port Wine', 1);
 
 INSERT INTO product (name, price, product_group, size, unit, tax, category)
 VALUES ('Rota das Especiarias', 18.00, 1, 150, 1, 0.19, 1);
+
+INSERT INTO product_visibility(category, product)
+VALUES (1, 1);

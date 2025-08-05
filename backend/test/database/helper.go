@@ -16,12 +16,13 @@ import (
 var dbPool *database.DB
 
 type modelStructs struct {
-	account       *models.AccountModel
-	accountOption *models.AccountOptionModel
-	category      *models.CategoryModel
-	product       *models.ProductModel
-	productGroup  *models.ProductGroupModel
-	unit          *models.UnitModel
+	account           *models.AccountModel
+	accountOption     *models.AccountOptionModel
+	category          *models.CategoryModel
+	product           *models.ProductModel
+	productGroup      *models.ProductGroupModel
+	unit              *models.UnitModel
+	productVisibility *models.ProductVisibilityModel
 }
 
 // run sets up members and the database before executing tests and tearing them down after execution.
@@ -42,6 +43,7 @@ func run(m *testing.M, dbModels *modelStructs) (code int, err error) {
 	dbModels.product = &models.ProductModel{DB: dbPool}
 	dbModels.productGroup = &models.ProductGroupModel{DB: dbPool}
 	dbModels.unit = &models.UnitModel{DB: dbPool}
+	dbModels.productVisibility = &models.ProductVisibilityModel{DB: dbPool}
 
 	defer tearDown()
 

@@ -183,7 +183,8 @@ func TestGetProductGroupById(t *testing.T) {
 
 	require.NoError(t, err)
 	require.Equal(t, group.Id, groupId)
-	require.Equal(t, group.Name, "Port Wine")
+	require.Equal(t, group.Name, "Alcohol")
+	require.Equal(t, group.ParentId, 0)
 }
 
 // --------------------------------------------------
@@ -211,4 +212,32 @@ func TestGetUnitById(t *testing.T) {
 	require.NoError(t, err)
 	require.Equal(t, unit.Id, unitId)
 	require.Equal(t, unit.Name, "ml")
+}
+
+// --------------------------------------------------
+// ProductVisibility
+// --------------------------------------------------
+
+func TestInsertProductVisibility(t *testing.T) {
+	dummyVisibility := models.CreateProductVisibility(1, 2)
+	id, err := dbModels.productVisibility.Insert(dummyVisibility)
+
+	require.NoError(t, err)
+	assert.NotZero(t, id)
+}
+
+func TestProductVisibilityById(t *testing.T) {
+	const visibilityId = 1
+	unit, err := dbModels.productVisibility.Get(visibilityId)
+	if unit == nil {
+		t.Fail()
+		t.Log("Could not get product visibility")
+
+		return
+	}
+
+	require.NoError(t, err)
+	require.Equal(t, unit.Id, visibilityId)
+	require.Equal(t, unit.CategoryId, 1)
+	require.Equal(t, unit.ProductId, 1)
 }

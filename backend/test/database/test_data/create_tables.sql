@@ -64,3 +64,12 @@ CREATE TABLE IF NOT EXISTS product
     FOREIGN KEY (unit) REFERENCES unit (unit_id),
     FOREIGN KEY (category) REFERENCES category (category_id)
 );
+
+CREATE TABLE IF NOT EXISTS product_visibility
+(
+    product_visibility_id SERIAL PRIMARY KEY,
+    category             INTEGER NOT NULL,
+    product           INTEGER NOT NULL,
+    FOREIGN KEY (category) REFERENCES category (category_id),
+    FOREIGN KEY (product) REFERENCES product (product_id)
+);

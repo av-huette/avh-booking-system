@@ -1,24 +1,26 @@
 <template>
   <div>
     <!-- search bar -->
-    <div class="columns">
-      <div class="column">
         <div class="field">
-          <div class="control has-icons-left">
+          <div class="control has-icons-left has-icons-right">
             <input
               class="input"
               type="text"
-              placeholder="Search user"
+              v-bind:placeholder="$t('booking.search.users')"
               v-model="search"
               v-on:keyup="searchUsers"
             />
             <span class="icon is-small is-left">
               <font-awesome-icon icon="search" />
             </span>
+            <span v-if="search != ''"
+              class="icon is-small is-right"
+              @click="clearSearch"
+              >
+              <font-awesome-icon icon="times" />
+            </span>
           </div>
         </div>
-      </div>
-    </div>
     <!-- search results -->
     <div class="buttons" v-if="searchResults !== []">
       <button
@@ -70,6 +72,10 @@ export default {
     selectUser(user) {
       this.$store.commit("selectUser", user);
     },
+    clearSearch(){
+      this.search = "";
+      this.searchUsers();
+    }
   },
 };
 </script>

@@ -45,6 +45,14 @@ func main() {
 	r.HandleFunc("/changeAdminPassword", handler.ChangeAdminPassword)
 	r.HandleFunc("/getBookingStats", handler.GetBookingStats)
 	r.HandleFunc("/getFavoriteItemsStats", handler.GetFavoriteItemsStats)
+	r.HandleFunc("/sendTestMail", handler.SendTestMail)
+	r.HandleFunc("/getDebts", handler.GetAllCategoryDebts)
+	r.HandleFunc("/sendCurrentDebts", handler.SendCurrentDebts)
+	r.HandleFunc("/getSettings", handler.GetSettings)
+	r.HandleFunc("/updateSetting", handler.UpdateSetting)
+	r.HandleFunc("/confirmPaymentIntent", handler.ConfirmPaymentIntent)
+	r.HandleFunc("/getStripeCardReader", handler.GetStripeCardReader)
+	r.HandleFunc("/cancelReaderAction", handler.CancelReaderAction)
 
 	serveIndexHTML := func(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("Strict-Transport-Security", "max-age=63072000; includeSubDomains")
@@ -65,4 +73,5 @@ func main() {
 	} else {
 		log.Fatal(server.ListenAndServe())
 	}
+	log.Fatal(server.ListenAndServe())
 }

@@ -18,7 +18,7 @@
               </div>
               <div>
                 <font-awesome-icon icon="euro-sign" />
-                &nbsp;&nbsp;{{ item.Price }}&nbsp;€
+                &nbsp;&nbsp;{{ $n(item.Price, "currency", "de-DE") }}
               </div>
             </h6>
           </div>
@@ -35,6 +35,15 @@
               <div>
                 <font-awesome-icon icon="info-circle" />
                 &nbsp;&nbsp;{{ item.Type }}
+              </div>
+            </h6>
+          </div>
+          <div class="column has-text-left">
+            <h6 class="subtitle is-6">
+              <div>
+                <font-awesome-icon v-if="item.Enabled" icon="check-circle"/>
+                <font-awesome-icon v-if="!item.Enabled" icon="times"/>
+                &nbsp;&nbsp;{{ item.Enabled }}
               </div>
             </h6>
           </div>

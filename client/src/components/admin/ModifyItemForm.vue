@@ -5,18 +5,18 @@
       <div class="modal-wrapper">
         <div class="modal-container">
           <div class="modal-header">
-            <h1 class="title is-4">Modify item</h1>
+            <h1 class="title is-4">{{$t('admin.itemSettings.modify')}}</h1>
             <hr />
           </div>
 
           <div class="modal-body">
             <div class="field">
-              <label class="label">Name</label>
+              <label class="label">{{$t('item.name')}}</label>
               <div class="control has-icons-left">
                 <input
                   class="input"
                   type="text"
-                  placeholder="Name"
+                  v-bind:placeholder="$t('item.name')"
                   v-model.lazy="item.Name"
                 />
                 <span class="icon is-small is-left">
@@ -26,13 +26,14 @@
             </div>
 
             <div class="field">
-              <label class="label">Price</label>
+              <label class="label">{{$t('item.price')}}</label>
               <div class="control has-icons-left">
                 <input
                   class="input"
-                  type="text"
-                  placeholder="Price"
+                  type="number"
+                  v-bind:placeholder="$t('item.price')"
                   v-model.number="item.Price"
+                  step=".01"
                 />
                 <span class="icon is-small is-left">
                   <font-awesome-icon icon="euro-sign" />
@@ -41,12 +42,12 @@
             </div>
 
             <div class="field">
-              <label class="label">Size</label>
+              <label class="label">{{$t('item.size')}}</label>
               <div class="control has-icons-left">
                 <input
                   class="input"
                   type="text"
-                  placeholder="Size"
+                  v-bind:placeholder="$t('item.size')"
                   v-model.number="item.Size"
                 />
                 <span class="icon is-small is-left">
@@ -56,30 +57,37 @@
             </div>
 
             <div class="field">
-              <label class="label">Unit</label>
+              <label class="label">{{$t('item.unit')}}</label>
               <div class="control">
                 <div class="select">
                   <select v-model="item.Unit">
-                    <option disabled value>Unit</option>
-                    <option>l</option>
-                    <option>piece</option>
+                    <option disabled value>{{$t('item.unit')}}</option>
+                    <option value="l">{{$t('item.unitL')}}</option>
+                    <option value="piece">{{$t('item.unitPiece')}}</option>
                   </select>
                 </div>
               </div>
             </div>
 
             <div class="field">
-              <label class="label">Type</label>
+              <label class="label">{{$t('item.type')}}</label>
               <div class="control">
                 <div class="select">
                   <select v-model="item.Type">
-                    <option disabled value>Type</option>
-                    <option>alcoholic</option>
-                    <option>non-alcoholic</option>
-                    <option>food</option>
+                    <option disabled value>{{$t('item.type')}}</option>
+                    <option value="alcoholic">{{$t('generic.alcoholic')}}</option>
+                    <option value="non-alcoholic">{{$t('generic.nonAlcoholic')}}</option>
+                    <option value="food">{{$t('generic.food')}}</option>
                   </select>
                 </div>
               </div>
+            </div>
+          </div>
+          <div class="field">
+            <label class="label">{{$t('item.enabled')}}</label>
+            <div class="control">
+              <input type="checkbox" id="ItemEnabled" v-model="item.Enabled" class="cbSwitch">
+              <label for="ItemEnabled"></label>
             </div>
           </div>
 
@@ -98,14 +106,14 @@
               <div class="level-left">
                 <div class="level-item">
                   <button class="button is-link" @click="modifyItem">
-                    Submit
+                    {{$t('generic.submit')}}
                   </button>
                 </div>
               </div>
               <div class="level-right">
                 <div class="level-item">
                   <button class="button is-text" @click="closeForm">
-                    Cancel
+                    {{$t('generic.cancel')}}
                   </button>
                 </div>
               </div>
@@ -131,22 +139,21 @@ export default {
   },
   methods: {
     modifyItem() {
+      //if(this.item.Enabled == true){this.item.Enabled = 1} else if(this.item.Enabled == false) {this.item.Enabled = 0}
       if (Object.keys(this.item).length === 0) {
-        this.validationError = "Please select an item first.";
+        this.validationError = this.$t('admin.itemSettings.selectFirst');
       } else {
         this.$http
           .post("modifyItem", this.item)
           .then(() => {
-            var message = "".concat(
-              "Modified item: ",
-              this.displayItem(this.item)
-            );
+            let message = `${this.$t('messages.success.modifiedItem')}: ${this.displayItem(this.item)}`;
             this.closeForm();
             this.$store.commit("getItems");
             this.$responseEventBus.$emit("successMessage", message);
           })
           .catch((response) => {
             if (response.data !== undefined) {
+              //ToDo: Internationalize this failure Message
               this.validationError = response.data;
             } else {
               this.$store.commit("getItems");

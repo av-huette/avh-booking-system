@@ -32,24 +32,28 @@ func validateUserArguments(newUser dataP.User) (validation string, user dataP.Us
 	case "Gast", "Steganleger":
 		if newUser.FirstName == "" && newUser.LastName == "" {
 			return "First or last name must be specified.", newUser
-		} else if newUser.Email == "" && newUser.Phone == "" {
-			return "Email address or phone number must be specified.", newUser
+		} else if newUser.Email == "" {
+			return "Email address must be specified.", newUser
 		} else if newUser.MaxDebt == 0 {
-			newUser.MaxDebt = 50
+			newUser.MaxDebt = 0 // Change if they should have Standard values during creation
 		}
 		return "ok", newUser
 	case "Aktiv B", "Aktiv KA":
 		if newUser.FirstName == "" {
 			return "First name must be specified.", newUser
+		} else if newUser.Email == "" {
+			return "Email address must be specified.", newUser
 		} else if newUser.MaxDebt == 0 {
-			newUser.MaxDebt = 50
+			newUser.MaxDebt = 0 // Change if they should have Standard values during creation
 		}
 		return "ok", newUser
 	case "AH":
 		if newUser.BierName == "" {
 			return "Biername must be specified.", newUser
+		} else if newUser.Email == "" {
+			return "Email address must be specified.", newUser
 		} else if newUser.MaxDebt == 0 {
-			newUser.MaxDebt = 100
+			newUser.MaxDebt = 0 // Change if they should have Standard values during creation
 		}
 		return "ok", newUser
 	default:
@@ -78,6 +82,7 @@ func ModifyUser(w http.ResponseWriter, r *http.Request) {
 		validation = "ok"
 		w.WriteHeader(http.StatusOK)
 	}
+	// ToDo: internaitonalize this message - maybe send only error-codes and do the text at client side
 	fmt.Fprint(w, validation)
 }
 
@@ -94,5 +99,6 @@ func DeleteUser(w http.ResponseWriter, r *http.Request) {
 		validation = "ok"
 		w.WriteHeader(http.StatusOK)
 	}
+	// ToDo: internaitonalize this message - maybe send only error-codes and do the text at client side
 	fmt.Fprint(w, validation)
 }

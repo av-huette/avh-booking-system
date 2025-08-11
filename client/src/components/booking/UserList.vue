@@ -2,6 +2,8 @@
   <div>
     <div class="tabs">
       <ul>
+        <!-- No internationalisation here because of hardcoded values that should come from the database anyway.
+        ToDo: Fetch Categorys from DB instead of hardcoding -->
         <li :class="[activeTab === 'tab0' ? 'is-active' : '']">
           <a @click="activeTab = 'tab0'">Alle</a>
         </li>
@@ -22,24 +24,12 @@
         </li>
       </ul>
     </div>
-    <div v-if="activeTab === 'tab0'">
-      <UserDictionary :userDict="allUsers">
-    </div>
-    <div v-if="activeTab === 'tab1'">
-      <UserDictionary :userDict="usersAH">
-    </div>
-    <div v-if="activeTab === 'tab2'">
-    <UserDictionary :userDict="usersAktivB">
-    </div>
-    <div v-if="activeTab === 'tab3'">
-      <UserDictionary :userDict="usersAktivKA">
-    </div>
-    <div v-if="activeTab === 'tab4'">
-      <UserDictionary :userDict="usersSteganleger">
-    </div>
-    <div v-if="activeTab === 'tab5'">
-      <UserDictionary :userDict="usersGaeste">
-    </div>
+    <UserDictionary v-if="activeTab === 'tab0'" :userDict="allUsers" />
+    <UserDictionary v-if="activeTab === 'tab1'" :userDict="usersAH" />
+    <UserDictionary v-if="activeTab === 'tab2'" :userDict="usersAktivB" />
+    <UserDictionary v-if="activeTab === 'tab3'" :userDict="usersAktivKA" />
+    <UserDictionary v-if="activeTab === 'tab4'" :userDict="usersSteganleger" />
+    <UserDictionary v-if="activeTab === 'tab5'" :userDict="usersGaeste" />
   </div>
 </template>
 

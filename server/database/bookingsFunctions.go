@@ -166,6 +166,7 @@ func Pay(payment data.Payment) bool {
 	err = tx.Commit()
 	HandleDatabaseError(err)
 
+	// Set new User.Balance based on the payment amount.
 	newBalance := payment.User.Balance - payment.Balance
 	query := fmt.Sprintf("UPDATE users SET balance = %.2f WHERE id = %d;", newBalance, payment.User.ID)
 	_, err = db.Query(query)

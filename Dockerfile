@@ -1,5 +1,5 @@
 # build client spa with npm
-FROM node:lts-alpine as build-npm
+FROM node:16-alpine as build-npm
 WORKDIR /app
 COPY ./client .
 RUN npm install

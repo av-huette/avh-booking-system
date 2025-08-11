@@ -4,16 +4,16 @@
       <table class="table is-hoverable is-striped">
         <thead>
           <tr>
-            <th>ID</th>
-            <th>First Name</th>
-            <th>Bier Name</th>
-            <th>Last Name</th>
-            <th>Boat Name</th>
-            <th>Status</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Balance</th>
-            <th>Max Debt</th>
+            <th>{{$t('generic.id')}}</th>
+            <th>{{$t('user.firstName')}}</th>
+            <th>{{$t('user.nickname')}}</th>
+            <th>{{$t('user.lastName')}}</th>
+            <th>{{$t('user.boatName')}}</th>
+            <th>{{$t('user.status')}}</th>
+            <th>{{$t('user.eMail')}}</th>
+            <th>{{$t('user.phoneNumber')}}</th>
+            <th style="text-align: right">{{$t('generic.balance')}}</th>
+            <th style="text-align: right">{{$t('generic.max')}} {{$t('generic.debt')}}</th>
           </tr>
         </thead>
         <tbody>
@@ -31,8 +31,8 @@
             <td>{{ user.Status }}</td>
             <td>{{ user.Email }}</td>
             <td>{{ user.Phone }}</td>
-            <td>{{ user.Balance }} €</td>
-            <td>{{ user.MaxDebt }} €</td>
+            <td style="text-align: right">{{ user.Balance }} €</td>
+            <td style="text-align: right">{{ user.MaxDebt }} €</td>
           </tr>
         </tbody>
       </table>

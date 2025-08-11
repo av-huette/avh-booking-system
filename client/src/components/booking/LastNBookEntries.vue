@@ -6,13 +6,12 @@
           <button class="button is-multiline">
             {{ printDateTime(entry.TimeStamp) }}<br />
             <span v-if="entry.ItemID === 0 && entry.PaymentMethod.length > 0">
-              {{ displayUserName(getUserByID(entry.UserID)) }} ~ Payment
+              {{ displayUserName(getUserByID(entry.UserID)) }} ~ {{$t('booking.entries.payment')}}
             </span>
             <span
               v-else-if="entry.ItemID === 0 && entry.Comment.startsWith('Undo')"
             >
-              {{ displayUserName(getUserByID(entry.UserID)) }} ~ Undid book
-              entry
+              {{ displayUserName(getUserByID(entry.UserID)) }} ~ {{$t('booking.entries.undid')}}
             </span>
             <span v-else>
               {{ displayUserName(getUserByID(entry.UserID)) }} ~
@@ -26,19 +25,19 @@
             <div class="dropdown-item has-background-primary-light">
               <p>{{ displayUserNameFull(getUserByID(entry.UserID)) }}</p>
               <span v-if="entry.ItemID === 0 && entry.PaymentMethod.length > 0">
-                {{ entry.TotalPrice * -1 }}€ {{ entry.PaymentMethod }}
+                {{ $n(entry.TotalPrice * -1, "currency", "de-DE") }} {{ entry.PaymentMethod }}
               </span>
               <span
                 v-else-if="
                   entry.ItemID === 0 && entry.Comment.startsWith('Undo')
                 "
               >
-                {{ entry.TotalPrice * -1 }}€
+                {{ $n(entry.TotalPrice * -1, "currency", "de-DE") }}
               </span>
               <span v-else>
                 {{ entry.Amount }}x
                 {{ displayItem(getItemByID(items, entry.ItemID)) }} =
-                {{ entry.TotalPrice }}€
+                {{ $n(entry.TotalPrice, "currency", "de-DE") }}
               </span>
             </div>
           </div>
@@ -60,30 +59,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss">
-.dropdown {
-  width: 100%;
-
-  .dropdown-trigger {
-    width: 100%;
-  }
-
-  .button {
-    display: block;
-    width: 100%;
-    justify-content: space-between;
-  }
-
-  .dropdown-menu {
-    width: 100%;
-  }
-}
-
-.button.is-multiline {
-  min-height: 2.25em;
-  white-space: unset;
-  height: auto;
-  flex-direction: column;
-}
-</style>

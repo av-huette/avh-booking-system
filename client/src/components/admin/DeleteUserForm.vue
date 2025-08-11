@@ -4,7 +4,7 @@
       <div class="modal-wrapper">
         <div class="modal-container">
           <div class="modal-header">
-            <h1 class="title is-4">Delete user</h1>
+            <h1 class="title is-4">{{$t('admin.userSettings.deleteUserTitle')}}</h1>
             <hr />
           </div>
 
@@ -18,14 +18,14 @@
                   <p class="icon is-small is-left">
                     <font-awesome-icon icon="exclamation" size="lg" />
                   </p>
-                  <p>Select user first.</p>
+                  <p>{{$t('admin.userSettings.selectFirst')}}</p>
                 </div>
               </div>
             </article>
             <div v-else>
               <p>
-                Do you really want to delete
-                <b>{{ displayUserName(user) }}</b
+                {{$t('admin.userSettings.deleteShure')}}
+                <b>{{ displayUserNameFull(user) }}</b
                 >?
               </p>
             </div>
@@ -37,14 +37,14 @@
                 <div class="level-item">
                   <div class="control" v-if="Object.keys(user).length !== 0">
                     <button class="button is-link" @click="deleteUser">
-                      Delete
+                      {{$t('generic.delete')}}
                     </button>
                   </div>
                 </div>
               </div>
               <div class="level-right">
                 <div class="level-item">
-                  <button class="button" @click="closeForm">Cancel</button>
+                  <button class="button" @click="closeForm">{{$t('generic.cancel')}}</button>
                 </div>
               </div>
             </div>
@@ -70,10 +70,7 @@ export default {
         this.$http
           .post("deleteUser", this.user)
           .then(() => {
-            var message = "".concat(
-              "Deleted user: ",
-              this.displayUserName(this.user)
-            );
+            let message = `${this.$t('messages.success.deleteUser')}: ${this.displayUserNameFull(this.user)}`;
             this.$store.commit("selectUser", {});
             this.$store.commit("getUsers");
             this.closeForm();
@@ -82,7 +79,7 @@ export default {
           .catch(() => {
             this.$responseEventBus.$emit(
               "failureMessage",
-              "Couldn't delete user."
+              this.$t('messages.failure.userDelete')
             );
           });
       }

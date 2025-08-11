@@ -7,7 +7,7 @@
             <icon class="icon is-small is-left">
               <font-awesome-icon icon="star" />
             </icon>
-            Favorites
+            {{ $t("generic.favorites") }}
           </a>
         </li>
         <li :class="[activeTab === 'tab1' ? 'is-active' : '']">
@@ -15,7 +15,7 @@
             <icon class="icon is-small is-left">
               <font-awesome-icon icon="beer" />
             </icon>
-            Alcoholic
+            {{ $t("generic.alcoholic") }}
           </a>
         </li>
         <li :class="[activeTab === 'tab2' ? 'is-active' : '']">
@@ -23,7 +23,7 @@
             <icon class="icon is-small is-left">
               <font-awesome-icon icon="glass-whiskey" />
             </icon>
-            Non-Alcoholic
+            {{ $t("generic.nonAlcoholic") }}
           </a>
         </li>
         <li :class="[activeTab === 'tab3' ? 'is-active' : '']">
@@ -31,27 +31,15 @@
             <icon class="icon is-small is-left">
               <font-awesome-icon icon="utensils" />
             </icon>
-            Food
+            {{ $t("generic.food") }}
           </a>
         </li>
       </ul>
     </tabs>
-
-    <div v-if="activeTab === 'tab0'">
-      <ItemDictionary :itemDict="favoriteItemDict">
-    </div>
-
-    <div v-if="activeTab === 'tab1'">
-      <ItemDictionary :itemDict="itemsAlc">
-    </div>
-
-    <div v-if="activeTab === 'tab2'">
-      <ItemDictionary :itemDict="itemsNonAlc">
-    </div>
-
-    <div v-if="activeTab === 'tab3'">
-      <ItemDictionary :itemDict="itemsFood">
-    </div>
+    <ItemDictionary v-if="activeTab === 'tab0'" :itemDict="favoriteItemDict" />
+    <ItemDictionary v-if="activeTab === 'tab1'" :itemDict="itemsAlc" />
+    <ItemDictionary v-if="activeTab === 'tab2'" :itemDict="itemsNonAlc" />
+    <ItemDictionary v-if="activeTab === 'tab3'" :itemDict="itemsFood" /> 
   </div>
 </template>
 
@@ -109,7 +97,7 @@ export default {
           console.log(e);
           this.$responseEventBus.$emit(
             "failureMessage",
-            "Couldn't get favorite items."
+            this.$t('messages.failure.noFavoriteItems')
           );
         });
       this.favoriteItemDict = helper.getFavoriteItemsAsDict(result);

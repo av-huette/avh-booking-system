@@ -4,26 +4,26 @@
       <div class="paymentModal-wrapper big">
         <div class="paymentModal-container big">
           <div class="paymentModal-header big">
-            <h1 class="title is-4">Payment</h1>
+            <h1 class="title is-4">{{$t('booking.payment.title')}}</h1>
             <hr />
           </div>
 
           <div class="paymentModal-body big">
             <p class="subtitle is-4">
-              <b>{{ displayUserName(user) }}</b> has to pay
-              <b>{{ user.Balance }}€</b>.
+              <b>{{ displayUserName(user) }}</b> {{$t('booking.payment.htp')}}
+              <b>{{ $n(user.Balance, "currency", "de-DE") }}</b>.
             </p>
             <br />
-            <p class="subtitle is-4">Please place the cash in the money box!</p>
+            <p class="subtitle is-4">{{$t('booking.payment.subtitle')}}</p>
             <div class="columns">
               <div class="column is-1"></div>
               <div class="column is-3">
                 <div class="field">
                   <p class="control has-icons-right">
                     <input
-                      class="input"
-                      type="text"
-                      placeholder="€"
+                      class="input no-controls"
+                      type="number"
+                      placeholder="00.00"
                       v-model.number="balancePart"
                       style="text-align: right; font-weight: bold"
                     />
@@ -37,13 +37,13 @@
                 </div>
               </div>
               <div class="column">
-                <button class="button is-success is-fullwidth" @click="payCash">
-                  Cash
-                </button>
+                <!-- <button class="button is-success is-fullwidth" @click="payCash">
+                  {{$t('booking.payment.cash')}}
+                </button> -->
               </div>
               <div class="column">
                 <button class="button is-link is-fullwidth" @click="payEC">
-                  EC
+                  {{$t('booking.payment.card')}}
                 </button>
               </div>
               <div class="column">
@@ -51,7 +51,7 @@
                   class="button is-danger is-outlined is-fullwidth"
                   @click="cancel"
                 >
-                  Cancel
+                {{$t('generic.cancel')}}
                 </button>
               </div>
               <div class="column is-1"></div>
@@ -64,7 +64,7 @@
                     <input
                       class="input"
                       type="password"
-                      placeholder="Password"
+                      v-bind:placeholder="$t('user.password')"
                       v-model="password"
                       @keyup.enter="loginAndPay"
                     />
@@ -79,7 +79,7 @@
               v-if="userBookEntries.LastPayment !== '0001-01-01T00:00:00Z'"
               class="subtitle is-6"
             >
-              Last Payment: {{ printDateTime(userBookEntries.LastPayment) }}
+            {{$t('booking.payment.lastPayment')}}: {{ printDateTime(userBookEntries.LastPayment) }}
             </p>
           </div>
 
@@ -87,11 +87,11 @@
             <table class="table is-hoverable is-striped">
               <thead>
                 <tr>
-                  <th>Timestamp</th>
-                  <th>Item</th>
-                  <th>Amount</th>
-                  <th>Total Price</th>
-                  <th>Comment</th>
+                  <th>{{$t('booking.payment.timestamp')}}</th>
+                  <th>{{$t('item.item')}}</th>
+                  <th>{{$t('cart.amount')}}</th>
+                  <th>{{$t('cart.total')}}</th>
+                  <th>{{$t('generic.comment')}}</th>
                 </tr>
               </thead>
               <tbody>
@@ -99,7 +99,7 @@
                   <td>{{ printDateTime(entry.TimeStamp) }}</td>
                   <td>{{ displayItem(getItemByID(items, entry.ItemID)) }}</td>
                   <td>{{ entry.Amount }}</td>
-                  <td>{{ entry.TotalPrice }}</td>
+                  <td>{{ $n(entry.TotalPrice, "currency", "de-DE") }}</td>
                   <td>{{ entry.Comment }}</td>
                 </tr>
               </tbody>
@@ -140,11 +140,11 @@ export default {
       this.pay();
     },
     pay() {
-      if (this.balancePart <= 0) {
+      if (this.balancePart <= 0.5) {
         this.$emit("close");
         this.$responseEventBus.$emit(
           "failureMessage",
-          "Payments smaller or equal 0 are not allowed"
+          this.$t('messages.failure.negativePaymentNotAllowed')
         );
         return;
       }
@@ -158,35 +158,66 @@ export default {
       }
     },
     submitPayment() {
-      this.$http
-        .post("pay", {
+      let AVHBS_payment = {
           User: this.user,
           Balance: this.balancePart,
           PaymentMethod: this.paymentMethod,
-        })
-        .then(() => {
-          var message = "".concat(
-            this.displayUserName(this.user),
-            " paid ",
-            this.balancePart,
-            " €"
-          );
-          this.$store.commit("getLastNBookEntries", 5);
-          this.$store.commit("getUsers");
-          this.$store.commit("selectUser", {});
+          IntentID: null,
+          CardReader: localStorage.getItem("StripeCardReader")
+        };
+      this.$http
+        .post("pay", AVHBS_payment)
+        .then((response) => {
+          AVHBS_payment.IntentID = response.data;
           this.$emit("close");
-          this.$responseEventBus.$emit("successMessage", message);
+          this.handlePaymentIntent(AVHBS_payment);
         })
         .catch((response) => {
+          //ToDo: internationalize this failure message
+          this.$emit("close");
           this.$responseEventBus.$emit("failureMessage", response.data);
         });
+    },
+    handlePaymentIntent(payment){
+      let status = ""; 
+      let pi_data = {};
+      this.$http.post("confirmPaymentIntent", payment)
+        .then((resp) => {
+          pi_data = resp.data;
+          status = pi_data.action.status;
+          this.$responseEventBus.$emit("close");
+          
+          if (status == "in_progress") {
+            let message = `${this.$t('booking.payment.processing')}`// Standard is Processing
+            this.$responseEventBus.$emit("processingMessage", message);
+            setTimeout(() => {this.handlePaymentIntent(payment)}, 1000);
+          }
+          if(status == "failed"){
+            let message = `${this.$t('booking.payment.failed')} ${pi_data.action.failure_message}`; // Internationalize the Message
+            this.$responseEventBus.$emit("failureMessage", message);
+          }
+          if(status == "succeeded"){
+            //ToDo: remove currency Symbol and use internationalisation on payment
+            this.$store.commit("getLastNBookEntries", 5);
+            this.$store.commit("getUsers");
+            this.$store.commit("selectUser", {});
+            let message = `${this.displayUserName(this.user)} ${this.$t('messages.success.paid')} ${this.newCredit}€`;
+            this.$responseEventBus.$emit("successMessage", message);
+          }
+        }).catch(() => {
+          this.$responseEventBus.$emit("failureMessage", status);
+          return;
+        })
     },
     weekdayIsMonday() {
       var day = new Date().getDay();
       if (day === 1) {
         return true;
       }
-      return false;
+      return true;
+      // Return False to only allow Payment on Mondays.
+      // Currently Payment is allowed on all Weekdays.
+      // return false;
     },
     loginAndPay() {
       this.$http
@@ -195,7 +226,7 @@ export default {
           this.submitPayment();
         })
         .catch(() => {
-          this.validationError = "Error. Wrong password?";
+          this.validationError = `${this.$t('messages.failure.error')}. ${this.$t('messages.failure.wrongPassword')}`;
         });
     },
     cancel() {
@@ -211,7 +242,7 @@ export default {
         this.userBookEntries = response.body;
       })
       .catch(() => {
-        this.$responseEventBus.$emit("failureMessage", "Couldn't get debts.");
+        this.$responseEventBus.$emit("failureMessage", this.$t('messages.failure.noDebts'));
       });
   },
 };

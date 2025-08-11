@@ -1,203 +1,153 @@
 <template>
   <div>
     <br />
-    <div class="columns">
-      <div class="column is-2">
-        <br />
-        <button
-          class="button is-link is-fullwidth is-outlined"
-          @click="getBookEntries"
-        >
-          Get Book Entries
-        </button>
-        <br />
-        <button
-          class="button is-link is-fullwidth"
-          @click="option = 'optLastN'"
-        >
-          Last N
-        </button>
-        <div class="box" v-if="option === 'optLastN'">
-          <br />
-          <div class="field">
-            <div class="control">
-              <input
-                class="input is-info"
-                type="number"
-                placeholder="N"
-                v-model="n"
-              />
-            </div>
+    <div class="tile is-ancestor is-narrow">
+      <div class="tile is-parent is-vertical">
+        <article class="tile is-child">
+          <div class="box" style="height: 21rem; overflow: auto">
+            <!-- Buttons -->
+            <columns class="columns">
+              <div class="column is-2">
+                <button class="button is-link" @click="getBookEntries">
+                  {{$t('admin.bookingSettings.getBookEntries')}}
+                </button>
+              </div>
+              <div class="column" align="left">
+                <button
+                  class="button is-link is-outlined"
+                  @click="option = 'optLastN'"
+                >
+                {{$t('admin.bookingSettings.lastN')}}
+                </button>
+                &nbsp;
+                <button
+                  class="button is-link is-outlined"
+                  @click="option = 'optFromUser'"
+                >
+                {{$t('admin.bookingSettings.ofUser')}}
+                </button>
+                &nbsp;
+                <button
+                  class="button is-link is-outlined"
+                  @click="option = 'optFromItem'"
+                >
+                {{$t('admin.bookingSettings.ofItem')}}
+                </button>
+                &nbsp;
+                <button
+                  class="button is-link is-outlined"
+                  @click="option = 'optUserPayments'"
+                >
+                {{$t('admin.bookingSettings.userPayments')}}
+                </button>
+              </div>
+              <div class="column is-1">
+                <button
+                  class="button is-warning is-outlined"
+                  v-on:click="downloadCsv"
+                >
+                {{$t('generic.download')}}
+                </button>
+              </div>
+              <div class="column">
+                &nbsp;
+                <button class="button is-danger is-outlined" @click="undoEntry">
+                  {{$t('admin.bookingSettings.undoEntry')}}
+                </button>
+                &nbsp;
+                <button
+                  class="button is-danger is-outlined"
+                  @click="deleteEntry"
+                >
+                {{$t('admin.bookingSettings.delEntry')}}
+                </button>
+              </div>
+            </columns>
+            <!-- Input Fields -->
+            <columns class="columns">
+              <div class="column is-2">
+                <div
+                  v-if="
+                    option === 'optFromUser' ||
+                    option === 'optFromItem' ||
+                    option === 'optUserPayments'
+                  "
+                >
+                  <div class="field">
+                    <div class="control">
+                      <input
+                        class="input is-info"
+                        type="date"
+                        v-bind:placeholder="$t('statistics.from')"
+                        v-model="from"
+                      />
+                    </div>
+                    <br />
+                    <div class="field">
+                      <div class="control">
+                        <input
+                          class="input is-info"
+                          type="date"
+                          v-bind:placeholder="$t('statistics.to')"
+                          v-model="to"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="column">
+                <div class="field" v-if="option === 'optLastN'" align="left">
+                  <div class="control">
+                    <input
+                      class="input is-info"
+                      type="number"
+                      v-bind:placeholder="$t('statistics.n')"
+                      v-model="n"
+                      style="width: 20em"
+                    />
+                  </div>
+                </div>
+                <div
+                  v-if="
+                    option === 'optFromUser' || option === 'optUserPayments'
+                  "
+                >
+                  <UserSearch />
+                </div>
+                <div v-if="option === 'optFromItem'">
+                  <ItemSearch :mode="'single'" />
+                </div>
+              </div>
+            </columns>
           </div>
-        </div>
-        <br />
-
-        <button
-          class="button is-link is-fullwidth"
-          @click="option = 'optFromUser'"
-        >
-          Of User
-        </button>
-        <div class="box" v-if="option === 'optFromUser'">
-          <br />
-          <UserSearch />
-          <p class="p has-text-grey-light">
-            Time span can be left empty or in format YYYY-MM-DD
-          </p>
-          <div class="columns">
-            <div class="column">
-              <div class="field">
-                <div class="control">
-                  <input
-                    class="input is-info"
-                    type="Text"
-                    placeholder="From"
-                    v-model="from"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="column">
-              <div class="field">
-                <div class="control">
-                  <input
-                    class="input is-info"
-                    type="Text"
-                    placeholder="To"
-                    v-model="to"
-                  />
-                </div>
-              </div>
-            </div>
+        </article>
+        <article class="tile is-child">
+          <div
+            class="box"
+            style="height: calc(100vh - 25.25rem); overflow: auto"
+          >
+            <BookEntryList
+              @selectEntry="selectEntry"
+              :bookEntries="bookEntries"
+            />
           </div>
-        </div>
-        <br />
-
-        <button
-          class="button is-link is-fullwidth"
-          @click="option = 'optFromItem'"
-        >
-          Of Item
-        </button>
-        <div class="box" v-if="option === 'optFromItem'">
-          <br />
-          <ItemSearch :mode="'single'" />
-          <p class="p has-text-grey-light">
-            Time span can be left empty or in format YYYY-MM-DD
-          </p>
-          <div class="columns">
-            <div class="column">
-              <div class="field">
-                <div class="control">
-                  <input
-                    class="input is-info"
-                    type="Text"
-                    placeholder="From"
-                    v-model="from"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="column">
-              <div class="field">
-                <div class="control">
-                  <input
-                    class="input is-info"
-                    type="Text"
-                    placeholder="To"
-                    v-model="to"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <br />
-
-        <button
-          class="button is-link is-fullwidth"
-          @click="option = 'optUserPayments'"
-        >
-          User Payments
-        </button>
-        <div class="box" v-if="option === 'optUserPayments'">
-          <br />
-          <UserSearch />
-          <p class="p has-text-grey-light">
-            User can be empty.
-            <br />Time span can be left empty or in format YYYY-MM-DD
-          </p>
-          <div class="columns">
-            <div class="column">
-              <div class="field">
-                <div class="control">
-                  <input
-                    class="input is-info"
-                    type="Text"
-                    placeholder="From"
-                    v-model="from"
-                  />
-                </div>
-              </div>
-            </div>
-            <div class="column">
-              <div class="field">
-                <div class="control">
-                  <input
-                    class="input is-info"
-                    type="Text"
-                    placeholder="To"
-                    v-model="to"
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <br />
-        <button
-          class="button is-link is-fullwidth is-outlined"
-          v-on:click="downloadCsv"
-        >
-          Download
-        </button>
-        <br />
-        <hr />
-        <br />
-        <button class="button is-danger is-outlined" @click="undoEntry">
-          Undo Entry
-        </button>
-        <p class="p has-text-grey-light">
-          Modifies user's balance accordingly and creates a new book entry.
-        </p>
-        <hr />
-        <button class="button is-danger is-outlined" @click="deleteEntry">
-          Delete Entry
-        </button>
-        <p class="p has-text-grey-light">
-          Use deliberately!
-          <br />The entry will be deleted and can not be restored.
-        </p>
-      </div>
-      <div class="column">
-        <div class="box" style="height: 88vh; overflow: auto">
-          <BookEntryList @selectEntry="selectEntry" :bookEntries="bookEntries" />
-        </div>
+        </article>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import UserSearch from "./UserSearch.vue";
+import ItemSearch from "./ItemSearch.vue";
 import BookEntryList from "./BookEntryList.vue";
-import UserSearch from "./../booking/UserSearch.vue";
-import ItemSearch from "./../booking/ItemSearch.vue";
 
 export default {
   components: {
-    BookEntryList,
     UserSearch,
     ItemSearch,
+    BookEntryList,
   },
   computed: {
     user() {
@@ -292,27 +242,33 @@ export default {
       this.selectedEntry = entry;
     },
     deleteEntry() {
-      if (Object.keys(this.selectedEntry).length !== 0) {
-        this.$http
-          .post("deleteBookEntry", this.selectedEntry)
-          .then(() => {
-            this.$store.commit("getLastNBookEntries", 5);
-            this.$responseEventBus.$emit(
-              "successMessage",
-              "Deleted book entry"
-            );
-          })
-          .catch(() => {
-            this.$responseEventBus.$emit(
-              "failureMessage",
-              "Couldn't delete book entry."
-            );
-          });
-      } else {
-        this.$responseEventBus.$emit(
-          "failureMessage",
-          "Select an book entry first!"
-        );
+      if (
+        confirm(
+          "The entry will be deleted and can not be restored. Prefer 'Undo Entry' for traceability. Use this button only in case of emergency.\n\nContinue?"
+        )
+      ) {
+        if (Object.keys(this.selectedEntry).length !== 0) {
+          this.$http
+            .post("deleteBookEntry", this.selectedEntry)
+            .then(() => {
+              this.$store.commit("getLastNBookEntries", 5);
+              this.$responseEventBus.$emit(
+                "successMessage",
+                "Deleted book entry"
+              );
+            })
+            .catch(() => {
+              this.$responseEventBus.$emit(
+                "failureMessage",
+                "Couldn't delete book entry."
+              );
+            });
+        } else {
+          this.$responseEventBus.$emit(
+            "failureMessage",
+            "Select an book entry first!"
+          );
+        }
       }
     },
     undoEntry() {
@@ -339,10 +295,11 @@ export default {
     downloadCsv() {
       let csv = "ID,Time Stamp,User,Item,Amount,Price,Comment,Payment Method\n";
       this.bookEntries.forEach((entry) => {
+        let user = this.getUserByID(entry.UserID);
         csv += entry.ID + ",";
         csv += this.printDateTime(entry.TimeStamp) + ",";
         csv +=
-          this.displayUserName(this.getUserByID(entry.UserID)) +
+          this.displayUserNameFull(user) +
           " (ID: " +
           entry.UserID +
           "),";

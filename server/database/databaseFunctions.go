@@ -49,9 +49,17 @@ func CreateDatabase() {
 		type VARCHAR(20),
 		size DECIMAL(6,2),
 		unit VARCHAR(10),
-		price DECIMAL(6,2)
+		price DECIMAL(6,2),
+		enabled BOOLEAN
 	);`
 	_, err = db.Exec(createItemsTable)
+	HandleDatabaseError(err)
+
+	// Altering because of a new Column
+	alterItemsTable := `
+	ALTER TABLE items ADD COLUMN IF NOT EXISTS enabled BOOLEAN NOT NULL DEFAULT '1' AFTER price
+	;`
+	_, err = db.Exec(alterItemsTable)
 	HandleDatabaseError(err)
 
 	createFavoriteItemsTable := `
@@ -100,6 +108,20 @@ func CreateDatabase() {
 		HandleDatabaseError(err)
 	}
 
+	createSettingsTable := `
+	CREATE TABLE IF NOT EXISTS settings(
+		name VARCHAR(50) NOT NULL PRIMARY KEY,
+		value VARCHAR(254) NOT NULL
+	);`
+	_, err = db.Exec(createSettingsTable)
+	HandleDatabaseError(err)
+
+	if !settingExists(db, "StripeAPIKey") {
+		_, err = db.Exec("INSERT INTO settings VALUES('StripeAPIKey', '');")
+		HandleDatabaseError(err)
+	}
+	// INSERT INTO `settings` (`name`, `value`) VALUES ('EMail-Host', 'mail.gmx.net');
+
 	var version string
 	db.QueryRow("SELECT VERSION()").Scan(&version)
 	newLoginInfo := fmt.Sprintf("%s:***@tcp(%s:%s)/%s", os.Getenv("AVHBS_DB_USER"), os.Getenv("AVHBS_DB_IP"), os.Getenv("AVHBS_DB_PORT"), os.Getenv("AVHBS_DB_NAME"))
@@ -119,6 +141,22 @@ func passwordExists(db *sql.DB) bool {
 		HandleDatabaseError(err)
 	}
 	if len(pws) == 1 {
+		return true
+	}
+	return false
+}
+
+func settingExists(db *sql.DB, name string) bool {
+	query := fmt.Sprintf("SELECT * FROM settings WHERE name = '%s';", name)
+	rows, err := db.Query(query)
+	HandleDatabaseError(err)
+	fmt.Println(rows)
+	var set []string
+	if rows.Next() {
+		set = append(set, "exists")
+		HandleDatabaseError(err)
+	}
+	if len(set) == 1 {
 		return true
 	}
 	return false

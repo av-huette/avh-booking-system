@@ -5,7 +5,7 @@
         <input
           class="input"
           type="password"
-          placeholder="Old password"
+          v-bind:placeholder="$t('admin.password.old')"
           v-model="oldPassword"
         />
       </div>
@@ -15,7 +15,7 @@
         <input
           class="input"
           type="password"
-          placeholder="New password"
+          v-bind:placeholder="$t('admin.password.new')"
           v-model="newPassword1"
         />
       </div>
@@ -25,7 +25,7 @@
         <input
           class="input"
           type="password"
-          placeholder="Confirm new password"
+          v-bind:placeholder="$t('admin.password.confirm')"
           v-model="newPassword2"
         />
       </div>
@@ -40,7 +40,7 @@
         </div>
       </div>
     </article>
-    <button class="button is-link" @click="changePassword">Change</button>
+    <button class="button is-link" @click="changePassword">{{$t('generic.change')}}</button>
   </div>
 </template>
 
@@ -60,13 +60,17 @@ export default {
         this.$http
           .post("changeAdminPassword", [this.oldPassword, this.newPassword1])
           .then(() => {
-            this.$responseEventBus.$emit("successMessage", "Changed password.");
+            this.$responseEventBus.$emit(
+              "successMessage",
+              this.$t('messages.success.passwordChangedAdmin')
+            );
           })
           .catch((response) => {
+            //ToDo: Internationalize this failure Message
             this.$responseEventBus.$emit("failureMessage", response.body);
           });
       } else {
-        this.validationError = "New passwords do not match!";
+        this.validationError = this.$t('messages.failure.passwordNoMatch');
       }
     },
   },

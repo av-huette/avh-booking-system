@@ -1,19 +1,15 @@
 <template>
   <div>
-    <div class="columns">
-      <div class="column">
-        <UserSearch />
-      </div>
-      <div class="column is-2">
-        <button class="button is-link" @click="showAddUserForm = true">
-          Add User
-        </button>
-      </div>
-      <AddUserForm v-if="showAddUserForm" @close="showAddUserForm = false" />
-    </div>
-    <hr />
-    <UserList />
+  <div class="columns search-input-area">
+      <UserSearch />
+      <button class="button is-link" @click="showAddUserForm = true">
+        {{$t('booking.addUser.title')}}
+      </button>
+    <AddUserForm v-if="showAddUserForm" @close="showAddUserForm = false" />
   </div>
+  <!-- <hr /> -->
+  <UserList />
+</div>
 </template>
 
 <script>

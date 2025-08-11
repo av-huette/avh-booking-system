@@ -2,17 +2,23 @@
   <div>
     <!-- Search bar -->
     <div class="field">
-      <div class="control has-icons-left">
+      <div class="control has-icons-left has-icons-right">
         <input
           class="input"
           type="text"
-          placeholder="Search items"
+          v-bind:placeholder="$t('booking.search.items')"
           v-model="search"
           v-on:keyup="searchItems"
         />
         <span class="icon is-small is-left">
           <font-awesome-icon icon="search" />
         </span>
+        <span v-if="search != ''"
+              class="icon is-small is-right"
+              @click="clearSearch"
+              >
+              <font-awesome-icon icon="times" />
+            </span>
       </div>
     </div>
     <!-- Search results -->
@@ -56,9 +62,12 @@ export default {
     searchItems() {
       if (this.search != "") {
         var tmpSearch = this.search.toLowerCase();
-        this.searchResults = this.items.filter((item) =>
-          item["Name"].toLowerCase().includes(tmpSearch)
-        );
+        this.searchResults = this.items.filter((item) => {
+          if(item["Name"].toLowerCase().includes(tmpSearch) && item["Enabled"] == 1){
+            return true
+          }
+          return false
+        });
       } else {
         this.searchResults = [];
       }
@@ -78,6 +87,10 @@ export default {
         return false;
       }
       return this.selectedItems.includes(item);
+    },
+    clearSearch(){
+      this.search = "";
+      this.searchItems();
     },
   },
 };

@@ -17,15 +17,7 @@ export default {
   components: {
     NavBar,
     Notification,
-    FeedbackButton,
-  },
+    FeedbackButton
+  }
 };
 </script>
-
-
-<style>
-#app {
-  text-align: center;
-  color: #000000;
-}
-</style>

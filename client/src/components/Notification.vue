@@ -11,14 +11,28 @@
             <header class="card-header">
               <div class="card-header-title">
                 <p v-if="messageType == 'success'" class="title is-4">
-                  Success
+                  {{ $t("notification.success") }}
                 </p>
-                <p v-else class="title is-4">Error</p>
+                <p v-if="messageType == 'failure'" class="title is-4">
+                  {{ $t("notification.error") }}
+                </p>
+                <p v-if="messageType == 'paymentProcessing'" class="title is-4">
+                  {{ $t("notification.processing") }}
+                </p>
               </div>
               <button
+                v-if="this.messageType != 'paymentProcessing'"
                 class="button is-rounded"
                 v-bind:class="textColor"
                 v-on:click="close()"
+              >
+                <font-awesome-icon icon="times" />
+              </button>
+              <button
+              v-if="this.messageType == 'paymentProcessing'"
+                class="button is-rounded"
+                v-bind:class="textColor"
+                v-on:click="cancelAction()"
               >
                 <font-awesome-icon icon="times" />
               </button>
@@ -32,7 +46,17 @@
                   icon="check-circle"
                   size="3x"
                 />
-                <font-awesome-icon v-else icon="sad-tear" size="3x" />
+                <font-awesome-icon
+                  v-if="messageType == 'failure'"
+                  icon="sad-tear"
+                  size="3x"
+                />
+                <font-awesome-icon
+                  v-if="messageType == 'paymentProcessing'"
+                  icon="spinner"
+                  size="3x"
+                  class="spinning"
+                />
               </div>
             </div>
           </div>
@@ -41,6 +65,21 @@
     </transition>
   </div>
 </template>
+
+<style scoped>
+.spinning{
+  animation: spin 1000ms ease-in-out infinite forwards;
+}
+@keyframes spin {
+  from{
+    transform: rotate(0deg);
+  }
+  to{
+    transform: rotate(359deg);
+  }
+}
+
+</style>
 
 <script>
 import Vue from "vue";
@@ -58,6 +97,15 @@ export default {
       this.textColor = "";
       this.backgroundColor = "";
       this.$emit("close");
+    },
+    cancelAction() {
+      this.content = "";
+      this.textColor = "";
+      this.backgroundColor = "";
+      this.$emit("close");
+      if(this.messageType == "paymentProcessing"){
+        this.$http.post("cancelReaderAction", localStorage.getItem("StripeCardReader"))
+      }
     },
     closeModal() {
       if (this.messageType == "success") {
@@ -78,10 +126,18 @@ export default {
       this.textColor = "is-danger";
       this.backgroundColor = "has-background-danger";
     },
+    processingMessage(message) {
+      this.messageType = "paymentProcessing";
+      this.content = message;
+      this.textColor = "is-success";
+      this.backgroundColor = "has-background-info";
+    }
   },
   created() {
     this.$responseEventBus.$on("successMessage", this.successMessage);
     this.$responseEventBus.$on("failureMessage", this.failureMessage);
+    this.$responseEventBus.$on("processingMessage", this.processingMessage);
+    this.$responseEventBus.$on("close", this.close);
   },
 };
 

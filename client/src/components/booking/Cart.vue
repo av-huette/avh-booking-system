@@ -3,18 +3,18 @@
     <table class="table is-fullwidth is-hoverable">
       <thead>
         <tr>
-          <th>Item</th>
-          <th>Price</th>
-          <th>Amount</th>
+          <th>{{ $t("item.item") }}</th>
+          <th>{{ $t("item.price") }}</th>
+          <th>{{ $t("cart.amount") }}</th>
         </tr>
       </thead>
       <tfoot>
         <tr>
           <th></th>
-          <th>{{ sum }} €</th>
+          <th>{{ $n(sum, "currency", "de-DE") }}</th>
           <th>
             <button class="button is-success" @click="checkout">
-              Checkout
+              {{ $t("cart.checkout") }}
             </button>
           </th>
         </tr>
@@ -24,7 +24,7 @@
         <tr v-for="i in cart" :key="i">
           <td v-if="i.item.Type === 'food'">{{ i.item.Name }}</td>
           <td v-else>{{ i.item.Name }} {{ i.item.Size }}{{ i.item.Unit }}</td>
-          <td>{{ i.item.Price }} €</td>
+          <td>{{ $n(i.item.Price, "currency", "de-DE")}}</td>
           <td>
             <input
               class="input is-small has-text-black"
@@ -138,13 +138,11 @@ export default {
       await this.$http
         .post("checkout", packedCart)
         .then(() => {
-          var message = "".concat(
-            "Checkout from ",
-            this.displayUserName(this.user)
-          );
+          let message = `${this.$t("messages.success.checkoutFrom")}: ${this.displayUserName(this.user)}`;
           this.$responseEventBus.$emit("successMessage", message);
         })
         .catch((response) => {
+          //ToDo: Failure Message internationalisation
           this.$responseEventBus.$emit("failureMessage", response.data);
         });
       await this.emptyCart();

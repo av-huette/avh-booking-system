@@ -2,11 +2,15 @@
   "name": "avhbs-booking-system-client",
   "version": "0.1.0",
   "private": true,
+  "description": "## Project setup ``` npm install ```",
+  "author": "https://github.com/maseiler",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "build": "vue-cli-service build --openssl-legacy-provider",
+    "lint": "vue-cli-service lint",
+    "i18n:report": "vue-cli-service i18n:report --src \"./src/**/*.?(js|vue)\" --locales \"./src/locales/**/*.json\""
   },
+  "main": "babel.config.js",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.36",
     "@fortawesome/free-solid-svg-icons": "^5.15.4",
@@ -14,23 +18,29 @@
     "bulma": "^0.9.3",
     "chart.js": "^2.9.4",
     "express": "^4.17.1",
-    "node-sass": "^6.0.1",
+    "register-service-worker": "^1.7.2",
+    "sass": "^1.56.1",
     "sass-loader": "^10",
     "underscore": "^1.13.1",
     "vue": "^2.6.14",
     "vue-chartjs": "^3.5.1",
     "vue-cli": "^2.9.6",
+    "vue-i18n": "^8.26.3",
+    "vue-i18n-bridge": "^9.2.0-beta.10",
     "vue-resource": "^1.5.3",
     "vue-router": "^3.5.3",
     "vuex": "^3.6.2"
   },
   "devDependencies": {
+    "@intlify/vue-i18n-loader": "^3.2.0",
     "@vue/cli-plugin-babel": "^4.5.15",
     "@vue/cli-plugin-eslint": "^4.5.15",
+    "@vue/cli-plugin-pwa": "~4.5.17",
     "@vue/cli-service": "^4.5.15",
     "babel-eslint": "^10.1.0",
     "eslint": "^6.8.0",
     "eslint-plugin-vue": "^8.1.1",
+    "vue-cli-plugin-i18n": "~2.3.2",
     "vue-template-compiler": "^2.6.14"
   },
   "eslintConfig": {
@@ -60,9 +70,6 @@
     "last 2 versions",
     "not ie <= 8"
   ],
-  "description": "## Project setup ``` npm install ```",
-  "main": "babel.config.js",
-  "author": "https://github.com/maseiler",
-  "license": "ISC",
-  "keywords": []
+  "keywords": [],
+  "license": "ISC"
 }

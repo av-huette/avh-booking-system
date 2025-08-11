@@ -26,13 +26,13 @@ const helper = {
       return "???";
     } else {
       if (user.FirstName !== "") {
-        name = name.concat(user.FirstName);
+        name = name.concat(decodeURIComponent(user.FirstName));
       }
       if (user.BierName !== "") {
-        name = name.concat(" (", user.BierName, ")")
+        name = name.concat(" (", decodeURIComponent(user.BierName), ")")
       }
       if (user.LastName !== "") {
-        name = name.concat(" ", user.LastName)
+        name = name.concat(" ", decodeURIComponent(user.LastName))
       }
     }
     return name;

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="item-list">
     <columns
       class="columns"
       v-for="(items, key) in itemDict"
@@ -23,6 +23,7 @@
           </button>
         </buttons>
       </columns>
+  </div>
 </template>
 
 <script>

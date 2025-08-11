@@ -3,11 +3,12 @@
     <table class="table is-hoverable is-striped">
       <thead>
         <tr>
-          <th>ID</th>
-          <th>Name</th>
-          <th style="text-align: right">Size</th>
-          <th>Unit</th>
-          <th style="text-align: right">Price</th>
+          <th>{{$t('generic.id')}}</th>
+          <th>{{$t('item.name')}}</th>
+          <th style="text-align: right">{{$t('item.size')}}</th>
+          <th>{{$t('item.unit')}}</th>
+          <th style="text-align: right">{{$t('item.price')}}</th>
+          <th>{{$t('item.enabled')}}</th>
         </tr>
       </thead>
       <tbody>
@@ -21,7 +22,11 @@
           <td>{{ item.Name }}</td>
           <td style="text-align: right">{{ item.Size }}</td>
           <td>{{ item.Unit }}</td>
-          <td style="text-align: right">{{ item.Price }} €</td>
+          <td style="text-align: right">{{ $n(item.Price, "currency", "de-DE") }}</td>
+          <td>
+            <font-awesome-icon v-if="item.Enabled" icon="check-circle"/>
+            <font-awesome-icon v-if="!item.Enabled" icon="times"/>
+          </td>
         </tr>
       </tbody>
     </table>

@@ -1,13 +1,3 @@
-<script setup lang="ts">
-  import { ref } from 'vue';
-  let burgerActive = ref(false);
-
-  function toggleBurger(){
-    burgerActive.value = !burgerActive.value;
-  }
-</script>
-
-
 <template>
 <nav class="navbar" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
@@ -25,13 +15,15 @@
 
   <div class="navbar-menu" :class="{'is-active': burgerActive}">
     <div class="navbar-start">
-      <router-link class="navbar-item" to="/">
+      <router-link class="navbar-item" to="/" @click="burgerActive = false">
         Home
       </router-link>
 
-      <router-link class="navbar-item" to="/test">
-        Test
+      <router-link class="navbar-item" to="/booking" @click="burgerActive = false">
+        Booking
       </router-link>
+
+      <a class="navbar-item">Orders</a>
 
       <a class="navbar-item">Statistics</a>
 
@@ -39,10 +31,10 @@
         <a class="navbar-link">Settings</a>
 
         <div class="navbar-dropdown">
-          <a class="navbar-item">Wareneinstellungen</a>
-          <a class="navbar-item">Benutzereinstellungen</a>
-          <a class="navbar-item">Zahlungseinstellungen</a>
-          <a class="navbar-item">Systemeinstellungen</a>
+          <a class="navbar-item" @click="burgerActive = false">Wareneinstellungen</a>
+          <a class="navbar-item" @click="burgerActive = false">Benutzereinstellungen</a>
+          <a class="navbar-item" @click="burgerActive = false">Zahlungseinstellungen</a>
+          <a class="navbar-item" @click="burgerActive = false">Systemeinstellungen</a>
         </div>
       </div>
     </div>
@@ -59,3 +51,18 @@
   </div>
 </nav>
 </template>
+
+<script lang="ts">
+  export default {
+    data() {
+      return {
+        burgerActive: false as Boolean
+      }
+    },
+    methods: {
+      toggleBurger(){
+        this.burgerActive = !this.burgerActive;
+      }
+    }
+  }
+</script>

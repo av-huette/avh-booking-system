@@ -1,32 +1,3 @@
-<script lang="ts">
-import {
-  huetteConfetti
-} from '../composables/confetti.ts';
-import { getTestCategorys, type Category } from '../composables/category.ts';
-
-export default {
-  data() {
-    return{
-      count: 0,
-      categorys: [] as Category[]
-    }
-  },
-  props: {
-    msg: String
-  },
-  methods:{
-    listCategorys(){
-      this.categorys = getTestCategorys();
-      console.log(getTestCategorys());
-    },
-    huetteConfetti(){
-      huetteConfetti();
-    }
-  },
-}
-
-</script>
-
 <template>
   <h1>{{ msg }}</h1>
   <h2><icon :icon="['fas', 'user']"/> Icon</h2>
@@ -60,8 +31,42 @@ export default {
     >.
   </p>
   <p class="read-the-docs">Click on the Vite and Vue logos to learn more</p>
+
+  <button class="button" v-for="account in account$.accounts"> {{ account.firstName }} </button>
+
 </template>
 
-<style scoped>
 
-</style>
+<script lang="ts">
+import {
+  huetteConfetti
+} from '../composables/confetti.ts';
+import { getTestCategorys, type Category } from '../composables/category.ts';
+import { useAccountStore } from '../store/AccountStore.ts';
+
+export default {
+  data() {
+    return{
+      count: 0,
+      categorys: [] as Category[],
+      account$: useAccountStore()
+    }
+  },
+  props: {
+    msg: String
+  },
+  methods:{
+    listCategorys(){
+      this.categorys = getTestCategorys();
+      console.log(getTestCategorys());
+    },
+    huetteConfetti(){
+      huetteConfetti();
+    }
+  },
+  mounted() {
+    console.log(import.meta.env.DEV);
+  },
+}
+
+</script>

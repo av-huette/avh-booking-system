@@ -28,8 +28,8 @@ export class Account implements Account{
   }
 
   public getShortName(): string{
-    if(this.nickName !== null && this.nickName !== undefined && this.nickName.length >= 0){
-      return this.nickName;
+    if(this.hasNickname()){
+      return `${this.nickName}`;
     }
     return `${this.firstName} ${this.lastName[0]}.`;
   }
@@ -41,6 +41,13 @@ export class Account implements Account{
     return `${this.firstName} ${this.lastName}`;
   }
 
+  private hasNickname(): boolean{
+    return (
+      this.nickName !== null &&
+      this.nickName !== undefined &&
+      this.nickName !== ""
+    );
+  }
   
 }
 

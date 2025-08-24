@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"github.com/av-huette/avh-booking-system/config"
 	"github.com/av-huette/avh-booking-system/internal/database"
 	"github.com/av-huette/avh-booking-system/internal/logger"
@@ -10,53 +9,42 @@ import (
 	"os"
 )
 
+type dbModels struct {
+	account       *models.AccountModel
+	accountOption *models.AccountOptionModel
+	category      *models.CategoryModel
+	unit          *models.UnitModel
+	productGroup  *models.ProductGroupModel
+	product       *models.ProductModel
+}
+
 type application struct {
-	conf           *config.AppConfig
-	log            *slog.Logger
-	db             *database.DB
-	account        *models.AccountModel
-	accountOptions *models.AccountOptionsModel
-	categories     *models.CategoriesModel
+	conf     *config.AppConfig
+	log      *slog.Logger
+	db       *database.DB
+	dbModels dbModels
 }
 
 func main() {
-	dbPool, err := database.New()
+	dbPool, err := database.NewFromConfig()
 	if err != nil {
 		panic(err)
 	}
 	defer dbPool.Close()
 
 	app := &application{
-		conf:           config.LoadConfig(),
-		log:            logger.CreateLogger(),
-		db:             dbPool,
-		account:        &models.AccountModel{DB: dbPool},
-		accountOptions: &models.AccountOptionsModel{DB: dbPool},
-		categories:     &models.CategoriesModel{DB: dbPool},
+		conf: config.LoadConfig(),
+		log:  logger.CreateLogger(),
+		db:   dbPool,
+		dbModels: dbModels{
+			&models.AccountModel{DB: dbPool},
+			&models.AccountOptionModel{DB: dbPool},
+			&models.CategoryModel{DB: dbPool},
+			&models.UnitModel{DB: dbPool},
+			&models.ProductGroupModel{DB: dbPool},
+			&models.ProductModel{DB: dbPool},
+		},
 	}
-
-	err = app.account.Insert("Dummy")
-	if err != nil {
-		panic(err.Error())
-	}
-
-	categories, err := app.categories.Get(1)
-	if err != nil {
-		panic(err.Error())
-	}
-	app.log.Debug(fmt.Sprintf("category: %#v", categories))
-
-	account, err := app.account.Get(1)
-	if err != nil {
-		panic(err.Error())
-	}
-	app.log.Debug(fmt.Sprintf("account: %#v", account))
-
-	accountOptions, err := app.accountOptions.Get(1, "opt1")
-	if err != nil {
-		panic(err.Error())
-	}
-	app.log.Debug(fmt.Sprintf("accountOption: %#v", accountOptions))
 
 	err = app.serveHTTP()
 	if err != nil {

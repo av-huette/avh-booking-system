@@ -36,7 +36,7 @@
 
           <Button
             v-if="product.constructor.name == 'ProductGroup'"
-            @click="selectedGroup = product"
+            @click="onGroupClick(product)"
             title="select product group">
               {{ product.name }}
               <icon style="margin-left:.5em" :icon="['fas', 'list']" />
@@ -187,6 +187,14 @@ export default {
     }
   },
   methods: {
+    onGroupClick(group: ProductGroup){
+      const groupProducts = this.processedProducts.groupProductsMap[group.id ?? -1] ?? [];
+      if (groupProducts.length === 1) {
+        this.cart$.addToCart(groupProducts[0]);
+        return;
+      }
+      this.selectedGroup = group;
+    },
     onResize(){
       let y = window.innerHeight;
       let _y = this.resizeElement.getBoundingClientRect().top;

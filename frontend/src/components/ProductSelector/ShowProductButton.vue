@@ -116,6 +116,8 @@ import { useProductStore } from '../../store/ProductStore';
 import type { PropType } from 'vue';
 import { useResizeObserver } from '@vueuse/core';
 import { useCartStore } from '../../store/CartStore';
+import { useAccountStore } from '../../store/AccountStore';
+import { useProductVisibilityStore } from '../../store/ProductVisibilityStore';
 import Button from '../../composables/elements/Button.vue';
 
 export default {
@@ -125,6 +127,8 @@ export default {
       height: 0,
       resizeElement: {} as HTMLElement,
       cart$: useCartStore(),
+      account$: useAccountStore(),
+      visibility$: useProductVisibilityStore(),
       selectedGroup: null as ProductGroup | null,
     }
   },
@@ -189,8 +193,13 @@ export default {
   methods: {
     onGroupClick(group: ProductGroup){
       const groupProducts = this.processedProducts.groupProductsMap[group.id ?? -1] ?? [];
-      if (groupProducts.length === 1) {
-        this.cart$.addToCart(groupProducts[0]);
+      const accounts = this.account$.selected;
+      // Every account sees exactly one product of the group -> add the visible product per account
+      const productPerAccount = accounts.map((acc) => {
+        return groupProducts.filter((prod) => this.visibility$.categoryIsVisible(acc.category ?? -1, prod.id ?? -1));
+      });
+      if (productPerAccount.every((prods) => prods.length === 1)) {
+        accounts.forEach((acc, i) => this.cart$.addToCart(productPerAccount[i][0], [acc]));
         return;
       }
       this.selectedGroup = group;

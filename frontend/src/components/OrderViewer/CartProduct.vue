@@ -6,14 +6,20 @@
           <button class="button" @click="cart$.removeFromCart(content.product)"><icon :icon="['fas', 'trash']" /></button>
         </p>
         <p class="control has-icons-left has-icons-right">
-          <input v-model="content.quantity" type="number" class="input"></input>
-          <span class="icon is-left" @click="reduceQuant()"><icon :icon="['fas', 'circle-minus']" /></span>
-          <span class="icon is-right" @click="content.quantity ++"><icon :icon="['fas', 'circle-plus']" /></span>
+          <input :value="content.quantity" @change="setQuant($event)" type="number" class="input"></input>
+          <span class="icon is-left" @click="cart$.changeQuantity(content.product, -1)"><icon :icon="['fas', 'circle-minus']" /></span>
+          <span class="icon is-right" @click="cart$.changeQuantity(content.product, 1)"><icon :icon="['fas', 'circle-plus']" /></span>
         </p>
       </div>
       <div class="field input" v-if="!allowEdit">{{ content.quantity }}</div>
     </td>
-    <td class="cell productName"><span>{{ content.product.name }} ({{ content.product.size }} {{ content.product.getUnit().name }})</span></td>
+    <td class="cell productName">
+      <span>{{ content.product.name }} ({{ content.product.size }} {{ content.product.getUnit().name }})</span>
+      <span v-for="category in content.categories" class="tag category-tag">
+        <span class="icon"><icon :icon="category.icon" /></span>
+        <span>{{ category.title }}</span>
+      </span>
+    </td>
     <td class="cell productTax has-text-right"><span>{{ content.tax }}%</span></td>
     <td class="cell productPrice has-text-right"><span>{{ $n(content.price / 100, 'currency') }}</span></td>
     <td class="cell productAmount has-text-right"><span>{{ $n(content.price * content.quantity / 100, 'currency') }}</span></td>
@@ -31,6 +37,10 @@
   td{
     vertical-align: middle;
   }
+}
+
+.category-tag{
+  margin-left:.5em;
 }
 
 .productQuantity{
@@ -57,25 +67,24 @@
 </style>
 
 <script lang="ts">
-import { type CartContent } from '../../composables/cartContent';
+import { type CartRow } from '../../composables/cartContent';
 import { useCartStore } from '../../store/CartStore';
+import type { PropType } from 'vue';
 
 export default{
   data() {
    return {
     cart$: useCartStore()
-   }   
+   }
   },
   props:{
-    content: {} as CartContent,
+    content: { type: Object as PropType<CartRow>, required: true },
     allowEdit: Boolean,
   },
   methods: {
-    reduceQuant(){
-      this.content.quantity --;
-      if(this.content.quantity == 0){
-        this.cart$.removeFromCart(this.content.product);
-      }
+    setQuant(e: Event){
+      const quantity = parseInt((e.target as HTMLInputElement).value);
+      this.cart$.setQuantity(this.content.product, isNaN(quantity) ? 0 : quantity);
     },
   }
 }

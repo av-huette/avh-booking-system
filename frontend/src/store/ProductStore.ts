@@ -21,19 +21,39 @@ export const useProductStore = defineStore('product', {
                 return prod.category == categoryId
             });
 
-            const visibleProducts = currentCategoryProducts.filter((prod) => {
-                if (useAccountStore().selected.length == 0) {return true}
+            let visibleProducts = currentCategoryProducts;
+            if (useAccountStore().selected.length > 0) {
                 // ToDo Show all Products for Accounts that have the corresponding Flag in their Account Options
-                let visibilities = useProductVisibilityStore().byProductId(prod.id)
-                let retVal = false;
-                visibilities.forEach((visi) => {
-                    if (selectedAccountCategorys.includes(visi.categoryId)) { 
-                        retVal = true;
-                        return
-                    } 
-                })
-                return retVal;
-            })
+                const visibility$ = useProductVisibilityStore();
+                const isVisibleForAll = (prod: Product) => selectedAccountCategorys.every((cat) => visibility$.categoryIsVisible(cat, prod.id ?? -1));
+                const isVisibleForAny = (prod: Product) => selectedAccountCategorys.some((cat) => visibility$.categoryIsVisible(cat, prod.id ?? -1));
+
+                // Products without group: only the intersection of all selected account categories
+                const ungrouped = currentCategoryProducts.filter((prod) => prod.productGroup == 0 && isVisibleForAll(prod));
+
+                // Products with group: intersection if not empty, otherwise distribute if every category sees exactly one product
+                const groupMap: {[groupId: number]: Product[]} = {};
+                currentCategoryProducts.forEach((prod) => {
+                    if (prod.productGroup == 0 || !isVisibleForAny(prod)) {return}
+                    (groupMap[prod.productGroup] ??= []).push(prod);
+                });
+                const grouped: Product[] = [];
+                Object.values(groupMap).forEach((groupProducts) => {
+                    const intersection = groupProducts.filter(isVisibleForAll);
+                    if (intersection.length > 0) {
+                        grouped.push(...intersection);
+                        return;
+                    }
+                    const oneProductPerCategory = selectedAccountCategorys.every((cat) => {
+                        return groupProducts.filter((prod) => visibility$.categoryIsVisible(cat, prod.id ?? -1)).length == 1;
+                    });
+                    if (oneProductPerCategory) {
+                        grouped.push(...groupProducts);
+                    }
+                });
+
+                visibleProducts = [...ungrouped, ...grouped];
+            }
 
             // if(all) {
             //     // Gib alle Produkte aus, wenn die all-Flag gesetzt ist

@@ -16,8 +16,8 @@
     <div :class="showOrderDetails ? 'showDetails' : ''" class="message-body fixed-grid has-3-cols">
       <AccountTagList :accounts="accounts" :allowEdit="allowEdit" @unselect="(a) => unselectAccount(a)"></AccountTagList>
 
-      <CartList  :allowEdit="allowEdit" :contents="contents" />
-      <CartSums :totals="totals" v-if="accounts.length > 0"/>
+      <CartList  :allowEdit="allowEdit" :contents="contents" :accounts="accounts" />
+      <CartSums :totals="totals" :categoryTotals="categoryTotals" v-if="accounts.length > 0"/>
       <CartControl v-if="allowEdit && accounts.length > 0" @cancelOrder="cancelOrder"/>
     </div>
     <div :class="showOrderDetails ? 'showDetails' : ''" class="order-ripped-teaser"> </div>
@@ -128,10 +128,12 @@
 import type { BookingTotals } from '../../composables/booking';
 import { Account } from '../../composables/account.ts';
 import CartContent from '../../composables/cartContent.ts';
+import type { CategoryTotals } from '../../store/CartStore';
 import { computed } from 'vue';
 
 const props = defineProps<{
   totals: BookingTotals,
+  categoryTotals?: CategoryTotals[],
   accounts: Account[],
   contents: CartContent[],
   allowEdit: Boolean,
@@ -190,6 +192,7 @@ export default {
   methods: {
     unselectAccount(account: Account){
       this.account$.selectSubstract(account);
+      this.cart$.removeAccount(account);
     },
     toggleOrderDetails(){
       this.showOrderDetails = !this.showOrderDetails;

@@ -4,7 +4,7 @@
       <div style="position:absolute; z-index:-50; left:50%; transform: translateX(-50%); opacity:.6;">
         <img v-if="companyLogo != null" :src="companyLogo"></img>
       </div>
-    <OrderViewer :allowEdit="true" :accounts="account$.selected" :totals="cart$.getTotals" :contents="cart$.cartContents"/>
+    <OrderViewer :allowEdit="true" :accounts="account$.selected" :totals="cart$.getTotals" :categoryTotals="cart$.totalsByCategory" :contents="cart$.cartContents"/>
 
     <!-- ToDo? Do this as a own component? -->
     <!-- Only visible on mobile -->

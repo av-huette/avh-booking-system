@@ -1,14 +1,19 @@
 <script lang="ts" setup>
 import { useAccountStore } from '../../store/AccountStore';
-import CartContent from '../../composables/cartContent.ts';
+import { type CartContent, aggregateCartContents } from '../../composables/cartContent.ts';
+import type { Account } from '../../composables/account.ts';
 import CartProduct from './CartProduct.vue';
+import { computed } from 'vue';
 
 const account$ = useAccountStore();
 
 const props = defineProps<{
   contents: CartContent[],
+  accounts: Account[],
   allowEdit: Boolean
 }>()
+
+const rows = computed(() => aggregateCartContents(props.contents, props.accounts));
 
 </script>
 
@@ -25,7 +30,7 @@ const props = defineProps<{
         <th class="has-text-right">{{ $t('transaction.amount') }}</th>
       </tr></thead>
       <tbody>
-        <CartProduct  :allowEdit="allowEdit" v-for="content in contents" :content="content"/>
+        <CartProduct  :allowEdit="allowEdit" v-for="row in rows" :key="row.product.id" :content="row"/>
       </tbody>
     </table>
   </div>  

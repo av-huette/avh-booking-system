@@ -73,7 +73,12 @@ export default{
   },
   methods: {
     checkoutOrder(){
-      this.booking$.addBooking(this.cart$.cartContents, this.account$.selected, 0)
+      // One booking per account, containing only its own cart contents
+      this.account$.selected.forEach((account) => {
+        const contents = this.cart$.cartContents.filter((cont) => cont.account.id == account.id);
+        if (contents.length == 0) { return }
+        this.booking$.addBooking(contents, account, 0)
+      })
       this.$emit('cancelOrder')
       // ToDo: this
     }

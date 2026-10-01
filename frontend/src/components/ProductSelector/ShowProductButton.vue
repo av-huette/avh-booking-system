@@ -3,14 +3,22 @@
 
     <div v-if="selectedGroup" class="group-overlay">
       <div class="group-overlay-header">
-        <button class="button is-small" @click="selectedGroup = null">
+        <button class="button is-small" @click="groupStack.pop()">
           <span class="icon is-small"><icon :icon="['fas', 'arrow-left']" /></span>
           <span>Zurück</span>
         </button>
-        <span class="group-overlay-title">{{ selectedGroup.name }}</span>
-        <button class="delete is-medium" @click="selectedGroup = null" />
+        <span class="group-overlay-title">{{ groupStack.map(g => g.name).join(' › ') }}</span>
+        <button class="delete is-medium" @click="groupStack = []" />
       </div>
       <div class="is-flex is-flex-direction-row is-flex-wrap-wrap is-align-content-flex-start is-gap-1">
+        <Button
+          v-for="group in childGroupsForSelectedGroup"
+          :key="'group-' + group.id"
+          @click="onGroupClick(group)"
+          title="select product group">
+            {{ group.name }}
+            <icon style="margin-left:.5em" :icon="['fas', 'list']" />
+        </Button>
         <Button
           v-for="product in productsForSelectedGroup"
           :key="product.id"
@@ -118,6 +126,7 @@ import { useResizeObserver } from '@vueuse/core';
 import { useCartStore } from '../../store/CartStore';
 import { useAccountStore } from '../../store/AccountStore';
 import { useProductVisibilityStore } from '../../store/ProductVisibilityStore';
+import { useProductGroupStore } from '../../store/ProductGroupStore.ts';
 import Button from '../../composables/elements/Button.vue';
 
 export default {
@@ -129,7 +138,8 @@ export default {
       cart$: useCartStore(),
       account$: useAccountStore(),
       visibility$: useProductVisibilityStore(),
-      selectedGroup: null as ProductGroup | null,
+      productGroup$: useProductGroupStore(),
+      groupStack: [] as ProductGroup[],
     }
   },
   props: {
@@ -144,21 +154,34 @@ export default {
     processedProducts() {
       const dict: {[key: string]: (Product | ProductGroup)[]} = {};
       const groupProductsMap: {[key: number]: Product[]} = {};
+      const childGroupsMap: {[key: number]: ProductGroup[]} = {};
 
       this.products?.forEach(prod => {
-        if (prod.productGroup != 0) {
+        // Chain from the top-level group down to the product's own group
+        const path = prod.productGroup != 0 ? this.productGroup$.path(prod.productGroup) : [];
+
+        if (path.length > 0) {
           if (!groupProductsMap[prod.productGroup]) {
             groupProductsMap[prod.productGroup] = [];
           }
           groupProductsMap[prod.productGroup].push(prod);
+
+          for (let i = 0; i < path.length - 1; i++) {
+            const parentId = path[i].id ?? -1;
+            if (!childGroupsMap[parentId]) {
+              childGroupsMap[parentId] = [];
+            }
+            if (!childGroupsMap[parentId].includes(path[i + 1])) {
+              childGroupsMap[parentId].push(path[i + 1]);
+            }
+          }
         }
 
         let char = prod.name[0].toUpperCase();
         let charCode = char.charCodeAt(0);
 
-        if (prod.productGroup != 0) {
-          const pG = prod.getGroup();
-          char = pG.name[0].toUpperCase();
+        if (path.length > 0) {
+          char = path[0].name[0].toUpperCase();
           charCode = char.charCodeAt(0);
         }
 
@@ -169,7 +192,7 @@ export default {
           char = "?";
         }
 
-        const toAdd: Product | ProductGroup = prod.productGroup != 0 ? prod.getGroup() : prod;
+        const toAdd: Product | ProductGroup = path.length > 0 ? path[0] : prod;
 
         if (dict[char] === undefined) {
           dict[char] = [toAdd];
@@ -178,11 +201,18 @@ export default {
         }
       });
 
-      return { dict, groupProductsMap };
+      return { dict, groupProductsMap, childGroupsMap };
+    },
+    selectedGroup(): ProductGroup | null {
+      return this.groupStack[this.groupStack.length - 1] ?? null;
     },
     productsForSelectedGroup() {
       if (!this.selectedGroup) return [];
       return this.processedProducts.groupProductsMap[this.selectedGroup.id ?? -1] ?? [];
+    },
+    childGroupsForSelectedGroup() {
+      if (!this.selectedGroup) return [];
+      return this.processedProducts.childGroupsMap[this.selectedGroup.id ?? -1] ?? [];
     }
   },
   watch: {
@@ -192,6 +222,11 @@ export default {
   },
   methods: {
     onGroupClick(group: ProductGroup){
+      // Groups with visible subgroups always open, so the subgroups stay reachable
+      if ((this.processedProducts.childGroupsMap[group.id ?? -1] ?? []).length > 0) {
+        this.groupStack.push(group);
+        return;
+      }
       const groupProducts = this.processedProducts.groupProductsMap[group.id ?? -1] ?? [];
       const accounts = this.account$.selected;
       // Every account sees exactly one product of the group -> add the visible product per account
@@ -202,7 +237,7 @@ export default {
         accounts.forEach((acc, i) => this.cart$.addToCart(productPerAccount[i][0], [acc]));
         return;
       }
-      this.selectedGroup = group;
+      this.groupStack.push(group);
     },
     onResize(){
       let y = window.innerHeight;

@@ -31,6 +31,10 @@
         {{ $t('menu.orders') }}
       </router-link>
 
+      <router-link class="navbar-item" to="/display" @click="burgerActive = false">
+        {{ $t('menu.display') }}
+      </router-link>
+
       <a class="navbar-item" href="#">{{ $t('menu.stats') }}</a>
 
       <div class="navbar-item has-dropdown is-hoverable">

@@ -19,6 +19,7 @@ import UnitSettings from '../views/Settings/UnitSettings.vue'
 import UnitSettingsSingle from '../views/Settings/UnitSettingsSingle.vue'
 import VatSettings from '../views/Settings/VatSettings.vue'
 import VatSettingsSingle from '../views/Settings/VatSettingsSingle.vue'
+import MenuDisplay from '../views/MenuDisplay.vue'
 
 const routes = [
   { path: '/', component: HomeView },
@@ -45,6 +46,7 @@ const routes = [
   { name: 'VatSettingsEdit', path: '/settings/vats/:vatId', component: VatSettingsSingle },
   { name: 'ClientSettings', path: '/settings/client', component: ClientSettings},
   { name: 'Orders', path: '/orders/', component: OrderView},
+  { name: 'MenuDisplay', path: '/display', component: MenuDisplay, meta: { fullscreen: true } },
   { path: '/settings/application', redirect: { name: 'ApplicationSettings', params: { section: 'company' } } },
   { name: 'ApplicationSettings', path: '/settings/application/:section', component: ApplicationSettings}
 ]

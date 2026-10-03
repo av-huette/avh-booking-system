@@ -12,6 +12,10 @@
     "name": {
       "type": "string",
       "description": "The name"
+    },
+    "parent_id": {
+      "type": ["integer", "null"],
+      "description": "The ID of the parent group, null for top-level groups"
     }
   },
   "required": [

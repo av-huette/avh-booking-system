@@ -87,9 +87,9 @@ const filteredBookings = computed(() => {
       <OrderViewer
         class="cell"
         v-for="booking in filteredBookings"
-        :key="booking.timestamp"
+        :key="booking.timestamp + '-' + booking.account.id"
         :allowEdit="false"
-        :accounts="booking.account"
+        :accounts="[booking.account]"
         :totals="booking.getTotals()"
         :contents="booking.products"
         :timestamp="booking.timestamp"

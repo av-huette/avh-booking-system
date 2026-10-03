@@ -24,7 +24,7 @@
     <div class="columns">
     <div class="column is-3">
       Category: 
-      <router-link :to="{name: 'CategorySettings'}" class="tag">
+      <router-link :to="{name: 'CategorySettings', params: { type: 'product' }}" class="tag">
         <icon :icon="['fas', 'gear']" title="Category Settings"/>
       </router-link>
     </div>
@@ -71,8 +71,7 @@
   <div class="columns">
     <div class="column is-3">
       Size and Unit:
-      <!-- ToDo: Add Unit Settings -->
-      <router-link to="#" class="tag">
+      <router-link :to="{ name: 'UnitSettings' }" class="tag">
         <icon :icon="['fas', 'gear']" title="Unit Settings"/>
       </router-link>
     </div>
@@ -107,8 +106,7 @@
   <div class="columns">
     <div class="column is-3">
       Vat:
-      <!-- ToDo: Add Vat Settings -->
-      <router-link to="#" class="tag">
+      <router-link :to="{ name: 'VatSettings' }" class="tag">
         <icon :icon="['fas', 'gear']" title="Vat Settings"/>
       </router-link>
     </div>

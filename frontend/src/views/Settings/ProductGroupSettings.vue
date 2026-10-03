@@ -4,6 +4,7 @@ import { useRouter } from 'vue-router'
 import { useProductGroupStore } from '../../store/ProductGroupStore'
 import { useSocketStore } from '../../store/socketStore'
 import ErrorModal from '../../components/ErrorModal.vue'
+import SettingsLayout from '../../components/SettingsLayout.vue'
 
 const router = useRouter()
 const productGroup$ = useProductGroupStore()
@@ -68,6 +69,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
+<SettingsLayout area="product">
   <h1 class="title">Produktgruppen</h1>
 
   <div class="panel">
@@ -81,8 +83,13 @@ onBeforeUnmount(() => {
           </tr>
         </thead>
         <tbody>
-          <tr v-for="group in productGroup$.all.filter(g => g.id !== 0)" :key="group.id">
-            <td>{{ group.name }}</td>
+          <tr v-for="{ group, depth } in productGroup$.tree" :key="group.id">
+            <td :style="{ paddingLeft: (0.75 + depth * 1.5) + 'em' }">
+              <span v-if="depth > 0" class="icon is-small has-text-grey mr-2">
+                <icon :icon="['fas', 'turn-up']" rotation="90" />
+              </span>
+              <span :class="{ 'has-text-weight-semibold': depth === 0 }">{{ group.name }}</span>
+            </td>
             <td class="has-text-right">
               <div class="buttons is-right">
                 <button
@@ -101,7 +108,7 @@ onBeforeUnmount(() => {
               </div>
             </td>
           </tr>
-          <tr v-if="productGroup$.all.filter(g => g.id !== 0).length === 0">
+          <tr v-if="productGroup$.tree.length === 0">
             <td colspan="2" class="has-text-grey has-text-centered is-italic">
               Keine Produktgruppen vorhanden
             </td>
@@ -120,6 +127,7 @@ onBeforeUnmount(() => {
   </div>
 
   <ErrorModal v-model="errorModalVisible" :error="currentError" />
+</SettingsLayout>
 </template>
 
 <style scoped>

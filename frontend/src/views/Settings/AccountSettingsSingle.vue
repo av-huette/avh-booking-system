@@ -192,7 +192,12 @@ function startSave() {
 
 
   <div class="columns">
-    <div class="column is-3">Category:</div>
+    <div class="column is-3">
+      Category:
+      <router-link :to="{ name: 'CategorySettings', params: { type: 'account' } }" class="tag">
+        <icon :icon="['fas', 'gear']" title="Category Settings"/>
+      </router-link>
+    </div>
     <div class="column">
       <div class="control has-icons-left">
         <div class="select">

@@ -11,6 +11,8 @@ import {useProductStore} from "../store/ProductStore.ts";
 import {useLocationStore} from "../store/LocationStore.ts";
 import {useProductVisibilityStore} from "../store/ProductVisibilityStore.ts";
 import type { ProductVisibility } from "../composables/productVisibility.ts";
+import type { Unit } from "../composables/unit.ts";
+import type { Vat } from "../composables/vat.ts";
 import { useSettingStore } from "../store/SettingStore.ts";
 import { Product } from "../composables/product.ts";
 
@@ -255,6 +257,14 @@ export class WebSocketClient {
                         }
                         case 'product_group': {
                             useProductGroupStore().patchProductGroups([result.data]);
+                            return;
+                        }
+                        case 'unit': {
+                            useUnitStore().patchUnits([result.data as unknown as Unit]);
+                            return;
+                        }
+                        case 'vat': {
+                            useVatStore().patchVats([result.data as unknown as Vat]);
                             return;
                         }
                     }

@@ -102,20 +102,54 @@ export const useSocketStore = defineStore("notificationStore", {
             }
             this.wsClient.send({ type: "mutation", payload: payload })
         },
-        addProductGroup(name: string) {
+        addProductGroup(name: string, parentId: number | null) {
             let payload = {
                 "operation": "insert",
                 "table": "product_group",
-                "values": { "name": name }
+                "values": { "name": name, "parent_id": parentId }
             }
             this.wsClient.send({ type: "mutation", payload: payload })
         },
-        updateProductGroup(id: number, name: string) {
+        updateProductGroup(id: number, name: string, parentId: number | null) {
             let payload = {
                 "operation": "update",
                 "table": "product_group",
                 "where": { "product_group_id": id.toString() },
+                "values": { "name": name, "parent_id": parentId }
+            }
+            this.wsClient.send({ type: "mutation", payload: payload })
+        },
+        addUnit(name: string) {
+            let payload = {
+                "operation": "insert",
+                "table": "unit",
                 "values": { "name": name }
+            }
+            this.wsClient.send({ type: "mutation", payload: payload })
+        },
+        updateUnit(id: number, name: string) {
+            let payload = {
+                "operation": "update",
+                "table": "unit",
+                "where": { "unit_id": id.toString() },
+                "values": { "name": name }
+            }
+            this.wsClient.send({ type: "mutation", payload: payload })
+        },
+        addVat(rate: number) {
+            let payload = {
+                "operation": "insert",
+                "table": "vat",
+                "values": { "rate": rate }
+            }
+            this.wsClient.send({ type: "mutation", payload: payload })
+        },
+        updateVat(id: number, rate: number) {
+            let payload = {
+                "operation": "update",
+                "table": "vat",
+                "where": { "vat_id": id.toString() },
+                "values": { "rate": rate }
             }
             this.wsClient.send({ type: "mutation", payload: payload })
         },

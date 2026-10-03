@@ -1,11 +1,15 @@
 <script lang="ts" setup>
 import { ref, computed, onMounted } from 'vue';
-import DetailsArea from '../../components/DetailsArea.vue';
+import { useRoute } from 'vue-router';
+import SettingsLayout from '../../components/SettingsLayout.vue';
 import { useSettingStore } from '../../store/SettingStore';
 import Buttons from '../../composables/elements/Buttons.vue';
 import Button from '../../composables/elements/Button.vue';
 
+const route = useRoute();
 const setting$ = useSettingStore();
+
+const section = computed(() => route.params.section as string);
 
 type DraftKey = 'compTitle' | 'compSlogan' | 'compLogo';
 
@@ -77,12 +81,10 @@ function changeIcon(e){
 
 <template>
 
-<h1 class="title">General Settings</h1>
+<SettingsLayout area="system">
 
-<DetailsArea>
-  <template #summary>
-    <h2 class="title is-4">Company Settings</h2>
-  </template>
+<template v-if="section === 'company'">
+  <h1 class="title">Company Settings</h1>
 
   <div class="columns">
     <div class="column is-3">
@@ -166,12 +168,10 @@ function changeIcon(e){
     </div>
   </div>
 
-</DetailsArea>
+</template>
 
-<DetailsArea>
-  <template #summary>
-    <h2 class="title is-4">Application Look</h2>
-  </template>
+<template v-if="section === 'look'">
+  <h1 class="title">Application Look</h1>
 
   <div class="columns">
     <div class="column is-3">
@@ -208,12 +208,10 @@ function changeIcon(e){
     </div>
   </div>
 
-</DetailsArea>
+</template>
 
-<DetailsArea>
-  <template #summary>
-    <h2 class="title is-4">Localisation</h2>
-  </template>
+<template v-if="section === 'localisation'">
+  <h1 class="title">Localisation</h1>
 
   <div class="columns">
     <div class="column is-3">
@@ -231,7 +229,9 @@ function changeIcon(e){
   <!-- ToDo Allow seperate changing of currency -->
 
 
-</DetailsArea>
+</template>
+
+</SettingsLayout>
 
 
 

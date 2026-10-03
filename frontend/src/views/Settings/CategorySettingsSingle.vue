@@ -17,12 +17,7 @@ const categoryType = computed(() => StringToCategoryType[route.params.type as st
 const typeLabel = computed(() => categoryType.value === CategoryType.ACCOUNT ? 'Account' : 'Produkt')
 const isEdit = computed(() => !!route.params.categoryId)
 const editId = computed(() => isEdit.value ? parseInt(route.params.categoryId as string) : null)
-const backRoute = computed(() => {
-  if (isEdit.value) return { name: 'CategorySettings' }
-  return categoryType.value === CategoryType.ACCOUNT
-    ? { name: 'AccountSettings' }
-    : { name: 'ProductSettings' }
-})
+const backRoute = computed(() => ({ name: 'CategorySettings', params: { type: CategoryTypeToString[categoryType.value] } }))
 
 const name = ref('')
 const iconName = ref('')

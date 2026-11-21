@@ -20,6 +20,8 @@ Before writing something down, find its place here; before searching for somethi
 
 ## In this folder
 
+- [Architecture](architecture.md): how the system works, from the tills to the database.
+- [Glossary](glossary.md): what the domain terms mean.
 - [Architecture decision records](adr/README.md): why AVHBS is built the way it is.
 
 ## Deciding where something goes

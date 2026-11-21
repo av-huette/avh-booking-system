@@ -55,6 +55,8 @@ How to contribute, including the checks to run before a pull request, is describ
 
 - [CONTRIBUTING.md](CONTRIBUTING.md): branches, commits, checks and pull requests.
 - [docs/README.md](docs/README.md): where each kind of information belongs.
+- [docs/architecture.md](docs/architecture.md): how the system works.
+- [docs/glossary.md](docs/glossary.md): what the domain terms mean.
 - [docs/adr/](docs/adr/README.md): why AVHBS is built the way it is.
 - [AGENTS.md](AGENTS.md): instructions for coding agents; the conventions for backend and frontend are in [backend/AGENTS.md](backend/AGENTS.md) and [frontend/AGENTS.md](frontend/AGENTS.md).
 

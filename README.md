@@ -64,3 +64,8 @@ How to contribute, including the checks to run before a pull request, is describ
 
 Questions and bug reports go to [GitHub Issues](https://github.com/av-huette/avh-booking-system/issues).
 Security problems: please report them privately, see [SECURITY.md](SECURITY.md).
+
+## License
+
+AVHBS is free software under the [GNU Affero General Public License v3.0 or later](LICENSE).
+If you run a changed version for others, for example for the members of your association, the license asks you to offer them its source code.

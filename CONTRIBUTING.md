@@ -56,3 +56,8 @@ They follow the [`AGENTS.md`](AGENTS.md) files, which also forbid them to commit
 - Markdown files are written with one sentence per line and no other line breaks inside a paragraph.
   A change then touches only the sentences it changes, which keeps diffs readable.
 - A decision that shapes how the code is written and is hard to reverse gets an architecture decision record, see [`docs/adr/README.md`](docs/adr/README.md).
+
+## License
+
+AVHBS is licensed under the [GNU Affero General Public License v3.0 or later](LICENSE).
+By contributing, you agree that your contributions are licensed under the same terms.

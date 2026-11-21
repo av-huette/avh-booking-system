@@ -1,7 +1,7 @@
-# AVHBS Backend Agent Instructions
+# AVHBS Backend Conventions
 
-Rules for agents working in `backend/` (Go, PostgreSQL via pgx/v5, gorilla/websocket). Cross-cutting rules are in
-the root `AGENTS.md`.
+Conventions for working in `backend/` (Go, PostgreSQL via pgx/v5, gorilla/websocket), for developers and coding
+agents. Cross-cutting rules are in the root `AGENTS.md`; the contribution process is in `CONTRIBUTING.md`.
 
 ## Commands (run from `backend/`)
 

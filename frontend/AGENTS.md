@@ -1,7 +1,8 @@
-# AVHBS Frontend Agent Instructions
+# AVHBS Frontend Conventions
 
-Rules for agents working in `frontend/` (Vue 3, TypeScript, Vite, Pinia, Vue Router, vue-i18n, Bulma with Sass).
-Cross-cutting rules are in the root `AGENTS.md`.
+Conventions for working in `frontend/` (Vue 3, TypeScript, Vite, Pinia, Vue Router, vue-i18n, Bulma with Sass), for
+developers and coding agents. Cross-cutting rules are in the root `AGENTS.md`; the contribution process is in
+`CONTRIBUTING.md`.
 
 ## Commands (run from `frontend/`)
 

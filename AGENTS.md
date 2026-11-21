@@ -24,5 +24,6 @@ frontend in `frontend/`; each has its own `AGENTS.md` with stack-specific rules 
 - After a change, suggest a commit message: a title under 50 characters in imperative mood, and a 1–2 sentence
   description.
 - Before a PR, review the whole branch: consistency between commits, these rules, and docs that mention the change.
+- Before writing documentation, check `docs/README.md` for where each kind of information belongs.
 - A developer-defined workflow may exist at `.notes/WORKFLOW.md`. If it does, read it before starting a task and
   follow it.

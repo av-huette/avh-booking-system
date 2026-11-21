@@ -79,19 +79,20 @@ A new table needs all of these, in this order:
 
 ### Repo layer and SQL
 
-- No ORM. Values go into SQL only as `$N` placeholders, identifiers only via `pgx.Identifier{...}.Sanitize()` (see
-  `buildSelectSQL`); never build SQL by string interpolation.
+- No ORM (why: `docs/adr/0002-postgresql-with-pgx-and-raw-sql.md`). Values go into SQL only as `$N` placeholders,
+  identifiers only via `pgx.Identifier{...}.Sanitize()` (see `buildSelectSQL`); never build SQL by string
+  interpolation.
 - Never import `database/sql`; map `pgx.ErrNoRows` to `database.ErrNoRecord`, the only "not found" error.
 - `GetByID` delegates to `Get()` with a filter on the primary key.
 - Nullable columns map to pointer types (`*int`), never to `COALESCE`.
 - Model fields carry `json` tags in camelCase and `db` tags with the column name.
 - Accounts are never deleted (disable them via `enabled`), and `AccountStore.Update` never changes `Balance`: every
-  booking and every balance change must stay traceable for fiscalization.
+  booking and every balance change must stay traceable for fiscalization (`docs/adr/0004-traceable-bookings.md`).
 
 ### Database changes
 
 - Every schema change gets a goose migration with only a `-- +goose Up` section, and the same change in
-  `internal/repo/testdata/create_tables.sql`.
+  `internal/repo/testdata/create_tables.sql`. There are no down migrations: we fix forward with new migrations.
 
 ### Testing
 

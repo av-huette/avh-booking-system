@@ -18,6 +18,10 @@ down, find its place here; before searching for something, look where it should 
 | Code comments | Why non-obvious code is the way it is | what the code does; history |
 | Commit messages, PR descriptions | What changed and why, for this change | lasting knowledge (docs, ADRs) |
 
+## In this folder
+
+- [Architecture decision records](adr/README.md): why AVHBS is built the way it is.
+
 ## Deciding where something goes
 
 Apply these questions in order:

@@ -6,10 +6,11 @@ frontend in `frontend/`; each has its own `AGENTS.md` with stack-specific rules 
 ## Architecture
 
 - WebSocket-only transport: there are no REST endpoints. Client and server exchange JSON `{type, payload}` messages,
-  validated on both sides against the shared JSON Schemas in `schemas/`.
+  validated on both sides against the shared JSON Schemas in `schemas/`
+  (why: `docs/adr/0001-websocket-only-transport.md`).
 - Changing a message means changing the schema in `schemas/`, the backend (`internal/ws`) and the frontend
   (`webSocketClient.ts`, stores, composables) in the same change.
-- Money is an integer number of cents on both sides, never a float.
+- Money is an integer number of cents on both sides, never a float (why: `docs/adr/0005-money-as-integer-cents.md`).
 
 ## Rules
 

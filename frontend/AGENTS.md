@@ -59,11 +59,14 @@ A new table needs, after the backend side (`backend/AGENTS.md`):
 ### Strings
 
 - New code: user-facing strings go into `src/locales/en.ts` (the reference) and `src/locales/de.ts`, and are shown
-  with `$t()`. Exception: receipts (`src/components/Receipt/`) are always German, whatever the UI language.
+  with `$t()` (why: `docs/adr/0006-internationalization.md`). Exception: receipts (`src/components/Receipt/`) are
+  always German, whatever the UI language: a receipt is a document handed to customers and part of the fiscal
+  record, so it looks the same on every till.
 
 ### Money
 
-- Display money with `$n(cents / 100, 'currency')`; convert inputs back with `Math.round(value * 100)`.
+- Display money with `$n(cents / 100, 'currency')`; convert inputs back with `Math.round(value * 100)` (why:
+  `docs/adr/0005-money-as-integer-cents.md`).
 - The currency is EUR in every locale; a locale changes only texts and number formatting. Receipts always use
   German formatting (`toLocaleString('de-DE', …)`); see Strings.
 

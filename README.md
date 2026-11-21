@@ -61,3 +61,4 @@ How to contribute, including the checks to run before a pull request, is describ
 ## Support
 
 Questions and bug reports go to [GitHub Issues](https://github.com/av-huette/avh-booking-system/issues).
+Security problems: please report them privately, see [SECURITY.md](SECURITY.md).

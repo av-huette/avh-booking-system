@@ -5,9 +5,9 @@
 
 ## Context
 
-AVHBS is meant to be installed by other associations, usually by a member who is comfortable with a terminal and
-Docker but is not a developer of the project. The installation has to be simple and the same everywhere. This ADR
-documents a decision made when the deployment setup was added.
+AVHBS is meant to be installed by other associations, usually by a member who is comfortable with a terminal and Docker but is not a developer of the project.
+The installation has to be simple and the same everywhere.
+This ADR documents a decision made when the deployment setup was added.
 
 ## Decision
 
@@ -19,13 +19,10 @@ AVHBS is deployed with Docker Compose (`docker-compose.yml`) as three services:
 
 ## Considered options
 
-- **Docker Compose:** chosen, because it installs everything with one command, gives the same setup everywhere and
-  includes the database.
-- **One image, with the Go server serving the frontend:** chosen, because there is only one container to deploy,
-  the page and the WebSocket share one origin (so no CORS), and it is simpler than a separate web server for
-  static files.
-- **Caddy as reverse proxy:** the reason for choosing Caddy over alternatives was not recorded. The setup relies on
-  two of its properties: automatic HTTPS for a domain, and proxying the WebSocket with a two-line configuration.
+- **Docker Compose:** chosen, because it installs everything with one command, gives the same setup everywhere and includes the database.
+- **One image, with the Go server serving the frontend:** chosen, because there is only one container to deploy, the page and the WebSocket share one origin (so no CORS), and it is simpler than a separate web server for static files.
+- **Caddy as reverse proxy:** the reason for choosing Caddy over alternatives was not recorded.
+  The setup relies on two of its properties: automatic HTTPS for a domain, and proxying the WebSocket with a two-line configuration.
 
 ## Consequences
 

@@ -1,7 +1,7 @@
 # Documentation
 
-Where each kind of information about AVHBS belongs, for developers and coding agents. Before writing something
-down, find its place here; before searching for something, look where it should be.
+Where each kind of information about AVHBS belongs, for developers and coding agents.
+Before writing something down, find its place here; before searching for something, look where it should be.
 
 ## Where things go
 
@@ -26,10 +26,15 @@ down, find its place here; before searching for something, look where it should 
 
 Apply these questions in order:
 
-1. Can it be read from the code, the schemas or the git history? Then write nothing.
-2. Why did we do it this way? An ADR.
-3. How does it work, or how do I do X? A document in `docs/`.
-4. How do we work together? `CONTRIBUTING.md`.
-5. What is this, and how do I start? `README.md`.
-6. Would a coding agent get it wrong without noticing? Additionally a one-line rule in the matching `AGENTS.md`
-   that links to the place from questions 2 to 5.
+1. Can it be read from the code, the schemas or the git history?
+   Then write nothing.
+2. Why did we do it this way?
+   An ADR.
+3. How does it work, or how do I do X?
+   A document in `docs/`.
+4. How do we work together?
+   `CONTRIBUTING.md`.
+5. What is this, and how do I start?
+   `README.md`.
+6. Would a coding agent get it wrong without noticing?
+   Additionally a one-line rule in the matching `AGENTS.md` that links to the place from questions 2 to 5.

@@ -1,8 +1,7 @@
 # Architecture decision records
 
-An architecture decision record (ADR) explains why the software is built the way it is: the context, the decision,
-the options that were considered and the consequences. The rules that follow from a decision live in the
-`AGENTS.md` files; the ADR keeps the reasons.
+An architecture decision record (ADR) explains why the software is built the way it is: the context, the decision, the options that were considered and the consequences.
+The rules that follow from a decision live in the `AGENTS.md` files; the ADR keeps the reasons.
 
 ## Index
 
@@ -17,14 +16,12 @@ the options that were considered and the consequences. The rules that follow fro
 
 ## When to write an ADR
 
-Write an ADR when a decision shapes how code is written or structured, and it is either hard to reverse or likely
-to be questioned by someone new to the project. A reason that fits into half a sentence stays as a clause in the
-`AGENTS.md` rule instead.
+Write an ADR when a decision shapes how code is written or structured, and it is either hard to reverse or likely to be questioned by someone new to the project.
+A reason that fits into half a sentence stays as a clause in the `AGENTS.md` rule instead.
 
 ## How to write one
 
-- Copy [`template.md`](template.md) to `NNNN-kebab-case-title.md`, using the next free number, and add it to the
-  index above.
-- Status is `Proposed`, `Accepted`, or `Superseded by NNNN`. An accepted ADR is not edited afterwards; a changed
-  decision gets a new ADR that supersedes the old one.
+- Copy [`template.md`](template.md) to `NNNN-kebab-case-title.md`, using the next free number, and add it to the index above.
+- Status is `Proposed`, `Accepted`, or `Superseded by NNNN`.
+  An accepted ADR is not edited afterwards; a changed decision gets a new ADR that supersedes the old one.
 - A decision made before it was recorded gets an ADR too; its context says that it documents an existing decision.

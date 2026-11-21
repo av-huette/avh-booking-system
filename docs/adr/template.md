@@ -5,7 +5,8 @@
 
 ## Context
 
-What situation or problem led to this decision? Which forces and constraints apply?
+What situation or problem led to this decision?
+Which forces and constraints apply?
 
 ## Decision
 
@@ -18,4 +19,5 @@ What was decided, stated plainly.
 
 ## Consequences
 
-What becomes easier or harder because of this decision? What follows from it for the code?
+What becomes easier or harder because of this decision?
+What follows from it for the code?

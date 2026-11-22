@@ -75,7 +75,7 @@
       "if": {
         "properties": {
           "type": {
-            "const": "result"
+            "const": "queryResultList"
           }
         }
       },
@@ -84,7 +84,10 @@
           "payload": {
             "$ref": "sql/queryResultList.json"
           }
-        }
+        },
+        "required": [
+          "payload"
+        ]
       }
     },
     {

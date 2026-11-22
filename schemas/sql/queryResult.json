@@ -2,7 +2,7 @@
   "$schema": "http://json-schema.org/draft-07/schema#",
   "$id": "queryResult.json",
   "title": "QueryResult",
-  "description": "The result of a database query",
+  "description": "The result of a database query: one row of the table",
   "type": "object",
   "properties": {
     "table": {
@@ -11,39 +11,412 @@
     },
     "data": {
       "type": "object",
-      "description": "A single database object",
-      "items": {
-        "oneOf": [
-          {
-            "$ref": "../db/account.json"
-          },
-          {
-            "$ref": "../db/category.json"
-          },
-          {
-            "$ref": "../db/location.json"
-          },
-          {
-            "$ref": "../db/product.json"
-          },
-          {
-            "$ref": "../db/productGroup.json"
-          },
-          {
-            "$ref": "../db/productVisibility.json"
-          },
-          {
-            "$ref": "../db/unit.json"
-          },
-          {
-            "$ref": "../db/vat.json"
-          }
-        ]
-      }
+      "description": "A single database object, checked against its table's schema"
     }
   },
   "required": [
     "table"
+  ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "table": {
+            "const": "account"
+          }
+        },
+        "required": [
+          "table"
+        ]
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "$ref": "../db/account.json"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "table": {
+            "const": "account_option"
+          }
+        },
+        "required": [
+          "table"
+        ]
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "$ref": "../db/accountOption.json"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "table": {
+            "const": "category"
+          }
+        },
+        "required": [
+          "table"
+        ]
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "$ref": "../db/category.json"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "table": {
+            "const": "favorites"
+          }
+        },
+        "required": [
+          "table"
+        ]
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "$ref": "../db/favorite.json"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "table": {
+            "const": "location"
+          }
+        },
+        "required": [
+          "table"
+        ]
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "$ref": "../db/location.json"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "table": {
+            "const": "order"
+          }
+        },
+        "required": [
+          "table"
+        ]
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "$ref": "../db/order.json"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "table": {
+            "const": "product"
+          }
+        },
+        "required": [
+          "table"
+        ]
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "$ref": "../db/product.json"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "table": {
+            "const": "product_group"
+          }
+        },
+        "required": [
+          "table"
+        ]
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "$ref": "../db/productGroup.json"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "table": {
+            "const": "product_order"
+          }
+        },
+        "required": [
+          "table"
+        ]
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "$ref": "../db/productOrder.json"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "table": {
+            "const": "product_visibility"
+          }
+        },
+        "required": [
+          "table"
+        ]
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "$ref": "../db/productVisibility.json"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "table": {
+            "const": "rights"
+          }
+        },
+        "required": [
+          "table"
+        ]
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "$ref": "../db/rights.json"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "table": {
+            "const": "role"
+          }
+        },
+        "required": [
+          "table"
+        ]
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "$ref": "../db/role.json"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "table": {
+            "const": "service_link"
+          }
+        },
+        "required": [
+          "table"
+        ]
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "$ref": "../db/serviceLink.json"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "table": {
+            "const": "service_sewobe"
+          }
+        },
+        "required": [
+          "table"
+        ]
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "$ref": "../db/serviceSewobe.json"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "table": {
+            "const": "settings_email"
+          }
+        },
+        "required": [
+          "table"
+        ]
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "$ref": "../db/setting.json"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "table": {
+            "const": "settings_frontend"
+          }
+        },
+        "required": [
+          "table"
+        ]
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "$ref": "../db/setting.json"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "table": {
+            "const": "settings_payment"
+          }
+        },
+        "required": [
+          "table"
+        ]
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "$ref": "../db/setting.json"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "table": {
+            "const": "unit"
+          }
+        },
+        "required": [
+          "table"
+        ]
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "$ref": "../db/unit.json"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "table": {
+            "const": "user"
+          }
+        },
+        "required": [
+          "table"
+        ]
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "$ref": "../db/user.json"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "table": {
+            "const": "user_option"
+          }
+        },
+        "required": [
+          "table"
+        ]
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "$ref": "../db/userOption.json"
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "table": {
+            "const": "vat"
+          }
+        },
+        "required": [
+          "table"
+        ]
+      },
+      "then": {
+        "properties": {
+          "data": {
+            "$ref": "../db/vat.json"
+          }
+        }
+      }
+    }
   ],
   "additionalProperties": false
 }

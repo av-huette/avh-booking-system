@@ -6,7 +6,7 @@ The Go backend lives in `backend/`, the Vue 3 frontend in `frontend/`; each has 
 ## Architecture
 
 - WebSocket-only transport: there are no REST endpoints.
-  Client and server exchange JSON `{type, payload}` messages, validated on both sides against the shared JSON Schemas in `schemas/` (why: `docs/adr/0001-websocket-only-transport.md`).
+  Client and server exchange JSON `{type, payload}` messages, validated against the shared JSON Schemas in `schemas/`: fully on the server, only the envelope on the till (why: `docs/adr/0001-websocket-only-transport.md`).
 - Changing a message means changing the schema in `schemas/`, the backend (`internal/ws`) and the frontend (`webSocketClient.ts`, stores, composables) in the same change.
 - Money is an integer number of cents on both sides, never a float (why: `docs/adr/0005-money-as-integer-cents.md`).
 - How the system works is described in `docs/architecture.md`; the domain terms are defined in `docs/glossary.md`.

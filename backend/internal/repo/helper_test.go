@@ -11,6 +11,8 @@ import (
 	"github.com/av-huette/avh-booking-system/internal/config"
 	"github.com/av-huette/avh-booking-system/internal/database"
 	"github.com/jackc/pgx/v5"
+	"github.com/jackc/pgx/v5/stdlib"
+	"github.com/pressly/goose/v3"
 	"github.com/stretchr/testify/require"
 )
 
@@ -75,16 +77,21 @@ func execQueries(queries []string) {
 	}
 }
 
-// setUp creates tables and inserts test data.
+// setUp creates the tables with the migrations, as `migrate up` does, and inserts test data.
 func setUp() {
-	currentWorkDirectory, _ := os.Getwd()
-	filePath := currentWorkDirectory + `/testdata/create_tables.sql`
-	queries := getQueriesFromFile(filePath)
-	execQueries(queries)
+	db := stdlib.OpenDBFromPool(dbPool.Pool)
+	defer db.Close()
+	if err := goose.SetDialect("postgres"); err != nil {
+		panic(err)
+	}
+	if err := goose.Up(db, "../../db/migrations"); err != nil {
+		panic(err)
+	}
 	logSetup("Created tables")
 
-	filePath = currentWorkDirectory + `/testdata/insert_test_data.sql`
-	queries = getQueriesFromFile(filePath)
+	currentWorkDirectory, _ := os.Getwd()
+	filePath := currentWorkDirectory + `/testdata/insert_test_data.sql`
+	queries := getQueriesFromFile(filePath)
 	execQueries(queries)
 	logSetup("Inserted test data")
 }

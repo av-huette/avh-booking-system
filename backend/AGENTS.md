@@ -35,12 +35,12 @@ Variables:
 | Wiring                | `cmd/server/main.go`                                                                      |
 | Config / env variable | `internal/config/config.go`, plus `.env.template`                                         |
 | Message type          | `internal/ws/message.go`, `ReadPump` in `internal/ws/pump.go`, `schemas/`                 |
-| Schema change         | `db/migrations/NNN_<name>.sql` (Up only), `internal/repo/testdata/create_tables.sql`      |
+| Schema change         | `db/migrations/` (Up only; see `db/MIGRATIONS.md`)                                        |
 | Test                  | `internal/repo/integration_test.go` (`package repo_test`)                                 |
 
 A new table needs all of these, in this order:
 
-1. Migration and `internal/repo/testdata/create_tables.sql`.
+1. Migration in `db/migrations/`; the integration tests build their schema from it.
 2. Model, store and `TableName` constant.
 3. Interface and `Stores` field; wiring in `cmd/server/main.go`.
 4. Cases in `processQuery`, `processMutation` and `prepareBroadcast` (`internal/ws/processor.go`); composite-key tables use the `…NoReturn` helpers.
@@ -85,7 +85,8 @@ A new table needs all of these, in this order:
 
 ### Database changes
 
-- Every schema change gets a goose migration with only a `-- +goose Up` section, and the same change in `internal/repo/testdata/create_tables.sql`.
+- Every schema change gets a goose migration with only a `-- +goose Up` section.
+  While nothing is in production, it goes into `001_initial_schema.sql` and local databases are re-created (`db/MIGRATIONS.md`).
   There are no down migrations: we fix forward with new migrations.
 
 ### Testing

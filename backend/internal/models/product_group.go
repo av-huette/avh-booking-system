@@ -6,7 +6,7 @@ package models
 type ProductGroup struct {
 	ID       int    `json:"id" db:"product_group_id"`
 	Name     string `json:"name" db:"name"`
-	ParentID *int   `json:"parent_id" db:"parent"`
+	ParentID *int   `json:"parentId" db:"parent"`
 }
 
 // CreateProductGroup creates a new ProductGroup with the provided details.

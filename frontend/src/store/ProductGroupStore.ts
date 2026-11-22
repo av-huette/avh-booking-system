@@ -24,7 +24,7 @@ export const useProductGroupStore = defineStore('productGroup', {
             while (group && !visited.has(group.id ?? -1)) {
                 visited.add(group.id ?? -1);
                 path.unshift(group);
-                group = group.parent_id != null ? this.byId(group.parent_id) : undefined;
+                group = group.parentId != null ? this.byId(group.parentId) : undefined;
             }
             return path;
         },

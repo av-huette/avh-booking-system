@@ -18,7 +18,7 @@ export const useSettingStore = defineStore('setting', {
     }
   },
   actions: {
-    get(key: string){
+    get(key: string): Setting | -1 {
       let foundSetting = this.settings.filter((set) => set.key == key)[0];
       return foundSetting == undefined || foundSetting.value == "" ? -1 : foundSetting;
     },

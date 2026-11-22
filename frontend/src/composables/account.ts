@@ -45,7 +45,7 @@ export class Account implements Account{
     return `${this.firstName} ${this.lastName}`;
   }
 
-  private hasNickname(): boolean{
+  hasNickname(): boolean{
     return (
       this.nickname !== null &&
       this.nickname !== undefined &&

@@ -13,6 +13,7 @@ import {useProductVisibilityStore} from "../store/ProductVisibilityStore.ts";
 import type { ProductVisibility } from "../composables/productVisibility.ts";
 import { useSettingStore } from "../store/SettingStore.ts";
 import { Product } from "../composables/product.ts";
+import type { ProductGroup } from "../composables/productGroup.ts";
 
 interface WebSocketClientOptions {
     reconnectInterval?: number;
@@ -230,7 +231,8 @@ export class WebSocketClient {
                 case 'broadcast' : {
                     console.info('Received broadcast');
                     // TODO check if payload exists
-                    const result = message.payload as queryResultList
+                    // One record, or the whole table (after a delete, and always for some tables)
+                    const result = message.payload as queryResult | queryResultList
                     switch (result.table) {
                         case 'account': {
                             let newAccounts = [] as Account[]
@@ -251,7 +253,7 @@ export class WebSocketClient {
                             return;
                         }
                         case 'product_group': {
-                            useProductGroupStore().patchProductGroups([result.data]);
+                            useProductGroupStore().patchProductGroups([result.data as ProductGroup]);
                             return;
                         }
                     }

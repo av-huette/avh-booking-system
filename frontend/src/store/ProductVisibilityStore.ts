@@ -45,7 +45,7 @@ export const useProductVisibilityStore = defineStore('product_visibility', {
         },
         patchVisibilities(newVisibilities: ProductVisibility[] | ProductVisibility) {
             this.$patch(state => {
-                if(newVisibilities.constructor.name == "Array"){
+                if(Array.isArray(newVisibilities)){
                     // If all visibilities are queried
                     state.visibilities = [];
                     newVisibilities.forEach((newVis) => {

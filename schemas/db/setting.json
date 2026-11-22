@@ -1,0 +1,22 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "setting.json",
+  "title": "Setting",
+  "description": "A setting, as a key and a value; used by the frontend, payment and email settings tables",
+  "type": "object",
+  "properties": {
+    "key": {
+      "type": "string",
+      "description": "The setting's key"
+    },
+    "value": {
+      "type": "string",
+      "description": "The setting's value"
+    }
+  },
+  "required": [
+    "key",
+    "value"
+  ],
+  "additionalProperties": false
+}

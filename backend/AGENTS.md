@@ -46,6 +46,7 @@ A new table needs all of these, in this order:
 4. Cases in `processQuery`, `processMutation` and `prepareBroadcast` (`internal/ws/processor.go`); composite-key tables use the `…NoReturn` helpers.
    Without `prepareBroadcast`, other clients never see changes.
 5. The table name in `schemas/db/_tableNames.json`; without it, the schema rejects every query.
+   A result schema in `schemas/db/`, its case in both `schemas/sql/queryResult.json` and `queryResultList.json`, and a row in `internal/ws/schema_test.go`.
 6. The frontend side (`frontend/AGENTS.md`).
 
 ## Rules

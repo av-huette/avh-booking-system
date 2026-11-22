@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "accountOption.json",
+  "title": "AccountOption",
+  "description": "An option of an account, as a key and a value",
+  "type": "object",
+  "properties": {
+    "accountId": {
+      "type": "integer",
+      "description": "The ID of the account"
+    },
+    "key": {
+      "type": "string",
+      "description": "The option's key"
+    },
+    "value": {
+      "type": "string",
+      "description": "The option's value"
+    }
+  },
+  "required": [
+    "accountId",
+    "key",
+    "value"
+  ],
+  "additionalProperties": false
+}

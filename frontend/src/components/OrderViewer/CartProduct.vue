@@ -14,7 +14,7 @@
       <div class="field input" v-if="!allowEdit">{{ content.quantity }}</div>
     </td>
     <td class="cell productName">
-      <span>{{ content.product.name }} ({{ content.product.size }} {{ content.product.getUnit().name }})</span>
+      <span>{{ content.product.name }} ({{ content.product.size }} {{ content.product.getUnit()?.name }})</span>
       <span v-for="category in content.categories" class="tag category-tag">
         <span class="icon"><icon :icon="category.icon" /></span>
         <span>{{ category.title }}</span>

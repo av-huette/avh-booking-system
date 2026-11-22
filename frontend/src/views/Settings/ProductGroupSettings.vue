@@ -95,7 +95,7 @@ onBeforeUnmount(() => {
                   class="button is-small is-danger is-light"
                   :disabled="pendingDeleteId !== null"
                   :class="{ 'is-loading': pendingDeleteId === group.id }"
-                  @click="deleteGroup(group.id, group.name)">
+                  @click="deleteGroup(group.id!, group.name)">
                   <span class="icon is-small"><icon :icon="['fas', 'trash']" /></span>
                 </button>
               </div>

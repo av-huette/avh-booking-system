@@ -1,6 +1,3 @@
-import {ref} from "vue";
-import {getApi} from "../api/api";
-
 type Icon = [string, string];
 
 /**
@@ -61,19 +58,5 @@ export function createCategory(obj: any): Category {
     cat.icon = obj.icon;
     cat.type = StringToCategoryType[obj.type];
     return new Category(cat);
-}
-
-export async function getCategorys() {
-    let {response: categories, request} = getApi<Category[]>(
-        "/category"
-    );
-
-    let loaded = ref(false);
-    if (loaded.value === false) {
-        await request();
-        loaded.value = true;
-    }
-
-    return {categories};
 }
 

@@ -54,16 +54,6 @@ export const useAccountStore = defineStore('account', {
       let foundAcc = this.accounts.find((acc) => acc.id == id);
       return foundAcc
     },
-    loadAllAccounts(accJsonObj: any[]){
-      let accObjArray = [] as Account[];
-      accJsonObj.forEach((accObj) => {
-        // let newAccount = {} as Account;
-        let newAccount = new Account({} as Account);
-        newAccount.jsonToClass(accObj);
-        accObjArray.push(newAccount);
-      })
-      this.accounts = accObjArray;
-    },
     addAccount(newAccount: Account){
       this.accounts.push(newAccount);
       // const socket$ = useSocketStore();

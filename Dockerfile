@@ -11,7 +11,7 @@ RUN npm run build
 # RUN npx vite build  # TODO: temporary workaround, remove once TS errors are fixed
 
 # Stage 2: Build backend
-FROM golang:1.24-alpine AS backend
+FROM golang:1.27-alpine AS backend
 WORKDIR /build
 COPY backend/go.mod backend/go.sum ./
 RUN go mod download

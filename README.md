@@ -22,7 +22,7 @@ The installation with Docker Compose will be described here with the first usabl
 
 ## Development
 
-Requirements: Go 1.25 or newer, Node.js 22, and PostgreSQL 17 (or Docker to run it).
+Requirements: Go 1.27 or newer, Node.js 22, and PostgreSQL 17 (or Docker to run it).
 
 1. Start a database, for example with Docker:
 

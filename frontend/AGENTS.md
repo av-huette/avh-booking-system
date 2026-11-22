@@ -12,8 +12,7 @@ npm run build    # Type-check (vue-tsc), then build
 
 ## Checks
 
-Before suggesting a commit: `npx vue-tsc -b` reports no errors in the files you changed (older errors elsewhere are known), and `npx vite build` succeeds.
-Once the old errors are fixed, `npm run build` must pass.
+Before suggesting a commit: `npm run build` passes (type check, then build).
 
 ## Environment
 

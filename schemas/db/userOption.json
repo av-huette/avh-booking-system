@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "userOption.json",
+  "title": "UserOption",
+  "description": "An option of a user, as a key and a value",
+  "type": "object",
+  "properties": {
+    "userId": {
+      "type": "integer",
+      "description": "The ID of the user"
+    },
+    "key": {
+      "type": "string",
+      "description": "The option's key"
+    },
+    "value": {
+      "type": "string",
+      "description": "The option's value"
+    }
+  },
+  "required": [
+    "userId",
+    "key",
+    "value"
+  ],
+  "additionalProperties": false
+}

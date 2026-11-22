@@ -14,6 +14,7 @@ Before writing something down, find its place here; before searching for somethi
 | `docs/glossary.md` | What the domain terms mean (account, user, booking, ...) | implementation details |
 | `docs/adr/NNNN-*.md` | Why a decision was made, the options, the consequences | how-tos; edits once accepted |
 | `AGENTS.md` (root) | One-line rules every agent must not miss, plus links | knowledge, process details |
+| `backend/db/MIGRATIONS.md` | How to run and change the database migrations | the schema itself (the migrations) |
 | `backend/AGENTS.md`, `frontend/AGENTS.md` | Commands, checks, environment, where code goes, conventions; for developers and agents | rules that span both stacks (root) |
 | Code comments | Why non-obvious code is the way it is | what the code does; history |
 | Commit messages, PR descriptions | What changed and why, for this change | lasting knowledge (docs, ADRs) |

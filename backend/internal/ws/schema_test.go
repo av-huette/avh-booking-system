@@ -79,7 +79,7 @@ func resultRows() map[repo.TableName]any {
 }
 
 // TestResultSchemasMatchModels checks every table's model against its result schema,
-// as one record and as a list, through the helpers the server sends results with.
+// as a query result and as a broadcast (one record and a list), through the helpers the server sends results with.
 func TestResultSchemasMatchModels(t *testing.T) {
 	s := &Service{validator: newMessageValidator()}
 	for table, row := range resultRows() {
@@ -93,6 +93,9 @@ func TestResultSchemasMatchModels(t *testing.T) {
 			list := []json.RawMessage{raw}
 			_, wsErr = s.marshalBroadcastQueryResultList(table, &list)
 			require.Nil(t, wsErr, "list")
+
+			_, wsErr = s.marshalQueryResultList(table, &list)
+			require.Nil(t, wsErr, "query result")
 		})
 	}
 }
@@ -109,4 +112,7 @@ func TestResultSchemaFollowsTable(t *testing.T) {
 	list := []json.RawMessage{raw}
 	_, wsErr = s.marshalBroadcastQueryResultList(repo.TableUnit, &list)
 	require.NotNil(t, wsErr, "a list of products sent as units is rejected")
+
+	_, wsErr = s.marshalQueryResultList(repo.TableUnit, &list)
+	require.NotNil(t, wsErr, "a query result of products sent as units is rejected")
 }

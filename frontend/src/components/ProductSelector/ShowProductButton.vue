@@ -35,7 +35,7 @@
       <div class="is-flex is-flex-direction-row is-flex-wrap-wrap is-align-content-flex-start is-gap-1">
         <template v-for="product in dict">
           <Button
-            v-if="product.constructor.name == 'Product'"
+            v-if="isProduct(product)"
             @click="cart$.addToCart(product)"
             title="select product">
               {{ product.name }} {{ product.size }} {{ product.getUnit()?.name }}
@@ -43,7 +43,7 @@
           </Button>
 
           <Button
-            v-if="product.constructor.name == 'ProductGroup'"
+            v-if="isProductGroup(product)"
             @click="onGroupClick(product)"
             title="select product group">
               {{ product.name }}
@@ -221,6 +221,13 @@ export default {
     }
   },
   methods: {
+    // instanceof, not constructor.name: the production build renames classes
+    isProduct(item: Product | ProductGroup): item is Product {
+      return item instanceof Product;
+    },
+    isProductGroup(item: Product | ProductGroup): item is ProductGroup {
+      return item instanceof ProductGroup;
+    },
     onGroupClick(group: ProductGroup){
       // Groups with visible subgroups always open, so the subgroups stay reachable
       if ((this.processedProducts.childGroupsMap[group.id ?? -1] ?? []).length > 0) {

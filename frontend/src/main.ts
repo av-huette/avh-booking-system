@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import './assets/style.scss'
 import router from './router/router.ts'
 import App from './App.vue'
-import { createI18n } from 'vue-i18n'
+import { createI18n, type IntlNumberFormats } from 'vue-i18n'
 import de  from './locales/de.ts'
 import en from './locales/en.ts'
 import { createPinia } from 'pinia'
@@ -25,7 +25,7 @@ function loadLocaleNumbers(){
   //   }
   // })
   // return numbers
-  const numberFormats = {
+  const numberFormats: IntlNumberFormats = {
     "de": {
       "currency": {
         "style": "currency",

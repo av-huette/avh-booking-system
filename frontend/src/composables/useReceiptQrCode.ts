@@ -7,7 +7,7 @@ const TSE_SERIAL_NUMBER       = 'BSI-TEST-TSE-00000000000000000000'
 const TSE_SIGNATURE_ALGORITHM = 'ecdsa-plain-SHA256'
 const TSE_LOG_TIME_FORMAT     = 'unixTime'
 const TSE_PUBLIC_KEY          = 'AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA='
-const TSE_CERTIFICATION_ID    = 'BSI-K-TR-XXXX-XXXX'
+export const TSE_CERTIFICATION_ID = 'BSI-K-TR-XXXX-XXXX'
 // ─────────────────────────────────────────────────────────────────────────────
 
 type VatGroup = 'A' | 'B' | 'C' | 'D' | 'E'

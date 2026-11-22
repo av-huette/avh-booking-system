@@ -136,7 +136,7 @@ const props = defineProps<{
   categoryTotals?: CategoryTotals[],
   accounts: Account[],
   contents: CartContent[],
-  allowEdit: Boolean,
+  allowEdit: boolean,
   timestamp?: string,
   bookingId?: number,
 }>()

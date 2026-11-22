@@ -2,7 +2,6 @@
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import type { Account } from '../../composables/account'
 import { useAccountStore } from '../../store/AccountStore'
-import { useCategoryStore } from '../../store/CategoryStore'
 import { useSocketStore } from '../../store/socketStore'
 import ToggleSwitch from '../../composables/elements/ToggleSwitch.vue'
 import ErrorModal from '../ErrorModal.vue'
@@ -12,7 +11,6 @@ const props = defineProps<{
 }>()
 
 const account$ = useAccountStore()
-const category$ = useCategoryStore()
 const socket$ = useSocketStore()
 
 const dev = ref(false)

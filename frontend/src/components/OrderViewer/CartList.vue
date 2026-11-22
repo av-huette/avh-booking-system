@@ -10,7 +10,7 @@ const account$ = useAccountStore();
 const props = defineProps<{
   contents: CartContent[],
   accounts: Account[],
-  allowEdit: Boolean
+  allowEdit: boolean
 }>()
 
 const rows = computed(() => aggregateCartContents(props.contents, props.accounts));

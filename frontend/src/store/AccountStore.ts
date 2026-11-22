@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
-import { Account, type Account} from '../composables/account'
-import { useSocketStore } from './socketStore'
+import { Account } from '../composables/account'
 import { useCategoryStore } from './CategoryStore'
 
 export const useAccountStore = defineStore('account', {

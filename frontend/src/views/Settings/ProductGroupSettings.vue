@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, onMounted, onBeforeUnmount } from 'vue'
+import { ref, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import { useProductGroupStore } from '../../store/ProductGroupStore'
 import { useSocketStore } from '../../store/socketStore'

@@ -37,7 +37,7 @@ onMounted(() => {
     const group = productGroup$.byId(editId.value)
     if (group) {
       name.value = group.name
-      parentId.value = group.parent_id ?? null
+      parentId.value = group.parentId ?? null
     }
   }
 })

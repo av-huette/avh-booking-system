@@ -23,10 +23,10 @@ export const useProductGroupStore = defineStore('productGroup', {
                 if (visited.has(group.id ?? -1)) return;
                 visited.add(group.id ?? -1);
                 result.push({ group, depth });
-                groups.filter(g => g.parent_id === group.id).sort(byName).forEach(child => visit(child, depth + 1));
+                groups.filter(g => g.parentId === group.id).sort(byName).forEach(child => visit(child, depth + 1));
             };
 
-            groups.filter(g => g.parent_id == null || !ids.has(g.parent_id)).sort(byName).forEach(root => visit(root, 0));
+            groups.filter(g => g.parentId == null || !ids.has(g.parentId)).sort(byName).forEach(root => visit(root, 0));
             return result;
         }
     },
@@ -53,7 +53,7 @@ export const useProductGroupStore = defineStore('productGroup', {
             while (queue.length > 0) {
                 const current = queue.shift();
                 this.productGroups
-                    .filter(g => g.parent_id === current && g.id !== undefined && !result.includes(g.id))
+                    .filter(g => g.parentId === current && g.id !== undefined && !result.includes(g.id))
                     .forEach(g => {
                         result.push(g.id as number);
                         queue.push(g.id as number);

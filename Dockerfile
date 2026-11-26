@@ -7,9 +7,7 @@ COPY frontend/ ./
 # vite.config.ts aliases @schemas to ../schemas (relative to frontend/),
 # which resolves to /schemas when WORKDIR is /build.
 COPY schemas/ /schemas/
-# Skips the type check (vue-tsc), which fails on known type errors.
-# TODO: back to `npm run build` once they are fixed.
-RUN npx vite build
+RUN npm run build
 
 # Stage 2: Build backend
 FROM golang:1.27-alpine AS backend

@@ -37,7 +37,7 @@ export const useProductVisibilityStore = defineStore('product_visibility', {
             let categoryVis = productVis.filter((vis) => { return vis.categoryId == categoryId});
             if(categoryVis.length > 0) {
                 // this.visibilities = this.visibilities.filter((vis) => { return vis != categoryVis[0]});
-                useSocketStore().removeVisibility(categoryVis[0].id);
+                useSocketStore().removeVisibility(categoryVis[0].id!);
                 return
             }
             let newVis = {'categoryId': categoryId, 'productId': productId, 'locationId': 1} as ProductVisibility;
@@ -45,7 +45,7 @@ export const useProductVisibilityStore = defineStore('product_visibility', {
         },
         patchVisibilities(newVisibilities: ProductVisibility[] | ProductVisibility) {
             this.$patch(state => {
-                if(newVisibilities.constructor.name == "Array"){
+                if(Array.isArray(newVisibilities)){
                     // If all visibilities are queried
                     state.visibilities = [];
                     newVisibilities.forEach((newVis) => {

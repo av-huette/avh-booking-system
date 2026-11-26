@@ -39,7 +39,9 @@ const maxDebt = computed({
 
 onMounted(() => {
   if (isEdit.value) {
-    account.value = account$.byId(parseInt(route.params.accountId.toString())).copy()
+    const found = account$.byId(parseInt(route.params.accountId.toString()))
+    if (!found) return
+    account.value = found.copy()
   } else {
     account.value = new Account({} as Account)
   }
@@ -232,7 +234,7 @@ function startSave() {
   <div class="columns" v-if="showAdvanced">
     <div class="column is-3" title="Useful if you want an account to show up in one category, but it should not be restricted by the categories visibilities.">Always show all Products</div>
     <div class="column" >
-      <ToggleSwitch>Not yet implemented</ToggleSwitch>
+      <ToggleSwitch :model-value="false">Not yet implemented</ToggleSwitch>
     </div>
   </div>
 

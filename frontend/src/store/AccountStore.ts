@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
-import { Account, type Account} from '../composables/account'
-import { useSocketStore } from './socketStore'
+import { Account } from '../composables/account'
 import { useCategoryStore } from './CategoryStore'
 
 export const useAccountStore = defineStore('account', {
@@ -53,16 +52,6 @@ export const useAccountStore = defineStore('account', {
     byId(id: number | undefined): Account | undefined {
       let foundAcc = this.accounts.find((acc) => acc.id == id);
       return foundAcc
-    },
-    loadAllAccounts(accJsonObj: any[]){
-      let accObjArray = [] as Account[];
-      accJsonObj.forEach((accObj) => {
-        // let newAccount = {} as Account;
-        let newAccount = new Account({} as Account);
-        newAccount.jsonToClass(accObj);
-        accObjArray.push(newAccount);
-      })
-      this.accounts = accObjArray;
     },
     addAccount(newAccount: Account){
       this.accounts.push(newAccount);

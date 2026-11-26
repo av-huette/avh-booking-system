@@ -127,7 +127,7 @@
 <script lang="ts" setup>
 import type { BookingTotals } from '../../composables/booking';
 import { Account } from '../../composables/account.ts';
-import CartContent from '../../composables/cartContent.ts';
+import type { CartContent } from '../../composables/cartContent.ts';
 import type { CategoryTotals } from '../../store/CartStore';
 import { computed } from 'vue';
 
@@ -136,7 +136,7 @@ const props = defineProps<{
   categoryTotals?: CategoryTotals[],
   accounts: Account[],
   contents: CartContent[],
-  allowEdit: Boolean,
+  allowEdit: boolean,
   timestamp?: string,
   bookingId?: number,
 }>()

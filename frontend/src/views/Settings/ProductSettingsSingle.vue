@@ -132,13 +132,13 @@
     <div class="column is-3">Category Visibility:</div>
     <div class="column">     
       <div class="buttons">
-        <label class="checkbox button has-icons-right has-icons-left" v-for="category in category$.accountCategories" :class="visibility$.categoryIsVisible(category.id, product.id) ? '' : 'not-visible'">
+        <label class="checkbox button has-icons-right has-icons-left" v-for="category in category$.accountCategories" :class="visibility$.categoryIsVisible(category.id, product.id!) ? '' : 'not-visible'">
           <!-- :checked="visibility.includes(category.id)" -->
           <div class="icon is-small is-left">
-            <icon :icon="['fas', 'eye']" v-if="visibility$.categoryIsVisible(category.id, product.id)"/>
-            <icon :icon="['fas', 'eye-slash']" v-if="!visibility$.categoryIsVisible(category.id, product.id)"/>
+            <icon :icon="['fas', 'eye']" v-if="visibility$.categoryIsVisible(category.id, product.id!)"/>
+            <icon :icon="['fas', 'eye-slash']" v-if="!visibility$.categoryIsVisible(category.id, product.id!)"/>
           </div> 
-          <input type="checkbox" :checked="visibility$.categoryIsVisible(category.id, product.id)" @change="visibility$.toggleCategoryVisibility(category.id, product.id)" style="visibility:hidden; width:0;"/>
+          <input type="checkbox" :checked="visibility$.categoryIsVisible(category.id, product.id!)" @change="visibility$.toggleCategoryVisibility(category.id, product.id!)" style="visibility:hidden; width:0;"/>
           <span>{{ category.title }}</span>
           <div class="icon is-small is-right">
             <icon :icon="category.icon" />
@@ -214,7 +214,9 @@ export default {
   },
   mounted() {
     if(this.isEdit){
-      this.product = this.product$.byId(parseInt(this.$route.params.productId.toString()))?.copy();
+      const product = this.product$.byId(parseInt(this.$route.params.productId.toString()));
+      if (!product) return;
+      this.product = product.copy();
     } else {
       let newProduct = {} as Product;
       this.product = new Product(newProduct);

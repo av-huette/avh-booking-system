@@ -34,7 +34,7 @@
           </td>
           <td>
             
-            <button v-for="visibility in visibility$.byProductId(product.id)" class="tag">
+            <button v-for="visibility in visibility$.byProductId(product.id!)" class="tag">
               <span class="icon"><icon :icon="visibility.getCategory()?.icon"/></span>
               <span>{{ visibility.getCategory()?.title }}</span>
             </button>

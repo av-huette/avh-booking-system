@@ -20,10 +20,11 @@ const compSlogan = computed(() => {
 })
 
 const companyLogo = computed(() => {
-  if (setting$.get("compLogo") == -1){
+  const logo = setting$.get("compLogo");
+  if (logo == -1){
       return null;
     }
-    return setting$.get("compLogo").value;
+    return logo.value;
 })
 
 

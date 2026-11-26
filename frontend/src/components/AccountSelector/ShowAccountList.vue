@@ -2,7 +2,6 @@
 import { ref, computed, onMounted, onBeforeUnmount, watch } from 'vue'
 import type { Account } from '../../composables/account'
 import { useAccountStore } from '../../store/AccountStore'
-import { useCategoryStore } from '../../store/CategoryStore'
 import { useSocketStore } from '../../store/socketStore'
 import ToggleSwitch from '../../composables/elements/ToggleSwitch.vue'
 import ErrorModal from '../ErrorModal.vue'
@@ -12,7 +11,6 @@ const props = defineProps<{
 }>()
 
 const account$ = useAccountStore()
-const category$ = useCategoryStore()
 const socket$ = useSocketStore()
 
 const dev = ref(false)
@@ -36,9 +34,9 @@ function copyText(txt: string) {
 }
 
 function toggleEnabled(account: Account) {
-  if (pendingIds.value.includes(account.id)) return
-  pendingIds.value.push(account.id)
-  socket$.toggleAccountEnabled(account.id, !account.enabled)
+  if (pendingIds.value.includes(account.id!)) return
+  pendingIds.value.push(account.id!)
+  socket$.toggleAccountEnabled(account.id!, !account.enabled)
 }
 
 function onMutationResult(res: any) {
@@ -59,25 +57,25 @@ function sortFor(sortParam: string) {
   const list = props.accounts ?? []
   switch (sortParam) {
     case 'id':
-      accountsSorted.value = [...list].sort((a, b) => a.id - b.id); break
+      accountsSorted.value = [...list].sort((a, b) => a.id! - b.id!); break
     case 'enabled':
       accountsSorted.value = [...list].sort((a, b) => (b.enabled ? 1 : 0) - (a.enabled ? 1 : 0)); break
     case 'fn':
       accountsSorted.value = [...list].sort((a, b) => a.firstName.localeCompare(b.firstName)); break
     case 'nn':
-      accountsSorted.value = [...list].sort((a, b) => a.nickname.localeCompare(b.nickname)); break
+      accountsSorted.value = [...list].sort((a, b) => a.nickname!.localeCompare(b.nickname!)); break
     case 'ln':
       accountsSorted.value = [...list].sort((a, b) => a.lastName.localeCompare(b.lastName)); break
     case 'mail':
       accountsSorted.value = [...list].sort((a, b) => a.email.localeCompare(b.email)); break
     case 'phone':
-      accountsSorted.value = [...list].sort((a, b) => a.phone?.localeCompare(b.phone)); break
+      accountsSorted.value = [...list].sort((a, b) => a.phone!.localeCompare(b.phone!)); break
     case 'bal':
       accountsSorted.value = [...list].sort((a, b) => a.balance - b.balance); break
     case 'md':
       accountsSorted.value = [...list].sort((a, b) => a.maxDebt - b.maxDebt); break
     case 'cat':
-      accountsSorted.value = [...list].sort((a, b) => a.category - b.category); break
+      accountsSorted.value = [...list].sort((a, b) => a.category! - b.category!); break
     case 'create':
       accountsSorted.value = [...list].sort((a, b) => {
         const aDate = new Date(a.createdAt as string)
@@ -156,10 +154,10 @@ watch(() => props.accounts, (newList) => {
               <div>
                 <ToggleSwitch
                   :model-value="account.enabled"
-                  :disabled="pendingIds.includes(account.id)"
+                  :disabled="pendingIds.includes(account.id!)"
                   @update:model-value="toggleEnabled(account)"
                 />
-                <span v-if="pendingIds.includes(account.id)" class="icon has-text-grey">
+                <span v-if="pendingIds.includes(account.id!)" class="icon has-text-grey">
                   <icon :icon="['fas', 'spinner']" :spin="true" />
                 </span>
               </div>
@@ -181,7 +179,7 @@ watch(() => props.accounts, (newList) => {
               <span v-if="!account.getCategory()?.enabled" class="icon"><icon :icon="['fas', 'eye-slash']"></icon></span>
             </button>  
           </td>
-          <td>{{ new Date(account.createdAt).toLocaleString() }}</td>
+          <td>{{ new Date(account.createdAt!).toLocaleString() }}</td>
           <td v-show="hasEditAccountRights">
             <button class="button">
               <router-link :to="{ name: 'AccountSettingsSingle', params: { accountId: account.id } }">

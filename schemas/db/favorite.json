@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "favorite.json",
+  "title": "Favorite",
+  "description": "How often an account booked a product",
+  "type": "object",
+  "properties": {
+    "productId": {
+      "type": "integer",
+      "description": "The ID of the product"
+    },
+    "accountId": {
+      "type": "integer",
+      "description": "The ID of the account"
+    },
+    "count": {
+      "type": "integer",
+      "description": "How often the product was booked"
+    }
+  },
+  "required": [
+    "productId",
+    "accountId",
+    "count"
+  ],
+  "additionalProperties": false
+}

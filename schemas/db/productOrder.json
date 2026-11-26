@@ -1,0 +1,32 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "productOrder.json",
+  "title": "ProductOrder",
+  "description": "A product in an order",
+  "type": "object",
+  "properties": {
+    "orderId": {
+      "type": "integer",
+      "description": "The ID of the order"
+    },
+    "productId": {
+      "type": "integer",
+      "description": "The ID of the product"
+    },
+    "amount": {
+      "type": "integer",
+      "description": "How many of the product were ordered"
+    },
+    "productPrice": {
+      "type": "integer",
+      "description": "The price of the product at the time of the order"
+    }
+  },
+  "required": [
+    "orderId",
+    "productId",
+    "amount",
+    "productPrice"
+  ],
+  "additionalProperties": false
+}

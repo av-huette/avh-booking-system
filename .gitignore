@@ -17,6 +17,7 @@
 # Application specifc
 frontend/dist/
 frontend/node_modules/
+/node_modules/
 frontend/.env
 
 backend/**/.env
@@ -24,5 +25,4 @@ backend/**/.env
 
 python/
 
-CLAUDE.md
-frontend/CLAUDE.md
+.notes/

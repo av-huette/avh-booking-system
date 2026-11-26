@@ -21,7 +21,7 @@
       "type": "integer",
       "description": "The ID of the VAT"
     },
-    "productGroupId": {
+    "productGroup": {
       "type": "integer",
       "description": "The ID of the product group"
     },

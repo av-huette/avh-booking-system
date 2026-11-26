@@ -1,0 +1,21 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "role.json",
+  "title": "Role",
+  "description": "A role that users can have",
+  "type": "object",
+  "properties": {
+    "id": {
+      "type": "integer",
+      "description": "The unique ID"
+    },
+    "name": {
+      "type": "string",
+      "description": "The name"
+    }
+  },
+  "required": [
+    "name"
+  ],
+  "additionalProperties": false
+}

@@ -13,7 +13,7 @@
       "type": "string",
       "description": "The name"
     },
-    "parent_id": {
+    "parentId": {
       "type": ["integer", "null"],
       "description": "The ID of the parent group, null for top-level groups"
     }

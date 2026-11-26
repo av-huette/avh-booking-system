@@ -1,0 +1,27 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "serviceLink.json",
+  "title": "ServiceLink",
+  "description": "A link between a user and a user of an external service",
+  "type": "object",
+  "properties": {
+    "foreignUserId": {
+      "type": "integer",
+      "description": "The ID of the user in the external service"
+    },
+    "userId": {
+      "type": "integer",
+      "description": "The ID of the user"
+    },
+    "serviceSewobeId": {
+      "type": "integer",
+      "description": "The ID of the Sewobe service"
+    }
+  },
+  "required": [
+    "foreignUserId",
+    "userId",
+    "serviceSewobeId"
+  ],
+  "additionalProperties": false
+}

@@ -22,7 +22,7 @@
 </style>
 
 <script lang="ts">
-import { useThemeStore } from '../store/themeStore'
+import { useThemeStore, type ThemeFlavor } from '../store/themeStore'
 
 export default {
   data() {
@@ -34,7 +34,7 @@ export default {
         { key: 'catppuccin-frappe',    label: 'Frappé' },
         { key: 'catppuccin-macchiato', label: 'Macchiato' },
         { key: 'catppuccin-mocha',     label: 'Mocha' },
-      ]
+      ] as { key: ThemeFlavor, label: string }[]
     }
   }
 }

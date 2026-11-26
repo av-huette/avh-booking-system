@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 
-type ThemeFlavor = 'catppuccin-latte' | 'catppuccin-frappe' | 'catppuccin-macchiato' | 'catppuccin-mocha'
+export type ThemeFlavor = 'catppuccin-latte' | 'catppuccin-frappe' | 'catppuccin-macchiato' | 'catppuccin-mocha'
 
 const VALID_THEMES: ThemeFlavor[] = ['catppuccin-latte', 'catppuccin-frappe', 'catppuccin-macchiato', 'catppuccin-mocha']
 

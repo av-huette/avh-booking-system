@@ -53,7 +53,7 @@ function reset() {
   loadFromStore();
 }
 
-function changeLogo(e){
+function changeLogo(e: Event){
   const reader = new FileReader();
   reader.addEventListener("load", () => {
     const newValue = reader.result as string;
@@ -64,18 +64,18 @@ function changeLogo(e){
     draft.value.compLogo = newValue;
   })
 
-  reader.readAsDataURL(e.target.files[0]);
+  reader.readAsDataURL((e.target as HTMLInputElement).files![0]);
 }
 
 const companyIcon = ref("");
-function changeIcon(e){
+function changeIcon(e: Event){
   const reader = new FileReader();
   reader.addEventListener("load", () => {
-    companyIcon.value = reader.result;
+    companyIcon.value = reader.result as string;
     console.log(companyIcon.value.length);
   })
 
-  reader.readAsDataURL(e.target.files[0]);
+  reader.readAsDataURL((e.target as HTMLInputElement).files![0]);
 }
 </script>
 

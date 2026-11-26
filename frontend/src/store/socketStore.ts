@@ -18,19 +18,6 @@ export const useSocketStore = defineStore("notificationStore", {
         sendMessage(msg: string) {
             this.wsClient.send({type: "hello", content: msg})
         },
-        queryAccountExample() {
-            let payload = {
-                "table": "account",
-                "filter": [{"column": "account_id", "operator": "gt", "value": "1"}, {
-                    "column": "balance",
-                    "operator": "gt",
-                    "value": "12.04"
-                }],
-                "limit": 10,
-                "sort": {"column": "account_id", "order": "desc"}
-            }
-            this.wsClient.send({type: "query", payload: payload})
-        },
         addAccount(newAccount: Account) {
             let payload = {
                 "operation": "insert",

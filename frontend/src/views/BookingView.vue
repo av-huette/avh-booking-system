@@ -103,10 +103,11 @@ import { useCartStore } from '../store/CartStore';
     },
     computed: {
       companyLogo(){
-        if (this.setting$.get("compLogo") == -1){
+        const logo = this.setting$.get("compLogo");
+        if (logo == -1){
           return null;
         }
-        return this.setting$.get("compLogo").value;
+        return logo.value;
       }
     }
   }

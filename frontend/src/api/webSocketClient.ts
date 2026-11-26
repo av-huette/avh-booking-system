@@ -15,6 +15,7 @@ import type { Unit } from "../composables/unit.ts";
 import type { Vat } from "../composables/vat.ts";
 import { useSettingStore } from "../store/SettingStore.ts";
 import { Product } from "../composables/product.ts";
+import type { ProductGroup } from "../composables/productGroup.ts";
 
 interface WebSocketClientOptions {
     reconnectInterval?: number;
@@ -59,9 +60,8 @@ export class WebSocketClient {
     private reconnectAttempts: number;
     private messageQueue: any[];
     private eventHandlers: EventHandlers;
-    private isConnected: boolean;
     private ws: WebSocket | null;
-    private heartbeatTimer: number | null;
+    private heartbeatTimer: ReturnType<typeof setInterval> | null;
     private lastPong: number;
     private schema: SchemaNode;
 
@@ -76,7 +76,6 @@ export class WebSocketClient {
         this.reconnectAttempts = 0;
         this.messageQueue = [];
         this.eventHandlers = {};
-        this.isConnected = false;
         this.ws = null;
         this.heartbeatTimer = null;
         this.lastPong = 0;
@@ -107,7 +106,6 @@ export class WebSocketClient {
 
         this.ws.onopen = (event: Event): void => {
             console.log('WebSocket connected');
-            this.isConnected = true;
             this.reconnectAttempts = 0;
 
             // Send any queued messages
@@ -235,7 +233,8 @@ export class WebSocketClient {
                 case 'broadcast' : {
                     console.info('Received broadcast');
                     // TODO check if payload exists
-                    const result = message.payload as queryResultList
+                    // One record, or the whole table (after a delete, and always for some tables)
+                    const result = message.payload as queryResult | queryResultList
                     switch (result.table) {
                         case 'account': {
                             let newAccounts = [] as Account[]
@@ -256,7 +255,7 @@ export class WebSocketClient {
                             return;
                         }
                         case 'product_group': {
-                            useProductGroupStore().patchProductGroups([result.data]);
+                            useProductGroupStore().patchProductGroups([result.data as ProductGroup]);
                             return;
                         }
                         case 'unit': {
@@ -291,7 +290,6 @@ export class WebSocketClient {
 
         this.ws.onclose = (event: CloseEvent): void => {
             console.log(`WebSocket closed: ${event.code} - ${event.reason}`);
-            this.isConnected = false;
             this.stopHeartbeat();
 
             // Trigger custom close handlers

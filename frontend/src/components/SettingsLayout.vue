@@ -33,6 +33,7 @@ const menus: Record<SettingsArea, { title: string, links: MenuLink[] }> = {
     title: 'Zahlungseinstellungen',
     links: [
       { label: 'Stripe', icon: ['fas', 'credit-card'], to: { name: 'PaymentSettings' } },
+      { label: 'Terminals', icon: ['fas', 'cash-register'], to: { name: 'TerminalSettings' } },
       { label: 'Steuersätze', icon: ['fas', 'percent'], to: { name: 'VatSettings' } },
     ],
   },
@@ -42,6 +43,7 @@ const menus: Record<SettingsArea, { title: string, links: MenuLink[] }> = {
       { label: 'Firma', icon: ['fas', 'building'], to: { name: 'ApplicationSettings', params: { section: 'company' } } },
       { label: 'Darstellung', icon: ['fas', 'palette'], to: { name: 'ApplicationSettings', params: { section: 'look' } } },
       { label: 'Lokalisierung', icon: ['fas', 'language'], to: { name: 'ApplicationSettings', params: { section: 'localisation' } } },
+      { label: 'Client', icon: ['fas', 'desktop'], to: { name: 'ClientSettings' } },
     ],
   },
 }

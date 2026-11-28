@@ -12,6 +12,7 @@ import AccountSettingsSingle from '../views/Settings/AccountSettingsSingle.vue'
 import CategorySettingsSingle from '../views/Settings/CategorySettingsSingle.vue'
 import CategorySettings from '../views/Settings/CategorySettings.vue'
 import PaymentSettings from '../views/Settings/PaymentSettings.vue'
+import TerminalSettings from '../views/Settings/TerminalSettings.vue'
 import ClientSettings from '../views/Settings/ClientSettings.vue'
 import OrderView from '../views/OrderView.vue'
 import ApplicationSettings from '../views/Settings/ApplicationSettings.vue'
@@ -41,6 +42,7 @@ const routes = [
   { name: 'UnitSettingsAdd', path: '/settings/units/add', component: UnitSettingsSingle },
   { name: 'UnitSettingsEdit', path: '/settings/units/:unitId', component: UnitSettingsSingle },
   { name: 'PaymentSettings', path: '/settings/payments', component: PaymentSettings},
+  { name: 'TerminalSettings', path: '/settings/terminals', component: TerminalSettings},
   { name: 'VatSettings', path: '/settings/vats', component: VatSettings },
   { name: 'VatSettingsAdd', path: '/settings/vats/add', component: VatSettingsSingle },
   { name: 'VatSettingsEdit', path: '/settings/vats/:vatId', component: VatSettingsSingle },

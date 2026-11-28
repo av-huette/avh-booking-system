@@ -7,19 +7,19 @@ import { useProductStore } from '../store/ProductStore'
 import { useProductVisibilityStore } from '../store/ProductVisibilityStore'
 import { useCategoryStore } from '../store/CategoryStore'
 import { useProductGroupStore } from '../store/ProductGroupStore'
+import { useSettingStore } from '../store/SettingStore'
 
 const product$ = useProductStore()
 const visibility$ = useProductVisibilityStore()
 const category$ = useCategoryStore()
 const productGroup$ = useProductGroupStore()
 
-// ToDo Set the location of this client once locations are implemented
-const currentLocationId: number | null = null
+const setting$ = useSettingStore()
 
 // A product is active if it has at least one visibility (at the current location)
 const activeProductIds = computed(() => new Set(
   visibility$.visibilities
-    .filter(vis => currentLocationId == null || vis.locationId == currentLocationId)
+    .filter(vis => setting$.locationId == null || vis.locationId == setting$.locationId)
     .map(vis => vis.productId)
 ))
 

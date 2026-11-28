@@ -26,3 +26,6 @@ backend/**/.env
 python/
 
 .notes/
+
+.CLAUDE.md
+./frontend/CLAUDE.md

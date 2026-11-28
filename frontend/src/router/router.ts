@@ -12,9 +12,15 @@ import AccountSettingsSingle from '../views/Settings/AccountSettingsSingle.vue'
 import CategorySettingsSingle from '../views/Settings/CategorySettingsSingle.vue'
 import CategorySettings from '../views/Settings/CategorySettings.vue'
 import PaymentSettings from '../views/Settings/PaymentSettings.vue'
+import TerminalSettings from '../views/Settings/TerminalSettings.vue'
 import ClientSettings from '../views/Settings/ClientSettings.vue'
 import OrderView from '../views/OrderView.vue'
 import ApplicationSettings from '../views/Settings/ApplicationSettings.vue'
+import UnitSettings from '../views/Settings/UnitSettings.vue'
+import UnitSettingsSingle from '../views/Settings/UnitSettingsSingle.vue'
+import VatSettings from '../views/Settings/VatSettings.vue'
+import VatSettingsSingle from '../views/Settings/VatSettingsSingle.vue'
+import MenuDisplay from '../views/MenuDisplay.vue'
 
 const routes = [
   { path: '/', component: HomeView },
@@ -26,16 +32,25 @@ const routes = [
   { name: 'ProductGroupSettings', path: '/settings/product-groups', component: ProductGroupSettings },
   { name: 'ProductGroupSettingsAdd', path: '/settings/product-groups/add', component: ProductGroupSettingsSingle },
   { name: 'ProductGroupSettingsEdit', path: '/settings/product-groups/:groupId', component: ProductGroupSettingsSingle },
-  { name: 'CategorySettings', path: '/settings/categories', component: CategorySettings },
+  { name: 'CategorySettings', path: '/settings/categories/:type', component: CategorySettings },
   { name: 'CategorySettingsAdd', path: '/settings/categories/:type/add', component: CategorySettingsSingle },
   { name: 'CategorySettingsSingleEdit', path: '/settings/categories/:type/:categoryId', component: CategorySettingsSingle },
   { name: 'AccountSettings', path: '/settings/accounts', component: AccountSettings},
   { name: 'AccountSettingsSingle', path: '/settings/accounts/:accountId', component: AccountSettingsSingle},
   { name: 'AccountSettingsAdd', path: '/settings/accounts/add', component: AccountSettingsSingle},
-  { path: '/settings/payments', component: PaymentSettings},
+  { name: 'UnitSettings', path: '/settings/units', component: UnitSettings },
+  { name: 'UnitSettingsAdd', path: '/settings/units/add', component: UnitSettingsSingle },
+  { name: 'UnitSettingsEdit', path: '/settings/units/:unitId', component: UnitSettingsSingle },
+  { name: 'PaymentSettings', path: '/settings/payments', component: PaymentSettings},
+  { name: 'TerminalSettings', path: '/settings/terminals', component: TerminalSettings},
+  { name: 'VatSettings', path: '/settings/vats', component: VatSettings },
+  { name: 'VatSettingsAdd', path: '/settings/vats/add', component: VatSettingsSingle },
+  { name: 'VatSettingsEdit', path: '/settings/vats/:vatId', component: VatSettingsSingle },
   { name: 'ClientSettings', path: '/settings/client', component: ClientSettings},
   { name: 'Orders', path: '/orders/', component: OrderView},
-  { name: 'ApplicationSettings', path: '/settings/application', component: ApplicationSettings}
+  { name: 'MenuDisplay', path: '/display', component: MenuDisplay, meta: { fullscreen: true } },
+  { path: '/settings/application', redirect: { name: 'ApplicationSettings', params: { section: 'company' } } },
+  { name: 'ApplicationSettings', path: '/settings/application/:section', component: ApplicationSettings}
 ]
 
 const router = createRouter({

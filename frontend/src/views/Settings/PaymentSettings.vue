@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import SettingsLayout from '../../components/SettingsLayout.vue';
 import Buttons from '../../composables/elements/Buttons.vue';
 import Button from '../../composables/elements/Button.vue';
 
@@ -29,8 +30,9 @@ function reset() {
 </script>
 
 <template>
-<h1 class="title">Payment Settings</h1>
-<h2 class="subtitle">Zahlungsdienstleister - Stripe</h2>
+<SettingsLayout area="payment">
+<h1 class="title">Stripe</h1>
+<h2 class="subtitle">Zahlungsdienstleister</h2>
 <div class="columns">
   <div class="column is-3">Aktivieren</div>
   <div class="column">
@@ -76,6 +78,7 @@ function reset() {
     </div>
   </div>
 </div>
+</SettingsLayout>
 </template>
 
 <style scoped>

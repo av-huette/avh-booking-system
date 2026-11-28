@@ -10,12 +10,12 @@ const de = {
     "booking": "Buchen",
     "payment": "Zahlen",
     "orders": "Bestellungen",
+    "display": "Karte",
     "stats": "Statistiken",
     "settings": {
       "menuTitle": "Einstellungen",
       "item": "Wareneinstellungen",
       "account": "Kontoeinstellungen",
-      "category": "Kategorieeinstellungen",
       "payment": "Zahlungseinsntellungen",
       "system": "Systemeinstellungen"
     },

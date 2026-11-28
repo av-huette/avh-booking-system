@@ -3,6 +3,7 @@ import {Product} from '../composables/product'
 import { useProductVisibilityStore } from './ProductVisibilityStore'
 import { useAccountStore } from './AccountStore'
 import { useCategoryStore } from './CategoryStore'
+import { useSettingStore } from './SettingStore'
 
 export const useProductStore = defineStore('product', {
     state: () => {
@@ -16,7 +17,8 @@ export const useProductStore = defineStore('product', {
             const currentCategoryProducts = this.products.filter((prod) => {
                 // Hide products whose category is disabled (unless all=true, e.g. in settings)
                 if (!all && !useCategoryStore().byId(prod.category)?.enabled) { return false }
-                // ToDo Hide Products that are not available at this location
+                // Hide products that are not visible at the location of this client (unless all=true)
+                if (!all && !useProductVisibilityStore().isVisibleAtLocation(prod.id ?? -1, useSettingStore().locationId)) { return false }
                 if (categoryId == 0) {return true}
                 return prod.category == categoryId
             });

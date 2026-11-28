@@ -10,6 +10,24 @@ export const useProductGroupStore = defineStore('productGroup', {
     getters: {
         all(): ProductGroup[] {
             return this.productGroups;
+        },
+        // Depth-first ordered groups (excluding "no group" id 0); groups with a missing parent are treated as roots
+        tree(): { group: ProductGroup, depth: number }[] {
+            const groups = this.productGroups.filter(g => g.id !== 0);
+            const ids = new Set(groups.map(g => g.id));
+            const byName = (a: ProductGroup, b: ProductGroup) => a.name.localeCompare(b.name);
+            const result: { group: ProductGroup, depth: number }[] = [];
+            const visited = new Set<number>();
+
+            const visit = (group: ProductGroup, depth: number) => {
+                if (visited.has(group.id ?? -1)) return;
+                visited.add(group.id ?? -1);
+                result.push({ group, depth });
+                groups.filter(g => g.parentId === group.id).sort(byName).forEach(child => visit(child, depth + 1));
+            };
+
+            groups.filter(g => g.parentId == null || !ids.has(g.parentId)).sort(byName).forEach(root => visit(root, 0));
+            return result;
         }
     },
     actions: {
@@ -27,6 +45,21 @@ export const useProductGroupStore = defineStore('productGroup', {
                 group = group.parentId != null ? this.byId(group.parentId) : undefined;
             }
             return path;
+        },
+        // Returns the IDs of all groups nested below the given group
+        descendantIds(id: number): number[] {
+            const result: number[] = [];
+            const queue = [id];
+            while (queue.length > 0) {
+                const current = queue.shift();
+                this.productGroups
+                    .filter(g => g.parentId === current && g.id !== undefined && !result.includes(g.id))
+                    .forEach(g => {
+                        result.push(g.id as number);
+                        queue.push(g.id as number);
+                    });
+            }
+            return result;
         },
         removeById(id: number) {
             this.$patch(state => {

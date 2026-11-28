@@ -1,5 +1,7 @@
 import { defineStore } from "pinia";
 import { type Setting } from "../composables/setting";
+import { type Location } from "../composables/location";
+import { useLocationStore } from "./LocationStore";
 
 
 export const useSettingStore = defineStore('setting', {
@@ -7,11 +9,22 @@ export const useSettingStore = defineStore('setting', {
       return {
         settings: [] as Setting[],
         clientId: "",
+        locationId: null as number | null,
       }
   },
   getters: {
     needsSetup(): boolean{
-      return (!this.hasClientId) || false;
+      return !this.hasClientId || !this.hasLocation;
+    },
+    hasLocation(): boolean{
+      return this.locationId != null;
+    },
+    currentLocation(): Location | undefined{
+      return this.locationId == null ? undefined : useLocationStore().byId(this.locationId);
+    },
+    // Stripe Terminal reader configured for the location of this client (used for card payments)
+    currentTerminalId(): string | undefined{
+      return this.currentLocation?.stripeTerminalId || undefined;
     },
     hasClientId(): boolean{
       return this.clientId != "";
@@ -51,6 +64,6 @@ export const useSettingStore = defineStore('setting', {
   },
   persist:{
     storage: localStorage,
-    pick: ['clientId'],
+    pick: ['clientId', 'locationId'],
   }
 })

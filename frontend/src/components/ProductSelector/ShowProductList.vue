@@ -10,6 +10,7 @@
           <th>Category</th>
           <th>Group</th>
           <th>Visibility</th>
+          <th>Location</th>
           <th>Price</th>
           <th>Vat</th>
           <th v-show="hasEditProductRights">Actions</th>
@@ -34,10 +35,13 @@
           </td>
           <td>
             
-            <button v-for="visibility in visibility$.byProductId(product.id!)" class="tag">
-              <span class="icon"><icon :icon="visibility.getCategory()?.icon"/></span>
-              <span>{{ visibility.getCategory()?.title }}</span>
+            <button v-for="categoryId in visibility$.categoriesOf(product.id!)" class="tag">
+              <span class="icon"><icon :icon="category$.byId(categoryId)?.icon"/></span>
+              <span>{{ category$.byId(categoryId)?.title }}</span>
             </button>
+          </td>
+          <td>
+            <span v-for="locationId in visibility$.locationsOf(product.id!)" class="tag">{{ location$.byId(locationId)?.name }}</span>
           </td>
           <td>{{$n(product.price / 100, 'currency')}}</td>
           <td>{{product.getVat()?.rate}}%</td>
@@ -67,6 +71,8 @@
 import type { Product } from '../../composables/product';
 import { useProductStore } from '../../store/ProductStore';
 import { useProductVisibilityStore } from '../../store/ProductVisibilityStore';
+import { useCategoryStore } from '../../store/CategoryStore';
+import { useLocationStore } from '../../store/LocationStore';
 import type { PropType } from 'vue';
 
 export default {
@@ -74,6 +80,8 @@ export default {
     return {
       product$: useProductStore(),
       visibility$: useProductVisibilityStore(),
+      category$: useCategoryStore(),
+      location$: useLocationStore(),
       dev: false
     }
   },

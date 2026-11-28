@@ -5,8 +5,8 @@
    Admin Settings directly. -->
   <ClientSetup v-if="setting$.needsSetup" />
   <template v-else>
-    <DevModeBar v-if="dev" />
-    <MainNavigation />
+    <DevModeBar v-if="dev && !$route.meta.fullscreen" />
+    <MainNavigation v-if="!$route.meta.fullscreen" />
     <RouterView />
   </template>
 </template>

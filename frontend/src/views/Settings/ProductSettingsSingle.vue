@@ -24,7 +24,7 @@
     <div class="columns">
     <div class="column is-3">
       Category: 
-      <router-link :to="{name: 'CategorySettings'}" class="tag">
+      <router-link :to="{name: 'CategorySettings', params: { type: 'product' }}" class="tag">
         <icon :icon="['fas', 'gear']" title="Category Settings"/>
       </router-link>
     </div>
@@ -71,8 +71,7 @@
   <div class="columns">
     <div class="column is-3">
       Size and Unit:
-      <!-- ToDo: Add Unit Settings -->
-      <router-link to="#" class="tag">
+      <router-link :to="{ name: 'UnitSettings' }" class="tag">
         <icon :icon="['fas', 'gear']" title="Unit Settings"/>
       </router-link>
     </div>
@@ -107,8 +106,7 @@
   <div class="columns">
     <div class="column is-3">
       Vat:
-      <!-- ToDo: Add Vat Settings -->
-      <router-link to="#" class="tag">
+      <router-link :to="{ name: 'VatSettings' }" class="tag">
         <icon :icon="['fas', 'gear']" title="Vat Settings"/>
       </router-link>
     </div>
@@ -132,13 +130,13 @@
     <div class="column is-3">Category Visibility:</div>
     <div class="column">     
       <div class="buttons">
-        <label class="checkbox button has-icons-right has-icons-left" v-for="category in category$.accountCategories" :class="visibility$.categoryIsVisible(category.id, product.id!) ? '' : 'not-visible'">
+        <label class="checkbox button has-icons-right has-icons-left" v-for="category in category$.accountCategories" :class="selectedCategoryIds.includes(category.id) ? '' : 'not-visible'">
           <!-- :checked="visibility.includes(category.id)" -->
           <div class="icon is-small is-left">
-            <icon :icon="['fas', 'eye']" v-if="visibility$.categoryIsVisible(category.id, product.id!)"/>
-            <icon :icon="['fas', 'eye-slash']" v-if="!visibility$.categoryIsVisible(category.id, product.id!)"/>
+            <icon :icon="['fas', 'eye']" v-if="selectedCategoryIds.includes(category.id)"/>
+            <icon :icon="['fas', 'eye-slash']" v-if="!selectedCategoryIds.includes(category.id)"/>
           </div> 
-          <input type="checkbox" :checked="visibility$.categoryIsVisible(category.id, product.id!)" @change="visibility$.toggleCategoryVisibility(category.id, product.id!)" style="visibility:hidden; width:0;"/>
+          <input type="checkbox" :checked="selectedCategoryIds.includes(category.id)" @change="toggleVisibleCategory(category.id)" style="visibility:hidden; width:0;"/>
           <span>{{ category.title }}</span>
           <div class="icon is-small is-right">
             <icon :icon="category.icon" />
@@ -146,6 +144,26 @@
         </label>
       </div>
      
+    </div>
+  </div>
+
+  <div class="columns" v-if="doneMounting && isEdit">
+    <div class="column is-3">Location Visibility:</div>
+    <div class="column">
+      <div class="buttons">
+        <label class="checkbox button has-icons-left" v-for="loc in location$.all" :key="loc.id" :class="selectedLocationIds.includes(loc.id!) ? '' : 'not-visible'">
+          <div class="icon is-small is-left">
+            <icon :icon="['fas', 'eye']" v-if="selectedLocationIds.includes(loc.id!)"/>
+            <icon :icon="['fas', 'eye-slash']" v-if="!selectedLocationIds.includes(loc.id!)"/>
+          </div>
+          <input type="checkbox" :checked="selectedLocationIds.includes(loc.id!)" @change="toggleVisibleLocation(loc.id!)" style="visibility:hidden; width:0;"/>
+          <span>{{ loc.name }}</span>
+        </label>
+      </div>
+      <p class="help is-warning" v-if="selectedCategoryIds.length == 0 || selectedLocationIds.length == 0">
+        The product is only visible once at least one category and one location are selected.
+        Until then, the selection is not saved.
+      </p>
     </div>
   </div>
 
@@ -184,6 +202,7 @@ import { Product } from '../../composables/product';
 import { useProductStore } from '../../store/ProductStore';
 import { useCategoryStore } from '../../store/CategoryStore';
 import { useProductVisibilityStore } from '../../store/ProductVisibilityStore.ts';
+import { useLocationStore } from '../../store/LocationStore.ts';
 import { useProductGroupStore } from '../../store/ProductGroupStore.ts';
 import {useUnitStore} from "../../store/UnitStore.ts";
 import Buttons from '../../composables/elements/Buttons.vue';
@@ -198,6 +217,7 @@ export default {
       product$: useProductStore(),
       category$: useCategoryStore(),
       visibility$: useProductVisibilityStore(),
+      location$: useLocationStore(),
       productGroup$: useProductGroupStore(),
       unit$: useUnitStore(),
       socket$: useSocketStore(),
@@ -210,6 +230,9 @@ export default {
       saveTimeoutId: null as number | null,
       mutationHandler: null as ((res: any) => void) | null,
       wsErrorHandler: null as ((err: any) => void) | null,
+      // Visibility is kept locally so that one side survives while the other one is still empty
+      selectedCategoryIds: [] as number[],
+      selectedLocationIds: [] as number[],
     }
   },
   mounted() {
@@ -217,6 +240,8 @@ export default {
       const product = this.product$.byId(parseInt(this.$route.params.productId.toString()));
       if (!product) return;
       this.product = product.copy();
+      this.selectedCategoryIds = this.visibility$.categoriesOf(product.id!);
+      this.selectedLocationIds = this.visibility$.locationsOf(product.id!);
     } else {
       let newProduct = {} as Product;
       this.product = new Product(newProduct);
@@ -246,6 +271,17 @@ export default {
     }
   },
   methods: {
+    toggleVisibleCategory(categoryId: number) {
+      this.selectedCategoryIds = this.toggleId(this.selectedCategoryIds, categoryId);
+      this.visibility$.setVisibility(this.product.id!, this.selectedCategoryIds, this.selectedLocationIds);
+    },
+    toggleVisibleLocation(locationId: number) {
+      this.selectedLocationIds = this.toggleId(this.selectedLocationIds, locationId);
+      this.visibility$.setVisibility(this.product.id!, this.selectedCategoryIds, this.selectedLocationIds);
+    },
+    toggleId(ids: number[], id: number): number[] {
+      return ids.includes(id) ? ids.filter((i) => i != id) : [...ids, id];
+    },
     cleanupSaveListeners() {
       if (this.mutationHandler) {
         this.socket$.wsClient.off('mutationResult', this.mutationHandler);
